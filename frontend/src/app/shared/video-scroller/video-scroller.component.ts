@@ -1,6 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Offer } from 'src/app/models/offer.model';
 import { OffersService } from 'src/app/services/offers.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-video-scroller',
@@ -12,8 +15,11 @@ export class VideoScrollerComponent implements OnInit {
 
   offers: Offer[] = [];
 
+  @ViewChild('iframe') iframe: ElementRef
+
   constructor(
-    private offersService: OffersService
+    private offersService: OffersService,
+    private http: HttpClient
   ) { }
 
   ngOnInit() {
@@ -25,7 +31,7 @@ export class VideoScrollerComponent implements OnInit {
   }
 
   public share() {
-    navigator.share({url: 'https://quickflick-e3121.web.app'})
+    navigator.share({ url: 'https://quickflick-e3121.web.app' })
   }
 
   loadNextOffers() {
@@ -38,4 +44,28 @@ export class VideoScrollerComponent implements OnInit {
       }
     }, 500);
   }
+
+  public getGif() {
+    // console.log(title)
+    // return 'https://i.giphy.com/GULjPncSkMTSHEiWcW.gif'
+    // console.log("event")
+    console.log("lol")
+    // return this.http.get(`https://api.giphy.com/v1/gifs/search?api_key=${environment.giphyAPIKey}&q=wolf+of+wallstreet?limit=1`).toPromise().then((data) => {
+    //   let res = data as GiphyResponse
+    //   let imageSrc = `https://i.giphy.com/${res.data[0].id}.gif`
+    //   return imageSrc
+    // })
+  }
+
+  public lol() {
+    console.log("lol")
+  }
+}
+
+interface GiphyResponse {
+  data: [
+    {
+      id: string;
+    }
+  ]
 }
