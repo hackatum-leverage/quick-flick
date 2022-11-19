@@ -14,7 +14,8 @@ export class OffersService {
   ) { }
 
   public async getMovies() {
-    return this.http.get<Offer[]>("https://quick-flick-backend-pu2rnvaodq-ew.a.run.app/movie/next").toPromise().then(async (movies: Offer[] | undefined) => {
+
+    return this.http.get<Offer[]>("https://quick-flick-backend-pu2rnvaodq-ew.a.run.app/movie/next/").toPromise().then(async (movies: Offer[] | undefined) => {
       movies = movies ?? []
       for (let movie of movies) {
         movie.gif_url = await this.getGif(movie);
@@ -24,7 +25,7 @@ export class OffersService {
   }
 
   public async getSeries() {
-    return this.http.get<Offer[]>("https://quick-flick-backend-pu2rnvaodq-ew.a.run.app/series/next").toPromise().then(async (series: Offer[] | undefined) => {
+    return this.http.get<Offer[]>("https://quick-flick-backend-pu2rnvaodq-ew.a.run.app/series/next/").toPromise().then(async (series: Offer[] | undefined) => {
       series = series ?? []
       for (let s of series) {
         s.gif_url = await this.getGif(s);
