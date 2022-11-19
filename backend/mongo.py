@@ -33,7 +33,21 @@ def get_random_movie():
     return ret
 
 def get_random_tv():
-    pass
+    ret = []
+    agg = col_netflix_full.aggregate([
+        {
+            '$match': {
+                'serie': '1'
+            }
+        }, {
+            '$sample': {
+                'size': 5
+            }
+        }
+    ])
+    for a in agg:
+        ret.append(parse_json(a))
+    return ret
 
 
 def find_by_imdb(imdb_id):
