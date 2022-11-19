@@ -111,14 +111,13 @@
                     align-items: center;
                     justify-content: center;
                     p {
-                        &.animate {
-                            animation: flip 2s;
-                        }
+                        animation: flip 3s ease-in-out;
                         font-size: 20px;
                         font-style: italic;
                         font-weight: bold;
                         font-family: serif;
                         margin: 0px;
+                        opacity: 0;
                         &::before {
                             content: open-quote;
                         }
@@ -133,15 +132,20 @@
 }
 @keyframes flip {
     0% {
-        transform: rotate3d(1, 0, 0, -180deg) scale(0.5);
+        transform: translateX(-100%);
         opacity: 0;
     }
-    98% {
-        transform: scale(1.05);
+    25% {
+        opacity: 1;
+        transform: translate(0);
+    }
+    75% {
+        opacity: 1;
+        transform: translate(0);
     }
     100% {
-        transform: rotate3d(0) sclae(1);
-        opacity: 1;
+        transform: translateX(100%);
+        opacity: 0;
     }
 }
 

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { Offer } from 'src/app/models/offer.model';
 import { OffersService } from 'src/app/services/offers.service';
 
@@ -24,7 +24,8 @@ export class VideoScrollerComponent implements OnInit, AfterViewInit {
   public animateFlipper = false
 
   constructor(
-    private offersService: OffersService
+    private offersService: OffersService,
+    private renderer: Renderer2
   ) { }
 
   ngOnInit() {
@@ -41,18 +42,17 @@ export class VideoScrollerComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.interval = setInterval(() => {
-      this.flipper.nativeElement.classList.add('animate')
       this.nextReview()
-      setTimeout(() => {
-        this.flipper.nativeElement.classList.remove('animate')
-      }, 2000)
-    }, 3000)
+    }, 5000)
   }
 
   nextReview() {
-    console.log("test")
     if (this.reviewIndex < this.review.length - 1) {
-      this.reviewIndex++
+      this.flipper.nativeElement.innerHTML = ""
+      let newChild = this.renderer.createElement('p')
+      newChild.classList.add('flipper')
+      newChild.innerHTML = this.review[++this.reviewIndex]
+      this.renderer.appendChild(this.flipper.nativeElement, newChild)
     } else {
       clearInterval(this.interval)
     }
