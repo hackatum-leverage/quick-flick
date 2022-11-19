@@ -9,8 +9,11 @@
           <!-- empty -->
         </div>
         <div class="title">
-          <div *ngIf="item.posters && item.posters.split(',').length >= 0">
+          <div *ngIf="item.posters && item.posters.split(',').length > 0">
             <img [src]="item.posters.split(',')[0]">
+          </div>
+          <div *ngIf="!item.posters || item.posters.split(',').length == 0">
+            <img src="../../../assets/poster-placeholder.jpg">
           </div>
           <div class="container">
             <h1>{{ item.title }}</h1>
