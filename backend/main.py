@@ -27,6 +27,9 @@ def test_trends_movie():
         ret_id = get_imdb_id(str(req_id))
     return ret_id
 
+@app.route("/test/trends/tv")
+def test_trends_tv():
+    pass
 
 @app.route("/test/poster/<imdb_id>")
 def test_poster(imdb_id="tt0137523"):
