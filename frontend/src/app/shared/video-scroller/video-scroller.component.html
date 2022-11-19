@@ -17,8 +17,12 @@
               <ion-label>{{ genre }}</ion-label>
             </ion-chip>
           </div>
+        </div>''
+        <div class="flipper" #flipper>
+          <p>
+            {{ review[reviewIndex] }}
+          </p>
         </div>
-        <div class="flipper"></div>
       </div>
       <div class="toolbar">
         <a [href]="item.url ?? ''" target="_blank">
