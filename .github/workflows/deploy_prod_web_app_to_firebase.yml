@@ -1,0 +1,35 @@
+name: Deploy Prod Web App To Firebase Hosting
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@master
+        with:
+          ref: main
+      - name: Setup node
+        uses: actions/setup-node@master
+        with:
+          node-version: 16    
+      - name: Run npm install
+        working-directory: ./frontend  
+        run: npm ci
+      - name: Install ionic cli
+        working-directory: ./frontend
+        run: npm install -g @ionic/cli
+      - name: Run ionic build
+        working-directory: ./frontend  
+        run: ionic build --configuration production
+      - name: Deploy Web App to Firebase
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_QUICKFLICK_E3121 }}"
+          projectId: quickflick-e3121
+          entryPoint: ./firebase
+          channelId: live
