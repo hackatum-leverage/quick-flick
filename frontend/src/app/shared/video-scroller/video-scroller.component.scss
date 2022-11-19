@@ -89,6 +89,7 @@
                         padding: 4px 6px;
                         border-radius: 4px;
                         margin: 0px;
+                        animation: text 0.5s ease-in-out;
                     }
                 }
                 .title {
@@ -164,6 +165,17 @@
     100% {
         transform: rotate3d(0) scale(1);
         opacity: 1;
+    }
+}
+
+@keyframes text {
+    0% {
+        opacity: 0;
+        transform: scale(1.5);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
     }
 }
 
