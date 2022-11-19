@@ -12,7 +12,7 @@ import { AppRoutingModule } from './app-routing.module';
   imports: [
     BrowserModule,
     IonicModule.forRoot({
-      mode: 'ios'
+      // mode: 'ios'
     }),
     AppRoutingModule
   ],
