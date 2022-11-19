@@ -44,29 +44,40 @@
         display: grid;
         column-gap: 0;
         row-gap: 0;
-        grid-template-columns: auto 20px;
-        grid-template-rows: auto 250px 100px;
+        grid-template-rows: auto;
+        grid-template-columns: auto 60px;
         height: 100%;
         background-color: blue;
-        &:nth-child(odd) {
-            background-color: rgb(190, 190, 190);
-        }
+        grid-template-areas:
+        "left toolbar";
         width: min(56.25vh, 100%);
         .toolbar {
-            grid-area: 1 / col2-start / row3-end / col2-end;
+            grid-area: "toolbar";
             background-color: red;
         }
-        .content {
-            grid-area: 1 / 1 / row2-start / col2-start;
-            background-color: violet;
+        .left {
+            display: grid;
+            grid-template-rows: auto 250px 100px;
+            grid-template-columns: auto;
+            grid-template-areas:
+            "content"
+            "title"
+            "flipper";
+            .content {
+                grid-area: "content";
+                background-color: violet;
+            }
+            .title {
+                grid-area: "title";
+                background-color: yellow;
+            }
+            .flipper {
+                grid-area: "flipper";
+                background-color: green;
+            }
         }
-        .title {
-            grid-area: 2 / 1 / row2-start / col2-start;
-            background-color: yellow;
-        }
-        .flipper {
-            grid-area: 3 / 1 / row4-start / col2-start;
-            background-color: green;
+        &:nth-child(odd) {
+            background-color: rgb(190, 190, 190);
         }
     }
 }
