@@ -51,6 +51,10 @@ def tv_poster(imdb_id):
         ret = req["posters"][0]["file_path"]
     return img_baseurl+size+ret
 
+@app.route("/offer/<imdb_id>")
+def get_offer_record(imdb_id):
+    pass
+
 def get_id(imdb_id): #vllt parameter einfügen für TV oder Movie ergebnisse
     with urllib.request.urlopen(mdb_url + "find/" + imdb_id + "?api_key=" + mdb_key + "&external_source=imdb_id") as url:
         req = json.loads(url.read().decode())
