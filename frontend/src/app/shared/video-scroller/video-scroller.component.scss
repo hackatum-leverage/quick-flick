@@ -19,7 +19,8 @@
         overflow: hidden;
         grid-template-areas: "left toolbar";
         width: min(56.25vh, 100%);
-        .foreground, .background {
+        .foreground,
+        .background {
             grid-column: 1;
             grid-row: 1;
         }
@@ -68,14 +69,30 @@
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    img {
-                        width: 250px;
-                        border-radius: 8px;
-                    }
                 }
                 .title {
+                    display: flex;
+                    flex-flow: row;
+                    align-items: center;
                     grid-area: "title";
+                    gap: 12px;
+                    margin: 12px;
+                    padding: 12px;
+                    backdrop-filter: blur(10px) brightness(60%);
+                    border-radius: 12px;
+                    img {
+                        width: 200px;
+                        border-radius: 12px;
+                    }
                     // background-color: yellow;
+                    .container {
+                        display: flex;
+                        flex-flow: column;
+                        h1 {
+                            font-size: 28px;
+                            font-weight: bold;
+                        }
+                    }
                 }
                 .flipper {
                     grid-area: "flipper";
