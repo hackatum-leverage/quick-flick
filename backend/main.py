@@ -53,11 +53,31 @@ def movie_next(num=5):
 
 @app.route("/series/poster/<imdb_id>")
 def tv_poster(imdb_id):
-    new_id=get_id(imdb_id)
+    new_id = str(get_id(imdb_id))
     with urllib.request.urlopen(mdb_url + "tv/" + new_id + "/images" + "?api_key=" + mdb_key) as url:
         req = json.loads(url.read().decode())
         ret = req["posters"][0]["file_path"]
     return img_baseurl+size+ret
+
+@app.route("/movie/comments/<imdb_id>")
+def movie_comments(imdb_id):
+    new_id = get_id(imdb_id)
+    with urllib.request.urlopen(mdb_url+ "movie/" + new_id + "/reviews" + "?api_key=" + mdb_key) as url:
+        req = json.loads(url.read().decode())
+        comments = []
+        for r in req["results"]:
+            comments.append(r["content"])
+    return {"comments": comments}
+
+@app.route("/series/comments/<imdb_id>")
+def tv_comments(imdb_id):
+    new_id = get_id(imdb_id)
+    with urllib.request.urlopen(mdb_url + "tv/" + new_id + "/reviews" + "?api_key=" + mdb_key) as url:
+        req = json.loads(url.read().decode())
+        comments = []
+        for r in req["results"]:
+            comments.append(r["content"])
+    return {"comments": comments}
 
 @app.route("/offer/<imdb_id>")
 def get_offer_record(imdb_id):
