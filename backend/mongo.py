@@ -62,9 +62,6 @@ def find_by_imdb(imdb_id):
         ret = random.choice(l)
     return ret
 
-def parse_json(data):
-    return json.loads(json_util.dumps(data))
-
 def check_imdb(_imdbID):
     agg = col_netflix_full.aggregate([
         {
@@ -80,3 +77,6 @@ def check_imdb(_imdbID):
         return True
     else:
         return False
+
+def parse_json(data):
+    return json.loads(json_util.dumps(data))
