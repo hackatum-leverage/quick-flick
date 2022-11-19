@@ -1,6 +1,5 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { IonModal, ModalController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Offer } from 'src/app/models/offer.model';
 import { OffersService } from 'src/app/services/offers.service';
 import { CommentListComponent } from '../modals/comment-list/comment-list.component';
@@ -10,34 +9,61 @@ import { CommentListComponent } from '../modals/comment-list/comment-list.compon
   templateUrl: './video-scroller.component.html',
   styleUrls: ['./video-scroller.component.scss'],
 })
-export class VideoScrollerComponent implements OnInit {
+export class VideoScrollerComponent implements OnInit, AfterViewInit {
   @Input() type: "movie" | "series" = "movie";
 
   offers: Offer[] = [];
   comments = ["Super fun movie", "Sucks"];
 
-  @ViewChild(IonModal) modal: IonModal;
+  @ViewChild('flipper') flipper: ElementRef
+
+  public review: string[] = [
+    'Lorem ipsum solor et dilor',
+    'liked it very much',
+    'Shit was bussin'
+  ]
+  public reviewIndex = 0
+  private interval: any = null
+  public animateFlipper = false
 
   constructor(
     private offersService: OffersService,
-    private http: HttpClient,
     private modalCtrl: ModalController
   ) { }
 
   ngOnInit() {
     if (this.type === "movie") {
       this.offersService.getMovies().then((movies) => {
-        this.offers = movies;
-      });
+        this.offers = movies
+      })
     } else {
       this.offersService.getSeries().then((series) => {
-        this.offers = series;
-      });
+        this.offers = series
+      })
+    }
+  }
+
+  ngAfterViewInit() {
+    this.interval = setInterval(() => {
+      this.flipper.nativeElement.classList.add('animate')
+      this.nextReview()
+      setTimeout(() => {
+        this.flipper.nativeElement.classList.remove('animate')
+      }, 2000)
+    }, 3000)
+  }
+
+  nextReview() {
+    console.log("test")
+    if (this.reviewIndex < this.review.length - 1) {
+      this.reviewIndex++
+    } else {
+      clearInterval(this.interval)
     }
   }
 
   public share(url: string) {
-    navigator.share({url: url})
+    navigator.share({ url: url })
   }
 
   loadNextOffers() {

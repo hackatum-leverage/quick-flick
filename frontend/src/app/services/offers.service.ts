@@ -13,31 +13,37 @@ export class OffersService {
   ) { }
 
   public async getMovies() {
-    const movies = [...this.DUMMY_MOVIE_OFFERS];
-    for (let movie of movies) {
-      movie.gif_url = await this.getGif(movie);
-    }
-    return movies
+    return this.http.get<Offer[]>("https://quick-flick-backend-pu2rnvaodq-ew.a.run.app/movie/next").toPromise().then(async (movies: Offer[] | undefined) => {
+      movies = movies ?? []
+      for (let movie of movies) {
+        movie.gif_url = await this.getGif(movie);
+      }
+      return movies
+    });
   }
 
   public async getSeries() {
-    const movies = [...this.DUMMY_SERIES_OFFERS];
-    for (let movie of movies) {
-      movie.gif_url = await this.getGif(movie);
-    }
-    return movies
+    return this.http.get<Offer[]>("https://quick-flick-backend-pu2rnvaodq-ew.a.run.app/series/next").toPromise().then(async (series: Offer[] | undefined) => {
+      series = series ?? []
+      for (let s of series) {
+        s.gif_url = await this.getGif(s);
+      }
+      return series;
+    });
   }
 
   public getGif(item: Offer) {
-    // console.log(title)
-    // return 'https://i.giphy.com/GULjPncSkMTSHEiWcW.gif'
-    // console.log("event")
-    const query_title = (item.otitle ?? "matrix").replace(/\s+/g, '+').toLowerCase();
-    return this.http.get(`https://api.giphy.com/v1/gifs/search?api_key=${environment.giphyAPIKey}&q=${query_title}+movie?limit=1`).toPromise().then((data) => {
-      let res = data as GiphyResponse
-      let gitUrl = `https://i.giphy.com/${res.data[0].id}.gif`
-      item.gif_url = gitUrl
-      return gitUrl
+    const query_addon = item.serie ? " series" : " movie";
+    const query_title = escape(((item.otitle || item.title || "The Matrix"))).substring(0, 50 - query_addon.length).replace(/%+\d*$/, "");
+
+    return this.http.get(`https://api.giphy.com/v1/gifs/search?api_key=${environment.giphyAPIKey}&q=${query_title}${query_addon}&limit=1&rating=g`).toPromise().then((data) => {
+      let res = data as GiphyResponse;
+      let gitUrl = `https://i.giphy.com/${res.data[0].id}.gif`;
+      item.gif_url = gitUrl;
+      return gitUrl;
+    }).catch((error) => {
+      console.log(error);
+      return `https://i.giphy.com/xUOxfj6cTg3ezmjIoo.gif`;
     })
   }
 

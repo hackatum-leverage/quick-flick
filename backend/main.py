@@ -2,8 +2,10 @@ import os
 import urllib.request, json
 from flask import Flask
 import mongo
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 mdb_url = "https://api.themoviedb.org/3/"
 mdb_key = "5df139106aa0fb2f1b015f82b6bf0a7a"
@@ -44,13 +46,13 @@ def movie_poster(imdb_id="tt0137523"):
         ret = req["poster_path"]
     return img_baseurl+size+ret
 
-@app.route("/series/next/<num>")
-def tv_next(num=5):
-    return num
+@app.route("/series/next/")
+def tv_next():
+    return json.dumps(mongo.get_random_tv())
 
-@app.route("/movie/next/<num>")
-def movie_next(num=5):
-    return {"result": mongo.get_random_movie()}
+@app.route("/movie/next/")
+def movie_next():
+    return json.dumps(mongo.get_random_movie())
 
 @app.route("/series/poster/<imdb_id>")
 def tv_poster(imdb_id):
