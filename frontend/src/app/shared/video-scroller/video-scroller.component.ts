@@ -74,4 +74,12 @@ export class VideoScrollerComponent implements OnInit, AfterViewInit {
       });
     }
   }
+
+  getProviderIcon(offer: Offer) {
+    if (offer.pid === "nf") {
+      return "assets/providers/netflix.png";
+    } else {
+      return "https://ionicframework.com/docs/img/demos/avatar.svg";
+    }
+  }
 }

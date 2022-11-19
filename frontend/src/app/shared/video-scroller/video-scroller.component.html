@@ -12,7 +12,7 @@
           <div *ngIf="item.posters && item.posters.split(',').length > 0">
             <img [src]="item.posters.split(',')[0]">
           </div>
-          <div *ngIf="!item.posters || item.posters.split(',').length == 0">
+          <div *ngIf="!item.posters || item.posters.split(',').length === 0">
             <img src="../../../assets/poster-placeholder.jpg">
           </div>
           <div class="container">
@@ -38,6 +38,9 @@
           <ion-icon name="eye-outline"></ion-icon>
           <ion-icon name="share-social-outline" (click)="share(item.url ?? '')"></ion-icon>
           <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+          <ion-avatar>
+            <img [src]="getProviderIcon(item)" />
+          </ion-avatar>
         </div>
       </div>
     </div>
