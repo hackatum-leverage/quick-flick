@@ -79,9 +79,8 @@
                     border-radius: 12px;
                     img {
                         border-radius: 7px;
-                        flex-grow: 0;
-                        flex-shrink: 0;
-                        width: 120px;
+                        width: 110px;
+                        min-width: 110px;
                     }
                     // background-color: yellow;
                     .container {
@@ -111,14 +110,13 @@
                     align-items: center;
                     justify-content: center;
                     p {
-                        &.animate {
-                            animation: flip 2s;
-                        }
+                        animation: flip 2s ease-in-out;
                         font-size: 20px;
                         font-style: italic;
                         font-weight: bold;
                         font-family: serif;
                         margin: 0px;
+                        opacity: 1;
                         &::before {
                             content: open-quote;
                         }
@@ -133,14 +131,14 @@
 }
 @keyframes flip {
     0% {
-        transform: rotate3d(1, 0, 0, -180deg) scale(0.5);
+        transform: rotate3d(1, 0, 0, -90deg) scale(0.5);
         opacity: 0;
     }
     98% {
         transform: scale(1.05);
     }
     100% {
-        transform: rotate3d(0) sclae(1);
+        transform: rotate3d(0) scale(1);
         opacity: 1;
     }
 }
