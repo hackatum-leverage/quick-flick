@@ -46,7 +46,7 @@
                 align-items: center;
                 .container {
                     border-radius: 12px;
-                    backdrop-filter: blur(10px) brightness(60%);
+                    filter: drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.4));
                     margin: 5px;
                     width: 55px;
                     margin-left: 0px;
@@ -58,6 +58,7 @@
                         font-size: 42px;
                         padding: 12px 0px;
                         cursor: pointer;
+                        color: white;
                     }
                     img {
                         border-radius: 50%;
