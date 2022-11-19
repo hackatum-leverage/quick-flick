@@ -6,36 +6,6 @@
     height: calc(100vh - 51px);
     overflow-y: auto;
     background-color: black;
-    .scroll-item {
-        scroll-snap-stop: always;
-        flex-shrink: 0;
-        flex-grow: 0;
-        background-color: rgb(56, 56, 56);
-        height: 100%;
-        width: min(56.25vh, 100%);
-        scroll-snap-align: start;
-        img {
-            border-radius: 8px;
-            width: 250px;
-        }
-        &:nth-child(odd) {
-            background-color: rgb(190, 190, 190);
-        }
-        .toolbar {
-            display: flex;
-            flex-flow: column;
-            gap: 12px;
-            position: absolute;
-            bottom: 12px;
-            right: 12px;
-            ion-icon {
-                font-size: 48px;
-                padding: 12px;
-                cursor: pointer;
-            }
-        }
-    }
-
     .wrapper {
         scroll-snap-stop: always;
         scroll-snap-align: start;
@@ -47,13 +17,23 @@
         grid-template-rows: auto;
         grid-template-columns: auto 60px;
         height: 100%;
-        background-color: blue;
+        background-color: black;
         grid-template-areas:
         "left toolbar";
         width: min(56.25vh, 100%);
         .toolbar {
             grid-area: "toolbar";
-            background-color: red;
+            // background-color: red;
+            display: flex;
+            flex-flow: column;
+            gap: 12px;
+            justify-content: end;
+            align-items: center;
+            ion-icon {
+                font-size: 48px;
+                padding: 12px;
+                cursor: pointer;
+            }
         }
         .left {
             display: grid;
@@ -65,19 +45,23 @@
             "flipper";
             .content {
                 grid-area: "content";
-                background-color: violet;
+                // background-color: violet;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                img {
+                    width: 250px;
+                    border-radius: 8px;
+                }
             }
             .title {
                 grid-area: "title";
-                background-color: yellow;
+                // background-color: yellow;
             }
             .flipper {
                 grid-area: "flipper";
                 background-color: green;
             }
-        }
-        &:nth-child(odd) {
-            background-color: rgb(190, 190, 190);
         }
     }
 }
