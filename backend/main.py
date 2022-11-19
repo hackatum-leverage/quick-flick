@@ -71,7 +71,13 @@ def movie_comments(imdb_id):
 
 @app.route("/series/comments/<imdb_id>")
 def tv_comments(imdb_id):
-    pass
+    new_id = get_id(imdb_id)
+    with urllib.request.urlopen(mdb_url + "tv/" + new_id + "/reviews" + "?api_key=" + mdb_key) as url:
+        req = json.loads(url.read().decode())
+        comments = []
+        for r in req["results"]:
+            comments.append(r["content"])
+    return {"comments": comments}
 
 @app.route("/offer/<imdb_id>")
 def get_offer_record(imdb_id):
