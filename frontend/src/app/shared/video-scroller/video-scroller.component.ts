@@ -50,6 +50,7 @@ export class VideoScrollerComponent implements OnInit, AfterViewInit {
   }
 
   nextReview() {
+    console.log("test")
     if (this.reviewIndex < this.review.length - 1) {
       this.reviewIndex++
     } else {
