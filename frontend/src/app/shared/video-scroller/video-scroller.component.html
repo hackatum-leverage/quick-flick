@@ -1,5 +1,5 @@
 <div class="scroller">
-  <div class="scroll-item" *ngFor="let item of offers">
+  <!-- <div class="scroll-item" *ngFor="let item of offers">
     <h1>{{ item.title }}</h1>
     <br>
     <div *ngIf="item.genres">
@@ -15,5 +15,11 @@
       <ion-icon name="share-social-outline" (click)="share()"></ion-icon>
       <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
     </div>
+  </div> -->
+  <div class="wrapper" *ngFor="let item of offers">
+    <div class="content"></div>
+    <div class="title"></div>
+    <div class="toolbar"></div>
+    <div class="flipper"></div>
   </div>
 </div>

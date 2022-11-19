@@ -35,4 +35,38 @@
             }
         }
     }
+
+    .wrapper {
+        scroll-snap-stop: always;
+        scroll-snap-align: start;
+        flex-shrink: 0;
+        flex-grow: 0;
+        display: grid;
+        column-gap: 0;
+        row-gap: 0;
+        grid-template-columns: auto 20px;
+        grid-template-rows: auto 250px 100px;
+        height: 100%;
+        background-color: blue;
+        &:nth-child(odd) {
+            background-color: rgb(190, 190, 190);
+        }
+        width: min(56.25vh, 100%);
+        .toolbar {
+            grid-area: 1 / col2-start / row3-end / col2-end;
+            background-color: red;
+        }
+        .content {
+            grid-area: 1 / 1 / row2-start / col2-start;
+            background-color: violet;
+        }
+        .title {
+            grid-area: 2 / 1 / row2-start / col2-start;
+            background-color: yellow;
+        }
+        .flipper {
+            grid-area: 3 / 1 / row4-start / col2-start;
+            background-color: green;
+        }
+    }
 }
