@@ -44,12 +44,12 @@ def movie_poster(imdb_id="tt0137523"):
         ret = req["poster_path"]
     return img_baseurl+size+ret
 
-@app.route("/series/next/<num>")
-def tv_next(num=5):
-    return num
+@app.route("/series/next/")
+def tv_next():
+    pass
 
-@app.route("/movie/next/<num>")
-def movie_next(num=5):
+@app.route("/movie/next/")
+def movie_next():
     return {"result": mongo.get_random_movie()}
 
 @app.route("/series/poster/<imdb_id>")
