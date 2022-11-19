@@ -180,6 +180,12 @@ def getMovies():
     else:
         movieList.append(trending7DayList[trendingMovieIdx])
 
+    # create objects
+    objectList = []
+    for movie in movieList:
+        objectList.append(mongo.check_imdb(movie))
+
+
     return movieList
 
 # Uses discover api as first suggestion and then selects next recommendation series

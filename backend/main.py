@@ -51,6 +51,7 @@ def movie_poster(imdb_id="tt0137523"):
 @app.route("/series/next/")
 @app.route("/series/next/<imdb_id>")
 def tv_next(imdb_id = None):
+    return json.dumps(mongo.get_random_movie())
     if imdb_id is None:
         return getSeries()
     else:
@@ -60,6 +61,7 @@ def tv_next(imdb_id = None):
 @app.route("/movie/next/")
 @app.route("/movie/next/<imdb_id>")
 def movie_next(imdb_id = None):
+    return json.dumps(mongo.get_random_tv())
     if imdb_id is None:
         return getMovies()
     else:

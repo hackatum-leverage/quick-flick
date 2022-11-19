@@ -77,6 +77,19 @@ def check_imdb(_imdbID):
         return True
     else:
         return False
+
+def check_list(_imdbList):
+    agg = col_netflix_full.find(
+        {
+            'tmdb': {
+                '$in': _imdbList
+            }
+        }
+    )
+
+    searchResults = list(agg)
+
+    return searchResults
         
 def parse_json(data):
     return json.loads(json_util.dumps(data))
