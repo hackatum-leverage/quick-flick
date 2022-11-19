@@ -1,6 +1,7 @@
 import os
 import urllib.request, json
 from flask import Flask
+import mongo
 
 app = Flask(__name__)
 
@@ -49,7 +50,7 @@ def tv_next(num=5):
 
 @app.route("/movie/next/<num>")
 def movie_next(num=5):
-    return num
+    return {"result": mongo.get_random_movie()}
 
 @app.route("/series/poster/<imdb_id>")
 def tv_poster(imdb_id):
