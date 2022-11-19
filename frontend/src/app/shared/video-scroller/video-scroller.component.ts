@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Offer } from 'src/app/models/offer.model';
 import { OffersService } from 'src/app/services/offers.service';
 
@@ -12,13 +12,15 @@ export class VideoScrollerComponent implements OnInit, AfterViewInit {
 
   offers: Offer[] = [];
 
+  @ViewChild('flipper') flipper: ElementRef
+
   public review: string[] = [
     'Lorem ipsum solor et dilor',
     'liked it very much',
     'Shit was bussin'
   ]
   public reviewIndex = 0
-  private timeout: any = null
+  private interval: any = null
   public animateFlipper = false
 
   constructor(
@@ -38,23 +40,25 @@ export class VideoScrollerComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.timeout = setInterval(() => {
+    this.interval = setInterval(() => {
+      this.flipper.nativeElement.classList.add('animate')
       this.nextReview()
+      setTimeout(() => {
+        this.flipper.nativeElement.classList.remove('animate')
+      }, 2000)
     }, 3000)
   }
 
   nextReview() {
-    this.animateFlipper = false
     if (this.reviewIndex < this.review.length - 1) {
       this.reviewIndex++
-      this.animateFlipper = true
     } else {
-      this.timeout.invalidate()
+      clearInterval(this.interval)
     }
   }
 
   public share(url: string) {
-    navigator.share({url: url})
+    navigator.share({ url: url })
   }
 
   loadNextOffers() {

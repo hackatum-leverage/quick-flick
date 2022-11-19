@@ -85,12 +85,14 @@
                         animation: flip 2s;
                     }
                     p {
-                        font-size: 24px;
+                        font-size: 28px;
                         padding: 12px;
                         grid-area: 1;
                         text-align: center;
                         text-shadow: rgb(0, 0, 0) 1px 0 10px;
                         font-style: italic;
+                        font-weight: bold;
+                        font-family: serif;
                         &::before {
                             content: open-quote;
                         }
