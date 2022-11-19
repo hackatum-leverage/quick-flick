@@ -53,7 +53,7 @@ def getReviewData(_imdbID):
     for review in reviewList:
         response = openai.Completion.create(
             model = "text-davinci-002",
-            prompt = "Summarize the following review in short form from the first person:" + review,
+            prompt = "Summarize the following review in short positive form from the first person:" + review,
             temperature = 0.7,
             max_tokens = 12,
             top_p = 1,

@@ -78,11 +78,11 @@ def check_imdb(_imdbID):
     else:
         return False
 
-def check_list(_imdbList):
+def check_list(_tmdbList):
     agg = col_netflix_full.find(
         {
             'tmdb': {
-                '$in': _imdbList
+                '$in': _tmdbList
             }
         }
     )
@@ -90,6 +90,20 @@ def check_list(_imdbList):
     searchResults = list(agg)
 
     return searchResults
+
+def check_list_series(_tmdbList):
+    agg = col_netflix_full.find(
+        {
+            'tmdb': {
+                '$in': _tmdbList
+            }
+        }
+    )
+
+    searchResults = list(agg)
+
+    return searchResults
+
         
 def parse_json(data):
     return json.loads(json_util.dumps(data))
