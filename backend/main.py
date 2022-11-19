@@ -4,7 +4,7 @@ from flask import Flask
 import mongo
 from flask_cors import CORS
 from reviewAPI import getReviewData
-from movieSeriesGrabber import getMovies, getSeries
+from movieSeriesGrabber import getMovies, getSeries, getMovieRecommendation, getSeriesRecommendation
 
 app = Flask(__name__)
 CORS(app)
@@ -49,12 +49,22 @@ def movie_poster(imdb_id="tt0137523"):
     return img_baseurl+size+ret
 
 @app.route("/series/next/")
-def tv_next():
-    return json.dumps(mongo.get_random_tv())
+@app.route("/series/next/<imdb_id>")
+def tv_next(imdb_id = None):
+    if imdb_id is None:
+        return getSeries()
+    else:
+        return getSeriesRecommendation(imdb_id)
+    
 
 @app.route("/movie/next/")
-def movie_next():
-    return json.dumps(mongo.get_random_movie())
+@app.route("/movie/next/<imdb_id>")
+def movie_next(imdb_id = None):
+    if imdb_id is None:
+        return getMovies()
+    else:
+        return getMovieRecommendation(imdb_id)
+
 
 @app.route("/series/poster/<imdb_id>")
 def tv_poster(imdb_id):

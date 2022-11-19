@@ -342,20 +342,25 @@ def getMovieRecommendation(_imdbID):
     try:
         equivalentID = get_id(_imdbID)
     except Exception as e:
-        return -1   # No movie found
+        return ["-1"]   # No movie found
     if equivalentID is None:
-        return -1   # No movie found
+        return ["-1"]   # No movie found
     tmdbID = int(equivalentID)
 
     with urllib.request.urlopen(mdb_url + "movie/" + str(tmdbID) + "/recommendations" + "?api_key=" + str(mdb_key) + "&page=1") as url:
         req = json.loads(url.read().decode())
         movieRecommendationList = req['results']
 
-        tmdbList = []
+        imdbList = []
         for movie in movieRecommendationList:
-            tmdbList.append(movie['id'])
+            equivalentID = 0
+            try:
+                equivalentID = get_imdb_id_movie(movie['id'])
+            except Exception as e:
+                return ["-1"]
+            imdbList.append(equivalentID.replace("tt", ""))
 
-        return tmdbList[:5]
+        return imdbList[:5]
         
     return -1
 
@@ -366,22 +371,30 @@ def getSeriesRecommendation(_imdbID):
     try:
         equivalentID = get_id(_imdbID)
     except Exception as e:
-        return -1   # No movie found
+        return ["-1"]   # No series found
     if equivalentID is None:
-        return -1   # No movie found
+        return ["-1"]   # No series found
     tmdbID = int(equivalentID)
 
     with urllib.request.urlopen(mdb_url + "tv/" + str(tmdbID) + "/recommendations" + "?api_key=" + str(mdb_key) + "&page=1") as url:
         req = json.loads(url.read().decode())
         seriesRecommendationList = req['results']
 
-        tmdbList = []
+        imdbList = []
         for series in seriesRecommendationList:
-            tmdbList.append(series['id'])
+            equivalentID = 0
+            try:
+                equivalentID = get_imdb_id_tv(series['id'])
+            except Exception as e:
+                return ["-1"]
+            imdbList.append(equivalentID.replace("tt", ""))
 
-        return tmdbList[:5]
+        return imdbList[:5]
         
     return -1
 
 if __name__ == "__main__":
     print("Ugga Ugga")
+
+    liste = getMovieRecommendation(816692)
+    print(liste)
