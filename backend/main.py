@@ -43,6 +43,14 @@ def movie_poster(imdb_id="tt0137523"):
         ret = req["poster_path"]
     return img_baseurl+size+ret
 
+@app.route("/series/next/<num>")
+def tv_next(num=5):
+    return num
+
+@app.route("/movie/next/<num>")
+def movie_next(num=5):
+    return num
+
 @app.route("/series/poster/<imdb_id>")
 def tv_poster(imdb_id):
     new_id=get_id(imdb_id)
