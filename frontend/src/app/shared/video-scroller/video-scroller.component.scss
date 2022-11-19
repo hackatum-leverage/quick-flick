@@ -75,11 +75,21 @@
                     "title"
                     "flipper";
                 .content {
+                    background-color: darkolivegreen;
                     grid-area: "content";
                     // background-color: violet;
                     display: flex;
+                    flex-flow: column;
                     justify-content: center;
                     align-items: center;
+                    gap: 5px;
+                    p {
+                        font-weight: bold;
+                        background-color: black;
+                        padding: 4px 8px;
+                        border-radius: 4px;
+                        margin: 0px;
+                    }
                 }
                 .title {
                     display: flex;
