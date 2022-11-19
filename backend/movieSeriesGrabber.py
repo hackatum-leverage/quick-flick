@@ -17,6 +17,21 @@ def get_imdb_id_tv(id):
         ret = req["imdb_id"]
     return ret
 
+def get_id(imdb_id):
+    # Check length of id
+    if len(str(imdb_id)) == 6:
+        imdb_id = "tt0" + str(imdb_id)
+    elif len(str(imdb_id)) == 7:
+        imdb_id = "tt" + str(imdb_id)
+
+    with urllib.request.urlopen(mdb_url + "find/" + imdb_id + "?api_key=" + mdb_key + "&external_source=imdb_id") as url:
+        req = json.loads(url.read().decode())
+        if not req["tv_results"]:
+            ret = req["movie_results"][0]["id"]
+        else :
+            ret = req["tv_results"][0]["id"]
+    return str(ret)
+
 # Uses discover api as first suggestion and then selects next recommendation
 def getRandomDiscoverMovie():
     tmdbList = []
@@ -37,14 +52,6 @@ def getRandomDiscoverMovie():
         return tmdbList
 
     return -1
-
-# Get recommendation for given tmdb id
-def getMovieRecommendation(_tmdbID):
-    with urllib.request.urlopen(mdb_url + "movie/" + str(_tmdbID) + "/recommendations" + "?api_key=" + str(mdb_key) + "&page=1") as url:
-        req = json.loads(url.read().decode())
-        movieRecommendationList = req['results']
-
-        return movieRecommendationList
 
 # Get trending movies
 def getTrendingMovies(_stage):
@@ -87,7 +94,13 @@ def getMovies():
             discoveryMovieIdx = random.randint(0, len(discoveryList) - 1)
 
             # Get imdb from tmdb
-            imdbID = int(get_imdb_id_movie(discoveryList[discoveryMovieIdx]).replace("tt", ""))
+            try:
+                equivalentID = get_imdb_id_movie(discoveryList[discoveryMovieIdx])
+            except Exception as e:
+                continue
+            if equivalentID is None:
+                continue
+            imdbID = int(equivalentID.replace("tt", ""))
 
             movieAvailable = mongo.check_imdb(imdbID)
 
@@ -114,7 +127,13 @@ def getMovies():
         trendingMovieIdx = random.randint(0, len(trending1DayList) - 1)
 
         # Get imdb from tmdb
-        imdbID = int(get_imdb_id_movie(trending1DayList[trendingMovieIdx]).replace("tt", ""))
+        try:
+            equivalentID = get_imdb_id_movie(trending1DayList[trendingMovieIdx])
+        except Exception as e:
+            continue
+        if equivalentID is None:
+            continue
+        imdbID = int(equivalentID.replace("tt", ""))
 
         movieAvailable = mongo.check_imdb(imdbID)
 
@@ -141,7 +160,13 @@ def getMovies():
         trendingMovieIdx = random.randint(0, len(trending7DayList) - 1)
 
         # Get imdb from tmdb
-        imdbID = int(get_imdb_id_movie(trending7DayList[trendingMovieIdx]).replace("tt", ""))
+        try:
+            equivalentID = get_imdb_id_movie(trending7DayList[trendingMovieIdx])
+        except Exception as e:
+            continue
+        if equivalentID is None:
+            continue
+        imdbID = int(equivalentID.replace("tt", ""))
 
         movieAvailable = mongo.check_imdb(imdbID)
 
@@ -310,5 +335,53 @@ def getSeries():
 
     return seriesList
 
+# Get recommendation for given tmdb id
+def getMovieRecommendation(_imdbID):
+    # Convert from imdb to tmdb
+    equivalentID = 0
+    try:
+        equivalentID = get_id(_imdbID)
+    except Exception as e:
+        return -1   # No movie found
+    if equivalentID is None:
+        return -1   # No movie found
+    tmdbID = int(equivalentID)
+
+    with urllib.request.urlopen(mdb_url + "movie/" + str(tmdbID) + "/recommendations" + "?api_key=" + str(mdb_key) + "&page=1") as url:
+        req = json.loads(url.read().decode())
+        movieRecommendationList = req['results']
+
+        tmdbList = []
+        for movie in movieRecommendationList:
+            tmdbList.append(movie['id'])
+
+        return tmdbList[:5]
+        
+    return -1
+
+# Get recommendation for given tmdb id
+def getSeriesRecommendation(_imdbID):
+    # Convert from imdb to tmdb
+    equivalentID = 0
+    try:
+        equivalentID = get_id(_imdbID)
+    except Exception as e:
+        return -1   # No movie found
+    if equivalentID is None:
+        return -1   # No movie found
+    tmdbID = int(equivalentID)
+
+    with urllib.request.urlopen(mdb_url + "tv/" + str(tmdbID) + "/recommendations" + "?api_key=" + str(mdb_key) + "&page=1") as url:
+        req = json.loads(url.read().decode())
+        seriesRecommendationList = req['results']
+
+        tmdbList = []
+        for series in seriesRecommendationList:
+            tmdbList.append(series['id'])
+
+        return tmdbList[:5]
+        
+    return -1
+
 if __name__ == "__main__":
-    print("Turn around")
+    print("Ugga Ugga")
