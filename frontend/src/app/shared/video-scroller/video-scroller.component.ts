@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { Offer } from 'src/app/models/offer.model';
 import { OffersService } from 'src/app/services/offers.service';
 
@@ -7,35 +7,79 @@ import { OffersService } from 'src/app/services/offers.service';
   templateUrl: './video-scroller.component.html',
   styleUrls: ['./video-scroller.component.scss'],
 })
-export class VideoScrollerComponent implements OnInit {
+export class VideoScrollerComponent implements OnInit, AfterViewInit {
   @Input() type: "movie" | "series" = "movie";
 
   offers: Offer[] = [];
 
+  @ViewChild('flipper') flipper: ElementRef
+
+  public review: string[] = [
+    'Lorem ipsum solor et dilor',
+    'liked it very much',
+    'Shit was bussin'
+  ]
+  public reviewIndex = 0
+  private interval: any = null
+  public animateFlipper = false
+
   constructor(
-    private offersService: OffersService
+    private offersService: OffersService,
+    private renderer: Renderer2
   ) { }
 
   ngOnInit() {
     if (this.type === "movie") {
-      this.offers = this.offersService.getMovies();
+      this.offersService.getMovies().then((movies) => {
+        this.offers = movies
+      })
     } else {
-      this.offers = this.offersService.getSeries();
+      this.offersService.getSeries().then((series) => {
+        this.offers = series
+      })
     }
   }
 
-  public share() {
-    navigator.share({url: 'https://quickflick-e3121.web.app'})
+  ngAfterViewInit() {
+    this.interval = setInterval(() => {
+      this.nextReview()
+    }, 5000)
+  }
+
+  nextReview() {
+    if (this.reviewIndex < this.review.length - 1) {
+      this.flipper.nativeElement.innerHTML = ""
+      let newChild = this.renderer.createElement('p')
+      newChild.classList.add('flipper')
+      newChild.innerHTML = this.review[++this.reviewIndex]
+      this.renderer.appendChild(this.flipper.nativeElement, newChild)
+    } else {
+      clearInterval(this.interval)
+    }
+  }
+
+  public share(url: string) {
+    navigator.share({ url: url })
   }
 
   loadNextOffers() {
-    setTimeout(() => {
-      console.log('Load new data...');
-      if (this.type === "movie") {
-        this.offers.push(...this.offersService.getMovies());
-      } else {
-        this.offers.push(...this.offersService.getSeries());
-      }
-    }, 500);
+    if (this.type === "movie") {
+      this.offersService.getMovies().then((movies) => {
+        this.offers.push(...movies);
+      });
+
+    } else {
+      this.offersService.getSeries().then((series) => {
+        this.offers.push(...series);
+      });
+    }
+  }
+
+  getProviderIcon(offer: Offer) {
+    if (offer.pid === "nf") {
+      return "assets/providers/netflix.png";
+    } else {
+      return "https://ionicframework.com/docs/img/demos/avatar.svg";
+    }
   }
 }

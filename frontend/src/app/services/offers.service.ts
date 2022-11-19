@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { Offer } from '../models/offer.model';
 
 @Injectable({
@@ -6,14 +8,44 @@ import { Offer } from '../models/offer.model';
 })
 export class OffersService {
 
-  constructor() { }
+  constructor(
+    private http: HttpClient
+  ) { }
 
-  public getMovies() {
-    return this.DUMMY_MOVIE_OFFERS;
+  public async getMovies() {
+
+    return this.http.get<Offer[]>("https://quick-flick-backend-pu2rnvaodq-ew.a.run.app/movie/next/").toPromise().then(async (movies: Offer[] | undefined) => {
+      movies = movies ?? []
+      for (let movie of movies) {
+        movie.gif_url = await this.getGif(movie);
+      }
+      return movies
+    });
   }
 
-  public getSeries() {
-    return this.DUMMY_SERIES_OFFERS;
+  public async getSeries() {
+    return this.http.get<Offer[]>("https://quick-flick-backend-pu2rnvaodq-ew.a.run.app/series/next/").toPromise().then(async (series: Offer[] | undefined) => {
+      series = series ?? []
+      for (let s of series) {
+        s.gif_url = await this.getGif(s);
+      }
+      return series;
+    });
+  }
+
+  public getGif(item: Offer) {
+    const query_addon = item.serie ? " series" : " movie";
+    const query_title = escape(((item.otitle || item.title || "The Matrix"))).substring(0, 50 - query_addon.length).replace(/%+\d*$/, "");
+
+    return this.http.get(`https://api.giphy.com/v1/gifs/search?api_key=${environment.giphyAPIKey}&q=${query_title}${query_addon}&limit=1&rating=g`).toPromise().then((data) => {
+      let res = data as GiphyResponse;
+      let gitUrl = `https://i.giphy.com/${res.data[0].id}.gif`;
+      item.gif_url = gitUrl;
+      return gitUrl;
+    }).catch((error) => {
+      console.log(error);
+      return `https://i.giphy.com/xUOxfj6cTg3ezmjIoo.gif`;
+    })
   }
 
   private DUMMY_MOVIE_OFFERS: Offer[] = [
@@ -150,4 +182,13 @@ export class OffersService {
         "fsk": "12",
     }
   ];
+}
+
+
+interface GiphyResponse {
+  data: [
+    {
+      id: string;
+    }
+  ]
 }

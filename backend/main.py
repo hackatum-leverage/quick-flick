@@ -65,7 +65,6 @@ def movie_next(imdb_id = None):
     else:
         return getMovieRecommendation(imdb_id)
 
-
 @app.route("/series/poster/<imdb_id>")
 def tv_poster(imdb_id):
     new_id = str(get_id(imdb_id))
