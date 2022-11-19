@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { Offer } from '../models/offer.model';
 
 @Injectable({
@@ -6,14 +8,37 @@ import { Offer } from '../models/offer.model';
 })
 export class OffersService {
 
-  constructor() { }
+  constructor(
+    private http: HttpClient
+  ) { }
 
-  public getMovies() {
-    return this.DUMMY_MOVIE_OFFERS;
+  public async getMovies() {
+    const movies = [...this.DUMMY_MOVIE_OFFERS];
+    for (let movie of movies) {
+      movie.gif_url = await this.getGif(movie);
+    }
+    return movies
   }
 
-  public getSeries() {
-    return this.DUMMY_SERIES_OFFERS;
+  public async getSeries() {
+    const movies = [...this.DUMMY_SERIES_OFFERS];
+    for (let movie of movies) {
+      movie.gif_url = await this.getGif(movie);
+    }
+    return movies
+  }
+
+  public getGif(item: Offer) {
+    // console.log(title)
+    // return 'https://i.giphy.com/GULjPncSkMTSHEiWcW.gif'
+    // console.log("event")
+    const query_title = (item.otitle ?? "matrix").replace(/\s+/g, '+').toLowerCase();
+    return this.http.get(`https://api.giphy.com/v1/gifs/search?api_key=${environment.giphyAPIKey}&q=${query_title}+movie?limit=1`).toPromise().then((data) => {
+      let res = data as GiphyResponse
+      let gitUrl = `https://i.giphy.com/${res.data[0].id}.gif`
+      item.gif_url = gitUrl
+      return gitUrl
+    })
   }
 
   private DUMMY_MOVIE_OFFERS: Offer[] = [
@@ -150,4 +175,13 @@ export class OffersService {
         "fsk": "12",
     }
   ];
+}
+
+
+interface GiphyResponse {
+  data: [
+    {
+      id: string;
+    }
+  ]
 }

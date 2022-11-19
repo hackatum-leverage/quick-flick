@@ -5,7 +5,6 @@ import { IonicModule } from '@ionic/angular';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 
-
 @NgModule({
   declarations: [
     VideoScrollerComponent
@@ -13,7 +12,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
   imports: [
     CommonModule,
     IonicModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
   ],
   exports: [
     VideoScrollerComponent
