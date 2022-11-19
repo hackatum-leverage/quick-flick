@@ -19,20 +19,24 @@ export class OffersService {
         movie.gif_url = await this.getGif(movie);
       }
       return movies
-    })
+    });
   }
 
   public async getSeries() {
-    const series = [...this.DUMMY_SERIES_OFFERS];
-    for (let serie of series) {
-      serie.gif_url = await this.getGif(serie);
-    }
-    return series
+    return this.http.get<Offer[]>("https://quick-flick-backend-pu2rnvaodq-ew.a.run.app/series/next").toPromise().then(async (series: Offer[] | undefined) => {
+      series = series ?? []
+      for (let s of series) {
+        s.gif_url = await this.getGif(s);
+      }
+      return series;
+    });
   }
 
   public getGif(item: Offer) {
-    const query_title = (item.otitle ?? "matrix").replace(/\s+/g, '+').toLowerCase().substring(0, 50 - " movie".length);
-    return this.http.get(`https://api.giphy.com/v1/gifs/search?api_key=${environment.giphyAPIKey}&q=${query_title}+movie?limit=1`).toPromise().then((data) => {
+    const query_addon = item.serie ? "+series" : "+movie";
+    const query_title = (item.otitle ?? "matrix").replace(/\s+/g, '+').toLowerCase().substring(0, 49 - query_addon.length);
+
+    return this.http.get(`https://api.giphy.com/v1/gifs/search?api_key=${environment.giphyAPIKey}&q=${query_title}${query_addon}?limit=1`).toPromise().then((data) => {
       let res = data as GiphyResponse;
       let gitUrl = `https://i.giphy.com/${res.data[0].id}.gif`;
       item.gif_url = gitUrl;
