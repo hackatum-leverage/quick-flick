@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VideoScrollerComponent } from './video-scroller/video-scroller.component';
+import { IonicModule } from '@ionic/angular';
 
 
 
@@ -9,7 +10,8 @@ import { VideoScrollerComponent } from './video-scroller/video-scroller.componen
     VideoScrollerComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    IonicModule
   ],
   exports: [
     VideoScrollerComponent

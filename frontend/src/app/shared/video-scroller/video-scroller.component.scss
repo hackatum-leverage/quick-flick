@@ -12,12 +12,12 @@
     scroll-snap-stop: always;
     flex-shrink: 0;
     flex-grow: 0;
-    background-color: red;
+    background-color: rgb(255, 184, 184);
     height: 100%;
     width: 56.25vh;
     scroll-snap-align: start;
 }
 
 .scroller > .scroll-item:nth-child(odd) {
-    background-color: blue;
+    background-color: rgb(206, 206, 255);
 }

@@ -1,5 +1,9 @@
 <div class="scroller">
   <div class="scroll-item" *ngFor="let item of suggestions">
     {{ item.title }}
+    <br>
+    <ion-chip *ngFor="let tag of item.tags">
+      <ion-label>{{ tag }}</ion-label>
+    </ion-chip>
   </div>
 </div>

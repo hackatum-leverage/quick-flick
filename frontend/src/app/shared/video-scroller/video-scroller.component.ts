@@ -10,10 +10,13 @@ export class VideoScrollerComponent implements OnInit {
   suggestions = [
     {
       title: 'The Best of 2019',
+      tags: ['Action', 'Comedy', 'Drama', 'Thriller'],
     }, {
       title: 'The Best of 2020',
+      tags: [],
     }, {
       title: 'The Best of 2021',
+      tags: [],
     }
   ]
 
