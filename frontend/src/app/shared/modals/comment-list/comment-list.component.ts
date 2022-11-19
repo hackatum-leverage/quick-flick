@@ -28,4 +28,9 @@ export class CommentListComponent implements OnInit {
     this.modalCtrl.dismiss(null, "cancel", "comment-list-modal");
   }
 
+  public getAvatar(name: string): string {
+    let encodedName = encodeURIComponent(name)
+    return `https://avatars.dicebear.com/api/open-peeps/${encodedName}.svg`
+  }
+
 }
