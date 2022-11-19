@@ -79,12 +79,24 @@
                 }
                 .flipper {
                     grid-area: "flipper";
-                    background-color: green;
+                    // background-color: green;
                     display: grid;
-                    .content {
+                    &.animate {
+                        animation: flip 2s;
+                    }
+                    p {
                         font-size: 24px;
                         padding: 12px;
                         grid-area: 1;
+                        text-align: center;
+                        text-shadow: rgb(0, 0, 0) 1px 0 10px;
+                        font-style: italic;
+                        &::before {
+                            content: open-quote;
+                        }
+                        &::after {
+                            content: close-quote;
+                        }
                     }
                 }
             }
@@ -93,10 +105,15 @@
 }
 @keyframes flip {
     0% {
-        transform: rotate3d(0);
+        transform: rotate3d(1, 0, 0, -180deg) scale(0.5);
+        opacity: 0;
+    }
+    98% {
+        transform: scale(1.05);
     }
     100% {
-        transform: rotate3d(1, 0, 0, -180deg);
+        transform: rotate3d(0) sclae(1);
+        opacity: 1;
     }
 }
 

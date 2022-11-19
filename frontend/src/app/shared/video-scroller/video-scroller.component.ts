@@ -12,13 +12,14 @@ export class VideoScrollerComponent implements OnInit, AfterViewInit {
 
   offers: Offer[] = [];
 
-  review: string[] = [
+  public review: string[] = [
     'Lorem ipsum solor et dilor',
     'liked it very much',
     'Shit was bussin'
   ]
-  reviewIndex = 0
-  timeout: any = null
+  public reviewIndex = 0
+  private timeout: any = null
+  public animateFlipper = false
 
   constructor(
     private offersService: OffersService
@@ -43,8 +44,10 @@ export class VideoScrollerComponent implements OnInit, AfterViewInit {
   }
 
   nextReview() {
+    this.animateFlipper = false
     if (this.reviewIndex < this.review.length - 1) {
       this.reviewIndex++
+      this.animateFlipper = true
     } else {
       this.timeout.invalidate()
     }

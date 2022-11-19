@@ -17,11 +17,11 @@
               <ion-label>{{ genre }}</ion-label>
             </ion-chip>
           </div>
-        </div>
-        <div class="flipper">
-          <div class="content">
+        </div>''
+        <div class="flipper" [ngClass]="{'animate': animateFlipper}">
+          <p>
             {{ review[reviewIndex] }}
-          </div>
+          </p>
         </div>
       </div>
       <div class="toolbar">
