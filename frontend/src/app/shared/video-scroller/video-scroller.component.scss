@@ -17,7 +17,6 @@
         height: 100%;
         background-color: black;
         overflow: hidden;
-        grid-template-areas: "left toolbar";
         width: min(56.25vh, 100%);
         .foreground,
         .background {
@@ -37,22 +36,33 @@
             row-gap: 0;
             grid-template-rows: auto;
             grid-template-columns: auto 60px;
+            grid-template-areas: "left toolbar";
             .toolbar {
                 grid-area: "toolbar";
                 // background-color: red;
                 display: flex;
                 flex-flow: column;
-                gap: 10px;
                 justify-content: end;
                 align-items: center;
-                ion-icon {
-                    font-size: 48px;
-                    padding: 12px;
-                    cursor: pointer;
-                    filter: drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.4));
+                .container {
+                    border-radius: 12px;
+                    backdrop-filter: blur(10px) brightness(60%);
+                    margin: 5px;
+                    width: 55px;
+                    margin-left: 0px;
+                    display: flex;
+                    flex-flow: column;
+                    justify-content: center;
+                    align-items: center;
+                    ion-icon {
+                        font-size: 42px;
+                        padding: 12px 0px;
+                        cursor: pointer;
+                    }
                 }
             }
             .left {
+                grid-area: "left";
                 display: grid;
                 grid-template-rows: auto min-content 60px;
                 grid-template-columns: auto;
