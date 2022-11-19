@@ -112,10 +112,10 @@
                     padding: 5px;
                     align-items: center;
                     justify-content: center;
-                    &.animate {
-                        animation: flip 2s;
-                    }
                     p {
+                        &.animate {
+                            animation: flip 2s;
+                        }
                         font-size: 20px;
                         font-style: italic;
                         font-weight: bold;
