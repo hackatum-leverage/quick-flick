@@ -1,7 +1,7 @@
 <div class="scroller" infinite-scroll [infiniteScrollDistance]="2" (scrolled)="loadNextOffers()" [scrollWindow]="false">
   <div class="wrapper" *ngFor="let item of offers">
     <div class="background">
-      <img [src]="item.gif_url ?? ''" (load)="lol()">
+      <img [src]="item.gif_url">
     </div>
     <div class="foreground">
       <div class="left">
