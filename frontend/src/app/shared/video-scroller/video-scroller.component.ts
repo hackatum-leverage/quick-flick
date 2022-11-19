@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Offer } from 'src/app/models/offer.model';
+import { OffersService } from 'src/app/services/offers.service';
 
 @Component({
   selector: 'app-video-scroller',
@@ -6,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./video-scroller.component.scss'],
 })
 export class VideoScrollerComponent implements OnInit {
+  @Input() type: "movie" | "series" = "movie";
 
   suggestions = [
     {
@@ -17,8 +20,18 @@ export class VideoScrollerComponent implements OnInit {
     }
   ]
 
-  constructor() { }
+  offers: Offer[] = [];
 
-  ngOnInit() {}
+  constructor(
+    private offersService: OffersService
+  ) { }
+
+  ngOnInit() {
+    if (this.type === "movie") {
+      this.offers = this.offersService.getMovies();
+    } else {
+      this.offers = this.offersService.getSeries();
+    }
+  }
 
 }
