@@ -37,4 +37,9 @@ export class VideoScrollerComponent implements OnInit {
     }
   }
 
+  share() {
+    console.log('share')
+    navigator.share({url: 'https://quickflick-e3121.web.app'})
+  }
+
 }
