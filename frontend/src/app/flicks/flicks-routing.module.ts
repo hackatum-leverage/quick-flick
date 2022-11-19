@@ -28,6 +28,11 @@ const routes: Routes = [
     redirectTo: '/flicks/tabs/movies',
     pathMatch: 'full'
   },
+  {
+    path: 'flicks',
+    redirectTo: '/flicks/tabs/movies',
+    pathMatch: 'full'
+  },
 ];
 
 @NgModule({
