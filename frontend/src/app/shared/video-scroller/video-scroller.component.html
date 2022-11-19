@@ -1,7 +1,7 @@
 <div class="scroller" infinite-scroll [infiniteScrollDistance]="2" (scrolled)="loadNextOffers()" [scrollWindow]="false">
   <div class="wrapper" *ngFor="let item of offers">
     <div class="background">
-      <iframe src="https://giphy.com/embed/SaX384PjtDl2U" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+      <img [src]="item.gif_url ?? ''" (load)="lol()">
     </div>
     <div class="foreground">
       <div class="left">

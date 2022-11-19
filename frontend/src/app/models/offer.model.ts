@@ -31,4 +31,5 @@ export interface Offer {
   audio?: string,
   runtime?: string,
   fsk?: string,
+  gif_url?: string
 }
