@@ -1,16 +1,19 @@
 <div class="modal-container">
   <div class="header">
-    <div class="header-button-wrapper">
-      <ion-icon (click)="onCancel()" name="close-circle-outline" id="button-cancel"></ion-icon>
-    </div>
     <div class="header-heading-wrapper">
+      <ion-icon (click)="onCancel()" name="close-circle-outline" id="button-cancel"></ion-icon>
       <ion-label>Quick Hits: What your peers think</ion-label>
     </div>
   </div>
   <div class="scroll-content">
-    <ion-item *ngFor="let comment of comments">
-      <ion-label>{{ comment.name }}</ion-label>
-      <ion-label>{{ comment.review }}</ion-label>
-    </ion-item>
+    <div *ngFor="let comment of comments" fill="outline" class="comment">
+      <ion-chip>
+        <ion-avatar>
+          <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+        </ion-avatar>
+        <ion-label>{{ comment.name }}</ion-label>
+      </ion-chip>
+      <ion-label class="ion-text-wrap">{{ comment.review }}</ion-label>
+    </div>
   </div>
 </div>

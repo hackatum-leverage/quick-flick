@@ -20,6 +20,7 @@
     width: 40px;
     height: 40px;
     padding:0;
+    margin-right: 0.5em;
 }
 
 .header-heading-wrapper{
@@ -47,4 +48,21 @@
 .scroll-content{
     flex: 0 1 auto;
     overflow: auto;
+}
+
+.comment {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: auto;
+  margin-right: auto;
+  ion-chip {
+    margin: 0;
+  }
+  margin-bottom: 0.75em;
+}
+
+.comment * {
+  font-size: 11px;
 }
