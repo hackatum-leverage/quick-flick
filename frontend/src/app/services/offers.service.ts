@@ -29,9 +29,6 @@ export class OffersService {
   }
 
   public getGif(item: Offer) {
-    // console.log(title)
-    // return 'https://i.giphy.com/GULjPncSkMTSHEiWcW.gif'
-    // console.log("event")
     const query_title = (item.otitle || item.title || "The+Matrix").replace(/\s+/g, '+').toLowerCase();
     return this.http.get(`https://api.giphy.com/v1/gifs/search?api_key=${environment.giphyAPIKey}&q=${query_title}+movie?limit=1`).toPromise().then((data) => {
       let res = data as GiphyResponse
