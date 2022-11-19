@@ -1,7 +1,7 @@
 <div class="modal-container">
   <div class="header">
     <div class="header-heading-wrapper">
-      <ion-label>Quick Hits: What your peers think</ion-label>
+      <ion-label>Quick Hits - What your peers think</ion-label>
       <ion-icon (click)="onCancel()" name="close-circle-outline" id="button-cancel"></ion-icon>
     </div>
   </div>
@@ -15,5 +15,7 @@
       </ion-chip>
       <ion-label class="ion-text-wrap">{{ comment.review }}</ion-label>
     </div>
+    <!-- source: https://loading.io/css/ -->
+    <div class="lds-ripple" *ngIf="comments.length === 0"><div></div><div></div></div>
   </div>
 </div>

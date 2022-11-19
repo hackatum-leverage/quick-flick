@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { CommentsResult, ReviewComment } from '../models/comment.model';
+import { ReviewComment } from '../models/comment.model';
 import { Offer } from '../models/offer.model';
 
 @Injectable({
@@ -35,13 +35,14 @@ export class OffersService {
   }
 
   private getGif(item: Offer) {
+    console.log(typeof(item));
     const query_addon = item.serie ? " series" : " movie";
     const query_title = escape(((item.otitle || item.title || "The Matrix"))).substring(0, 50 - query_addon.length).replace(/%+\d*$/, "");
 
     return this.http.get(`https://api.giphy.com/v1/gifs/search?api_key=${environment.giphyAPIKey}&q=${query_title}${query_addon}&limit=1&rating=g`).toPromise().then((data) => {
       let res = data as GiphyResponse;
       let gitUrl = `https://i.giphy.com/${res.data[0].id}.gif`;
-      item.gif_url = gitUrl;
+      console.log(typeof(item))
       return gitUrl;
     }).catch((error) => {
       console.log(error);
@@ -50,9 +51,9 @@ export class OffersService {
   }
 
   public getComments(item: Offer) {
-    return Promise.resolve(this.DUMMY_COMMENTS);
-    return this.http.get<CommentsResult>(`https://quick-flick-backend-pu2rnvaodq-ew.a.run.app/${item.serie ? "series" : "movie"}/comments/${"tt" + (item.imdb_id ?? "0133093")}`).toPromise().then(async (commentsResult: CommentsResult| undefined) => {
-      return commentsResult?.comments ?? [];
+    console.log(`https://quick-flick-backend-pu2rnvaodq-ew.a.run.app/${item.serie ? "series" : "movie"}/comments/${(item.imdb_id ?? "0133093")}`)
+    return this.http.get<ReviewComment[]>(`https://quick-flick-backend-pu2rnvaodq-ew.a.run.app/${item.serie ? "series" : "movie"}/comments/${(item.imdb_id ?? "0133093")}`).toPromise().then(async (comments: ReviewComment[]| undefined) => {
+      return comments ?? [];
     });
   }
 
