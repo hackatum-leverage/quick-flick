@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { IonModal, ModalController } from '@ionic/angular';
 import { Offer } from 'src/app/models/offer.model';
 import { OffersService } from 'src/app/services/offers.service';
-import { environment } from 'src/environments/environment';
+import { CommentListComponent } from '../modals/comment-list/comment-list.component';
 
 @Component({
   selector: 'app-video-scroller',
@@ -14,12 +14,14 @@ export class VideoScrollerComponent implements OnInit {
   @Input() type: "movie" | "series" = "movie";
 
   offers: Offer[] = [];
+  comments = ["Super fun movie", "Sucks"];
 
-  @ViewChild('iframe') iframe: ElementRef
+  @ViewChild(IonModal) modal: IonModal;
 
   constructor(
     private offersService: OffersService,
-    private http: HttpClient
+    private http: HttpClient,
+    private modalCtrl: ModalController
   ) { }
 
   ngOnInit() {
@@ -50,4 +52,20 @@ export class VideoScrollerComponent implements OnInit {
       });
     }
   }
+
+  openCommentModal(offer: Offer) {
+    this.modalCtrl
+      .create({
+        component: CommentListComponent,
+        id: "comment-list-modal",
+        componentProps: {
+          offer: offer
+        },
+        cssClass: "comment-list-modal"
+      })
+      .then((modalEl) => {
+        modalEl.present();
+        return modalEl.onDidDismiss();
+      })
+    }
 }

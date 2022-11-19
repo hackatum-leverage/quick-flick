@@ -1,0 +1,16 @@
+<div class="modal-container">
+  <div class="header">
+    <div class="header-button-wrapper">
+      <ion-icon (click)="onCancel()" name="close-circle-outline" id="button-cancel"></ion-icon>
+    </div>
+    <div class="header-heading-wrapper">
+      <ion-label>What your peers think</ion-label>
+    </div>
+  </div>
+  <div class="scroll-content">
+    <ion-item *ngFor="let comment of comments">
+      <ion-label>@username</ion-label>
+      <ion-label>comment</ion-label>
+    </ion-item>
+  </div>
+</div>

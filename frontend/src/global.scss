@@ -24,3 +24,69 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+// -- Modals --
+.standard-modal-code{
+  .ion-page{
+     position: absolute;
+     bottom: 0;
+     left: 0;
+     border-radius: 20px 20px 0 0;
+     position: absolute;
+     border: 2px solid var(--ion-color-hard-contrast);
+     border-bottom: none;
+     background-color: white;
+  }
+  align-items: flex-end;
+  &::part(content){
+     background-color: transparent;
+     border-radius: 20px 20px 0 0;
+  }
+}
+
+ // -- Makes modals only take up the vertical space that they actually need, based on https://forum.ionicframework.com/t/dynamic-modal-height-based-on-content-in-ionic-v4/139595/8
+ .auto-height {
+  --height: auto;
+    width: 100%;
+    .ion-page {
+      position: relative;
+      contain: content;
+      max-height: var(--max-modal-height, 80vh);
+      ion-content {    // the source states that it has to be .modal-content but that seems to be wrong
+        overflow: auto;
+      }
+  }
+}
+
+.modal-container{
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+}
+
+// --
+.scroll-content {
+  padding-bottom:0!important;
+}
+
+.comment-list-modal {
+  @extend .auto-height;
+  @extend .standard-modal-code;
+}
+
+// If the breakpoint of 600 px here changes it also needs to be adjusted in keyboard-helper.ts (constant MODAL_STYLE_WIDTH_BREAKPOINT)
+@media only screen and (width > 600px) {
+  .standard-modal-code {
+     .ion-page{
+        max-width: 600px;
+        border-radius: 20px;
+        position: relative;
+        border: 2px solid var(--ion-color-hard-contrast);
+     }
+  align-items: center;
+  &::part(content){
+     max-width: 600px;
+     border-radius: 20px;
+  }
+  }
+}

@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { VideoScrollerComponent } from './video-scroller/video-scroller.component';
 import { IonicModule } from '@ionic/angular';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { CommentListComponent } from './modals/comment-list/comment-list.component';
 
 
 @NgModule({
   declarations: [
-    VideoScrollerComponent
+    VideoScrollerComponent,
+    CommentListComponent
   ],
   imports: [
     CommonModule,
@@ -15,7 +17,8 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     InfiniteScrollModule,
   ],
   exports: [
-    VideoScrollerComponent
+    VideoScrollerComponent,
+    CommentListComponent
   ]
 })
 export class SharedModule { }
