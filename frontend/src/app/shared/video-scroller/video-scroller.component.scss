@@ -57,7 +57,7 @@
             }
             .left {
                 display: grid;
-                grid-template-rows: auto min-content 100px;
+                grid-template-rows: auto min-content 60px;
                 grid-template-columns: auto;
                 grid-template-areas:
                     "content"
@@ -99,20 +99,24 @@
                 }
                 .flipper {
                     grid-area: "flipper";
+                    backdrop-filter: blur(10px) brightness(60%);
                     // background-color: green;
-                    display: grid;
+                    display: flex;
+                    border-radius: 7px;
+                    margin: 5px;
+                    margin-top: 0px;
+                    padding: 5px;
+                    align-items: center;
+                    justify-content: center;
                     &.animate {
                         animation: flip 2s;
                     }
                     p {
-                        font-size: 28px;
-                        padding: 12px;
-                        grid-area: 1;
-                        text-align: center;
-                        text-shadow: rgb(0, 0, 0) 1px 0 10px;
+                        font-size: 20px;
                         font-style: italic;
                         font-weight: bold;
                         font-family: serif;
+                        margin: 0px;
                         &::before {
                             content: open-quote;
                         }
