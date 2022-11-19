@@ -19,7 +19,8 @@
         overflow: hidden;
         grid-template-areas: "left toolbar";
         width: min(56.25vh, 100%);
-        .foreground, .background {
+        .foreground,
+        .background {
             grid-column: 1;
             grid-row: 1;
         }
@@ -56,7 +57,7 @@
             }
             .left {
                 display: grid;
-                grid-template-rows: auto 250px 100px;
+                grid-template-rows: auto min-content 100px;
                 grid-template-columns: auto;
                 grid-template-areas:
                     "content"
@@ -68,14 +69,33 @@
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    img {
-                        width: 250px;
-                        border-radius: 8px;
-                    }
                 }
                 .title {
+                    display: flex;
+                    flex-flow: row;
+                    align-items: center;
                     grid-area: "title";
+                    gap: 5px;
+                    margin: 5px;
+                    padding: 5px;
+                    backdrop-filter: blur(10px) brightness(60%);
+                    border-radius: 12px;
+                    img {
+                        width: 200px;
+                        border-radius: 7px;
+                    }
                     // background-color: yellow;
+                    .container {
+                        display: flex;
+                        flex-flow: column;
+                        h1 {
+                            font-size: 20px;
+                            font-weight: bold;
+                        }
+                        ion-label {
+                            font-size: 10px;
+                        }
+                    }
                 }
                 .flipper {
                     grid-area: "flipper";

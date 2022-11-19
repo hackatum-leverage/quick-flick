@@ -34,7 +34,7 @@ export class OffersService {
 
   public getGif(item: Offer) {
     const query_addon = item.serie ? "+series" : "+movie";
-    const query_title = (item.otitle ?? "matrix").replace(/\s+/g, '+').toLowerCase().substring(0, 49 - query_addon.length);
+    const query_title = ((item.otitle || item.title || "The+Matrix")).replace(/\s+/g, '+').toLowerCase().substring(0, 49 - query_addon.length);
 
     return this.http.get(`https://api.giphy.com/v1/gifs/search?api_key=${environment.giphyAPIKey}&q=${query_title}${query_addon}?limit=1`).toPromise().then((data) => {
       let res = data as GiphyResponse;

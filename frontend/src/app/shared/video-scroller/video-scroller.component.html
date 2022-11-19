@@ -6,19 +6,22 @@
     <div class="foreground">
       <div class="left">
         <div class="content">
+          <!-- empty -->
+        </div>
+        <div class="title">
           <div *ngIf="item.posters && item.posters.split(',').length >= 0">
             <img [src]="item.posters.split(',')[0]">
           </div>
-        </div>
-        <div class="title">
-          <h1>{{ item.title }}</h1>
-          <div *ngIf="item.genres">
-            <ion-chip *ngFor="let genre of item.genres.split(',')">
-              <ion-label>{{ genre }}</ion-label>
-            </ion-chip>
+          <div class="container">
+            <h1>{{ item.title }}</h1>
+            <div *ngIf="item.genres">
+              <ion-chip *ngFor="let genre of item.genres.split(',')">
+                <ion-label>{{ genre }}</ion-label>
+              </ion-chip>
+            </div>
           </div>
-        </div>''
-        <div class="flipper" #flipper>
+        </div>
+        <div class="flipper">
           <p>
             {{ review[reviewIndex] }}
           </p>
