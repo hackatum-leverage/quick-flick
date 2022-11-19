@@ -13,6 +13,12 @@ def cleanHtml(_rawHtml):
         return cleanText
 
 def getReviewData(_imdbID):
+    # Check _imdbID
+    if len(str(_imdbID)) == 6:
+        _imdbID = "0" + str(_imdbID)
+    elif len(str(_imdbID)) == 7:
+        _imdbID = str(_imdbID)
+
     URL = "https://www.imdb.com/title/tt" + str(_imdbID) + "/reviews?ref_=tt_sa_3"
     page = requests.get(URL)
 
@@ -47,9 +53,9 @@ def getReviewData(_imdbID):
     for review in reviewList:
         response = openai.Completion.create(
             model = "text-davinci-002",
-            prompt = "Summarize the following review in first person:" + review,
+            prompt = "Summarize the following review in short form from the first person:" + review,
             temperature = 0.7,
-            max_tokens = 48,
+            max_tokens = 12,
             top_p = 1,
             frequency_penalty = 0,
             presence_penalty = 0
@@ -63,6 +69,8 @@ def getReviewData(_imdbID):
 
             if len(reviewStringList) == 0:
                 reviewString = "Just a marvellous movie. Nothing more to say!"
+            elif len(reviewStringList) == 1:
+                reviewString = "".join(reviewStringList) + "."
             else:
                 reviewString = "".join(reviewStringList[:-1]) + "."
 
@@ -81,4 +89,4 @@ def getReviewData(_imdbID):
 #        json.dump(getReviewData(0), f)
 
 if __name__ == "__main__":
-    print(getReviewData(1745960))
+    print(getReviewData(816692))

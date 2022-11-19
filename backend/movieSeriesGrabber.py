@@ -45,9 +45,9 @@ def getRandomDiscoverMovie():
 
         # just extract ids
         for movie in movieList:
-            tmdbList.append(movie['id'])
+            tmdbList.append(str(movie['id']))
         for movie in movieList2:
-            tmdbList.append(movie['id'])
+            tmdbList.append(str(movie['id']))
 
         return tmdbList
 
@@ -396,5 +396,5 @@ def getSeriesRecommendation(_imdbID):
 if __name__ == "__main__":
     print("Ugga Ugga")
 
-    liste = getMovieRecommendation(816692)
+    liste = getMovies()
     print(liste)
