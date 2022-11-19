@@ -10,19 +10,6 @@ import { OffersService } from 'src/app/services/offers.service';
 export class VideoScrollerComponent implements OnInit {
   @Input() type: "movie" | "series" = "movie";
 
-  suggestions = [
-    {
-      title: 'The Best of 2019',
-      tags: ['Action', 'Comedy', 'Drama', 'Thriller'],
-    }, {
-      title: 'The Best of 2020',
-      tags: [],
-    }, {
-      title: 'The Best of 2021',
-      tags: [],
-    }
-  ]
-
   offers: Offer[] = [];
 
   constructor(
@@ -37,8 +24,7 @@ export class VideoScrollerComponent implements OnInit {
     }
   }
 
-  share() {
-    console.log('share')
+  public share() {
     navigator.share({url: 'https://quickflick-e3121.web.app'})
   }
 

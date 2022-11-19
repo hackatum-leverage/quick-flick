@@ -1,10 +1,12 @@
 <div class="scroller">
-  <div class="scroll-item" *ngFor="let item of suggestions">
+  <div class="scroll-item" *ngFor="let item of offers">
     <h1>{{ item.title }}</h1>
     <br>
-    <ion-chip *ngFor="let tag of item.tags">
-      <ion-label>{{ tag }}</ion-label>
-    </ion-chip>
+    <div *ngIf="item.genres">
+      <ion-chip *ngFor="let genre of item.genres.split(',')">
+        <ion-label>{{ genre }}</ion-label>
+      </ion-chip>
+    </div>
     <div class="toolbar">
       <ion-icon name="eye-outline"></ion-icon>
       <ion-icon name="share-social-outline" (click)="share()"></ion-icon>
