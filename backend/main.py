@@ -19,37 +19,49 @@ def test_json():
         "success": True
     }
 
-@app.route("/test/trends/movie")
-def test_trends_movie():
+@app.route("/movie/trends")
+def movie_trends():
     with urllib.request.urlopen(mdb_url + "trending/" + "movie/" + "week" +"?api_key=" + mdb_key) as url:
         req = json.loads(url.read().decode())
         req_id = req["results"][0]["id"]
         ret_id = get_imdb_id_movie(str(req_id))
     return ret_id
 
-@app.route("/test/trends/tv")
-def test_trends_tv():
+@app.route("/series/trends")
+def tv_trends():
     with urllib.request.urlopen(mdb_url + "trending/" + "tv/" + "week" +"?api_key=" + mdb_key) as url:
         req = json.loads(url.read().decode())
         req_id = req["results"][0]["id"]
         ret_id = get_imdb_id_tv(str(req_id))
     return ret_id
 
-@app.route("/test/poster/movie/<imdb_id>")
-def test_poster_movie(imdb_id="tt0137523"):
+@app.route("/movie/poster/<imdb_id>")
+def movie_poster(imdb_id="tt0137523"):
     new_id = get_id(imdb_id)
     with urllib.request.urlopen(mdb_url + "movie/" + new_id +"?api_key=" + mdb_key) as url:
         req = json.loads(url.read().decode())
         ret = req["poster_path"]
     return img_baseurl+size+ret
 
-@app.route("/test/poster/tv/<imdb_id>")
-def test_poster_tv(imdb_id):
+@app.route("/series/next/<num>")
+def tv_next(num=5):
+    return num
+
+@app.route("/movie/next/<num>")
+def movie_next(num=5):
+    return num
+
+@app.route("/series/poster/<imdb_id>")
+def tv_poster(imdb_id):
     new_id=get_id(imdb_id)
     with urllib.request.urlopen(mdb_url + "tv/" + new_id + "/images" + "?api_key=" + mdb_key) as url:
         req = json.loads(url.read().decode())
         ret = req["posters"][0]["file_path"]
     return img_baseurl+size+ret
+
+@app.route("/offer/<imdb_id>")
+def get_offer_record(imdb_id):
+    pass
 
 def get_id(imdb_id): #vllt parameter einfügen für TV oder Movie ergebnisse
     with urllib.request.urlopen(mdb_url + "find/" + imdb_id + "?api_key=" + mdb_key + "&external_source=imdb_id") as url:
