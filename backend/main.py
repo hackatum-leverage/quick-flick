@@ -19,6 +19,8 @@ def test_json():
         "success": True
     }
 
+@app.route("/test/trends/movie")
+
 @app.route("/test/poster/<imdb_id>")
 def test_poster(imdb_id="tt0137523"):
     new_id = get_id(imdb_id)
@@ -35,6 +37,12 @@ def get_id(imdb_id):
         else :
             ret = req["tv_results"][0]["id"]
     return str(ret)
+
+def get_imdb_id(id):
+    with urllib.request.urlopen(mdb_url+ "movie/" + id + "?api_key=" + mdb_key) as url:
+        req = json.loads(url.read().decode())
+        ret = req["imdb_id"]
+    return ret
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
