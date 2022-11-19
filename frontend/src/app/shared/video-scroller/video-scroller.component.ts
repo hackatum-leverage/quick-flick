@@ -1,6 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Offer } from 'src/app/models/offer.model';
 import { OffersService } from 'src/app/services/offers.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-video-scroller',
@@ -12,30 +15,39 @@ export class VideoScrollerComponent implements OnInit {
 
   offers: Offer[] = [];
 
+  @ViewChild('iframe') iframe: ElementRef
+
   constructor(
-    private offersService: OffersService
+    private offersService: OffersService,
+    private http: HttpClient
   ) { }
 
   ngOnInit() {
     if (this.type === "movie") {
-      this.offers = this.offersService.getMovies();
+      this.offersService.getMovies().then((movies) => {
+        this.offers = movies;
+      });
     } else {
-      this.offers = this.offersService.getSeries();
+      this.offersService.getSeries().then((series) => {
+        this.offers = series;
+      });
     }
   }
 
   public share() {
-    navigator.share({url: 'https://quickflick-e3121.web.app'})
+    navigator.share({ url: 'https://quickflick-e3121.web.app' })
   }
 
   loadNextOffers() {
-    setTimeout(() => {
-      console.log('Load new data...');
-      if (this.type === "movie") {
-        this.offers.push(...this.offersService.getMovies());
-      } else {
-        this.offers.push(...this.offersService.getSeries());
-      }
-    }, 500);
+    if (this.type === "movie") {
+      this.offersService.getMovies().then((movies) => {
+        this.offers.push(...movies);
+      });
+
+    } else {
+      this.offersService.getSeries().then((series) => {
+        this.offers.push(...series);
+      });
+    }
   }
 }
