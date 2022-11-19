@@ -24,12 +24,16 @@ def test_trends_movie():
     with urllib.request.urlopen(mdb_url + "trending/" + "movie/" + "week" +"?api_key=" + mdb_key) as url:
         req = json.loads(url.read().decode())
         req_id = req["results"][0]["id"]
-        ret_id = get_imdb_id(str(req_id))
+        ret_id = get_imdb_id_movie(str(req_id))
     return ret_id
 
 @app.route("/test/trends/tv")
 def test_trends_tv():
-    pass
+    with urllib.request.urlopen(mdb_url + "trending/" + "tv/" + "week" +"?api_key=" + mdb_key) as url:
+        req = json.loads(url.read().decode())
+        req_id = req["results"][0]["id"]
+        ret_id = get_imdb_id_tv(str(req_id))
+    return ret_id
 
 @app.route("/test/poster/movie/<imdb_id>")
 def test_poster_movie(imdb_id="tt0137523"):
@@ -58,8 +62,14 @@ def get_id(imdb_id): #vllt parameter einfügen für TV oder Movie ergebnisse
             print("got tv result")
     return str(ret)
 
-def get_imdb_id(id):
+def get_imdb_id_movie(id):
     with urllib.request.urlopen(mdb_url+ "movie/" + id + "?api_key=" + mdb_key) as url:
+        req = json.loads(url.read().decode())
+        ret = req["imdb_id"]
+    return ret
+
+def get_imdb_id_tv(id):
+    with urllib.request.urlopen(mdb_url+ "tv/" + id + "/external_ids" + "?api_key=" + mdb_key) as url:
         req = json.loads(url.read().decode())
         ret = req["imdb_id"]
     return ret
