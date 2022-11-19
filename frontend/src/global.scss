@@ -35,7 +35,7 @@
      position: absolute;
      border: 2px solid var(--ion-color-hard-contrast);
      border-bottom: none;
-     background-color: white;
+     background-color: var(--ion-background-color);
   }
   align-items: flex-end;
   &::part(content){

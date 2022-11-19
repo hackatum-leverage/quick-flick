@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { ReviewComment } from 'src/app/models/comment.model';
 import { Offer } from 'src/app/models/offer.model';
+import { OffersService } from 'src/app/services/offers.service';
 
 @Component({
   selector: 'app-comment-list',
@@ -9,16 +11,21 @@ import { Offer } from 'src/app/models/offer.model';
 })
 export class CommentListComponent implements OnInit {
   @Input() offer: Offer;
-  comments = ["Awesome", "Noice"]
+  comments: ReviewComment[] = []
 
   constructor(
     private modalCtrl: ModalController,
+    private offersService: OffersService
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.offersService.getComments(this.offer).then((comments) => {
+      this.comments = comments;
+    });
+  }
 
   onCancel() {
-    this.modalCtrl.dismiss(null, "cancel", "create-koi-modal");
+    this.modalCtrl.dismiss(null, "cancel", "comment-list-modal");
   }
 
 }

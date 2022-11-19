@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { CommentsResult, ReviewComment } from '../models/comment.model';
 import { Offer } from '../models/offer.model';
 
 @Injectable({
@@ -32,7 +33,7 @@ export class OffersService {
     });
   }
 
-  public getGif(item: Offer) {
+  private getGif(item: Offer) {
     const query_addon = item.serie ? " series" : " movie";
     const query_title = escape(((item.otitle || item.title || "The Matrix"))).substring(0, 50 - query_addon.length).replace(/%+\d*$/, "");
 
@@ -46,6 +47,40 @@ export class OffersService {
       return `https://i.giphy.com/xUOxfj6cTg3ezmjIoo.gif`;
     })
   }
+
+  public getComments(item: Offer) {
+    return Promise.resolve(this.DUMMY_COMMENTS);
+    return this.http.get<CommentsResult>(`https://quick-flick-backend-pu2rnvaodq-ew.a.run.app/${item.serie ? "series" : "movie"}/comments/${"tt" + (item.imdb_id ?? "0133093")}`).toPromise().then(async (commentsResult: CommentsResult| undefined) => {
+      return commentsResult?.comments ?? [];
+    });
+  }
+
+  private DUMMY_COMMENTS: ReviewComment[] = [
+      {
+          "name": "Top_Dawg_Critic",
+          "review": "This film was better than the original in every way. The directing by Joseph Kosinski was outstanding and the camera work was perfection."
+      },
+      {
+          "name": "scottedwards-87359",
+          "review": "If you were a late teen or in your early twenties in the mid 1980's, the original Top Gun captured that moment in time"
+      },
+      {
+          "name": "goshamorrell",
+          "review": "I was really looking forward to Top Gun: Maverick, and it did not disappoint. It was great to see Tom Cruise back"
+      },
+      {
+          "name": "dtucker86",
+          "review": "I was really looking forward to this movie, especially because it's been so long since the last one came out. I was definitely"
+      },
+      {
+          "name": "lovefalloutkindagamer",
+          "review": ""
+      },
+      {
+          "name": "alexglimbergwindh",
+          "review": "I highly recommend seeing Top Gun: Maverick in the theaters. The big screen and booming speakers make for an amazing experience. I"
+      }
+  ]
 
   private DUMMY_MOVIE_OFFERS: Offer[] = [
     {
