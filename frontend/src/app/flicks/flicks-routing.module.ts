@@ -5,7 +5,7 @@ import { FlicksPage } from './flicks.page';
 
 const routes: Routes = [
   {
-    path: 'tabs',
+    path: '',
     component: FlicksPage,
     children: [
       {
@@ -18,19 +18,14 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: '/flicks/tabs/movies',
+        redirectTo: '/movies',
         pathMatch: 'full'
       }
     ]
   },
   {
     path: '',
-    redirectTo: '/flicks/tabs/movies',
-    pathMatch: 'full'
-  },
-  {
-    path: 'flicks',
-    redirectTo: '/flicks/tabs/movies',
+    redirectTo: '/movies',
     pathMatch: 'full'
   },
 ];

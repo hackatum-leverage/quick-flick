@@ -4,11 +4,6 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'flicks',
-    pathMatch: 'full'
-  },
-  {
-    path: 'flicks',
     loadChildren: () => import('./flicks/flicks.module').then( m => m.FlicksPageModule)
   },
 ];
