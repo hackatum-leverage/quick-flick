@@ -1,32 +1,19 @@
-.header {
-    width: 95%;
+.header-heading-wrapper{
+    margin-top: 0.6em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
     margin-bottom: 0.5em;
     margin-left: auto;
     margin-right: auto;
-    flex: 0 0 auto;
-}
-
-.header-button-wrapper{
-    display: flex;
-    margin-top: 0.6em;
-    margin-bottom: 1em;
-    flex-direction: row;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.header ion-icon{
-    width: 40px;
-    height: 40px;
-    padding:0;
-    margin-right: 0.5em;
-}
-
-.header-heading-wrapper{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+    ion-icon {
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      margin: 0;
+  }
 }
 
 .header-heading-wrapper ion-label {
@@ -64,5 +51,5 @@
 }
 
 .comment * {
-  font-size: 11px;
+  font-size: 12px;
 }
