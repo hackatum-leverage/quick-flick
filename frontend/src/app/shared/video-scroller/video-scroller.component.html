@@ -1,4 +1,10 @@
-<div class="scroller">
+<div
+  class="scroller"
+  infinite-scroll
+  [infiniteScrollDistance]="2"
+  (scrolled)="loadNextOffers()"
+  [scrollWindow]="false"
+>
   <div class="scroll-item" *ngFor="let item of offers">
     <h1>{{ item.title }}</h1>
     <br>
@@ -17,3 +23,6 @@
     </div>
   </div>
 </div>
+<!-- <ion-infinite-scroll (ionInfinite)="loadNextOffers($event)">
+  <ion-infinite-scroll-content></ion-infinite-scroll-content>
+</ion-infinite-scroll> -->

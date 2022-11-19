@@ -18,7 +18,7 @@ jobs:
           node-version: 16    
       - name: Run npm install
         working-directory: ./frontend  
-        run: npm ci
+        run: npm ci --force
       - name: Install ionic cli
         working-directory: ./frontend
         run: npm install -g @ionic/cli

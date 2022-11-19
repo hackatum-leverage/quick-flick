@@ -28,4 +28,14 @@ export class VideoScrollerComponent implements OnInit {
     navigator.share({url: 'https://quickflick-e3121.web.app'})
   }
 
+  loadNextOffers() {
+    setTimeout(() => {
+      console.log('Load new data...');
+      if (this.type === "movie") {
+        this.offers.push(...this.offersService.getMovies());
+      } else {
+        this.offers.push(...this.offersService.getSeries());
+      }
+    }, 500);
+  }
 }
