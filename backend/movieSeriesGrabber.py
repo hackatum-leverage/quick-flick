@@ -120,98 +120,57 @@ def getMovies():
 def getSeries():
     seriesList = []
 
-    
+    dataFile = open('seriesData.json')
+    seriesListRaw = json.load(dataFile)
 
-    discoveryList = getRandomDiscoverSeries()
-    liste = mongo.check_list_series(discoveryList)
-
-    idx = list(range(0, len(liste)))
+    idx = list(range(0, len(seriesListRaw)))
     random.shuffle(idx)
 
-    seriesList.append(liste[idx[0]])
-    seriesList.append(liste[idx[1]])
-    seriesList.append(liste[idx[2]])
-
-    popularList = getPopularSeries()
-    liste = mongo.check_list(popularList)
-
-    idx = list(range(0, len(liste)))
-    random.shuffle(idx)
-
-    seriesList.append(liste[idx[0]])
-
-    gemList = getHiddenGemSeries()
-    liste = mongo.check_list(gemList)
-
-    idx = list(range(0, len(liste)))
-    random.shuffle(idx)
-
-    # TODO: check size
-
-    seriesList.append(liste[idx[0]])
+    for counter in range(0,5):
+        seriesList.append(seriesListRaw[idx[counter]])
 
     return seriesList
 
 # Get recommendation for given tmdb id
-def getMovieRecommendation(_imdbID):
-    # Convert from imdb to tmdb
-    equivalentID = 0
-    try:
-        equivalentID = get_id(_imdbID)
-    except Exception as e:
-        return ["-1"]   # No movie found
-    if equivalentID is None:
-        return ["-1"]   # No movie found
-    tmdbID = int(equivalentID)
-
-    with urllib.request.urlopen(mdb_url + "movie/" + str(tmdbID) + "/recommendations" + "?api_key=" + str(mdb_key) + "&page=1") as url:
+def getMovieRecommendation(_tmdbID):
+    tmdbList = []
+    movieList = []
+    with urllib.request.urlopen(mdb_url + "movie/" + str(_tmdbID) + "/recommendations" + "?api_key=" + str(mdb_key) + "&page=1") as url:
         req = json.loads(url.read().decode())
         movieRecommendationList = req['results']
 
-        imdbList = []
+        # just extract ids
         for movie in movieRecommendationList:
-            equivalentID = 0
-            try:
-                equivalentID = get_imdb_id_movie(movie['id'])
-            except Exception as e:
-                return ["-1"]
-            imdbList.append(equivalentID.replace("tt", ""))
+            tmdbList.append(str(movie['id']))
 
-        return imdbList[:5]
-        
-    return -1
+        liste = mongo.check_list(tmdbList)
+
+        idx = list(range(0, len(liste)))
+        random.shuffle(idx)
+
+        movieList.append(liste[idx[0]])
+        movieList.append(liste[idx[1]])
+        movieList.append(liste[idx[2]])
+        movieList.append(liste[idx[3]])
+        movieList.append(liste[idx[4]])
+
+        return movieList
 
 # Get recommendation for given tmdb id
 def getSeriesRecommendation(_imdbID):
-    # Convert from imdb to tmdb
-    equivalentID = 0
-    try:
-        equivalentID = get_id(_imdbID)
-    except Exception as e:
-        return ["-1"]   # No series found
-    if equivalentID is None:
-        return ["-1"]   # No series found
-    tmdbID = int(equivalentID)
+    seriesList = []
 
-    with urllib.request.urlopen(mdb_url + "tv/" + str(tmdbID) + "/recommendations" + "?api_key=" + str(mdb_key) + "&page=1") as url:
-        req = json.loads(url.read().decode())
-        seriesRecommendationList = req['results']
+    dataFile = open('seriesData.json')
+    seriesListRaw = json.load(dataFile)
 
-        imdbList = []
-        for series in seriesRecommendationList:
-            equivalentID = 0
-            try:
-                equivalentID = get_imdb_id_tv(series['id'])
-            except Exception as e:
-                return ["-1"]
-            imdbList.append(equivalentID.replace("tt", ""))
+    idx = list(range(0, len(seriesListRaw)))
+    random.shuffle(idx)
 
-        return imdbList[:5]
-        
-    return -1
+    for counter in range(0,5):
+        seriesList.append(seriesListRaw[idx[counter]])
+
+    return seriesList
+    
 
 if __name__ == "__main__":
     print("Ugga Ugga")
-
-    liste = getSeries()
-    print(liste)
