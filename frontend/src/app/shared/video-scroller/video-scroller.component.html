@@ -5,7 +5,7 @@
   (scrolled)="loadNextOffers()"
   [scrollWindow]="false"
 >
-  <div class="scroll-item" *ngFor="let item of offers">
+  <!-- <div class="scroll-item" *ngFor="let item of offers">
     <h1>{{ item.title }}</h1>
     <br>
     <div *ngIf="item.genres">
@@ -21,8 +21,28 @@
       <ion-icon name="share-social-outline" (click)="share()"></ion-icon>
       <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
     </div>
+  </div> -->
+  <div class="wrapper" *ngFor="let item of offers">
+    <div class="left">
+      <div class="content">
+        <div *ngIf="item.posters && item.posters.split(',').length >= 0">
+          <img [src]="item.posters.split(',')[0]">
+        </div>
+      </div>
+      <div class="title">
+        <h1>{{ item.title }}</h1>
+        <div *ngIf="item.genres">
+          <ion-chip *ngFor="let genre of item.genres.split(',')">
+            <ion-label>{{ genre }}</ion-label>
+          </ion-chip>
+        </div>
+      </div>
+      <div class="flipper"></div>
+    </div>
+    <div class="toolbar">
+      <ion-icon name="eye-outline"></ion-icon>
+      <ion-icon name="share-social-outline" (click)="share()"></ion-icon>
+      <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+    </div>
   </div>
 </div>
-<!-- <ion-infinite-scroll (ionInfinite)="loadNextOffers($event)">
-  <ion-infinite-scroll-content></ion-infinite-scroll-content>
-</ion-infinite-scroll> -->
