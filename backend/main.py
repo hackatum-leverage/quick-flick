@@ -50,7 +50,7 @@ def tv_next():
 
 @app.route("/movie/next/")
 def movie_next():
-    return {"result": mongo.get_random_movie()}
+    return json.dumps(mongo.get_random_movie())
 
 @app.route("/series/poster/<imdb_id>")
 def tv_poster(imdb_id):
