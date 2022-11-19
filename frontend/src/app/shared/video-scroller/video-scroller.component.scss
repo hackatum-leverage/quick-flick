@@ -35,6 +35,9 @@
                 padding: 12px;
                 color: white;
                 cursor: pointer;
+                &.disabled {
+                    opacity: 0.2;
+                }
             }
             .spacer {
                 height: 48px;
