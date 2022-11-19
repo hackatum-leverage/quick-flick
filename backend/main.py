@@ -3,6 +3,8 @@ import urllib.request, json
 from flask import Flask
 import mongo
 from flask_cors import CORS
+from reviewAPI import getReviewData
+from movieSeriesGrabber import getMovies, getSeries, getMovieRecommendation, getSeriesRecommendation
 
 app = Flask(__name__)
 CORS(app)
@@ -47,12 +49,21 @@ def movie_poster(imdb_id="tt0137523"):
     return img_baseurl+size+ret
 
 @app.route("/series/next/")
-def tv_next():
-    return json.dumps(mongo.get_random_tv())
+@app.route("/series/next/<imdb_id>")
+def tv_next(imdb_id = None):
+    if imdb_id is None:
+        return getSeries()
+    else:
+        return getSeriesRecommendation(imdb_id)
+    
 
 @app.route("/movie/next/")
-def movie_next():
-    return json.dumps(mongo.get_random_movie())
+@app.route("/movie/next/<imdb_id>")
+def movie_next(imdb_id = None):
+    if imdb_id is None:
+        return getMovies()
+    else:
+        return getMovieRecommendation(imdb_id)
 
 @app.route("/series/poster/<imdb_id>")
 def tv_poster(imdb_id):
@@ -63,24 +74,12 @@ def tv_poster(imdb_id):
     return img_baseurl+size+ret
 
 @app.route("/movie/comments/<imdb_id>")
-def movie_comments(imdb_id):
-    new_id = get_id(imdb_id)
-    with urllib.request.urlopen(mdb_url+ "movie/" + new_id + "/reviews" + "?api_key=" + mdb_key) as url:
-        req = json.loads(url.read().decode())
-        comments = []
-        for r in req["results"]:
-            comments.append(r["content"])
-    return {"comments": comments}
+def returnCommentsM(imdb_id):
+    return getReviewData(imdb_id)
 
 @app.route("/series/comments/<imdb_id>")
-def tv_comments(imdb_id):
-    new_id = get_id(imdb_id)
-    with urllib.request.urlopen(mdb_url + "tv/" + new_id + "/reviews" + "?api_key=" + mdb_key) as url:
-        req = json.loads(url.read().decode())
-        comments = []
-        for r in req["results"]:
-            comments.append(r["content"])
-    return {"comments": comments}
+def returnCommentsS(imdb_id):
+    return getReviewData(imdb_id)
 
 @app.route("/offer/<imdb_id>")
 def get_offer_record(imdb_id):
@@ -98,13 +97,13 @@ def get_id(imdb_id): #vllt parameter einfügen für TV oder Movie ergebnisse
     return str(ret)
 
 def get_imdb_id_movie(id):
-    with urllib.request.urlopen(mdb_url+ "movie/" + id + "?api_key=" + mdb_key) as url:
+    with urllib.request.urlopen(mdb_url+ "movie/" + str(id) + "?api_key=" + mdb_key) as url:
         req = json.loads(url.read().decode())
         ret = req["imdb_id"]
     return ret
 
 def get_imdb_id_tv(id):
-    with urllib.request.urlopen(mdb_url+ "tv/" + id + "/external_ids" + "?api_key=" + mdb_key) as url:
+    with urllib.request.urlopen(mdb_url+ "tv/" + str(id) + "/external_ids" + "?api_key=" + mdb_key) as url:
         req = json.loads(url.read().decode())
         ret = req["imdb_id"]
     return ret
