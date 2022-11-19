@@ -1,3 +1,6 @@
+import json
+
+from bson import json_util
 from pymongo import MongoClient
 import random
 
@@ -12,6 +15,40 @@ col_rtl = db.rtl
 col_netflix = db.netflix
 col_netflix_full = db.netflix_full
 
+def get_random_movie():
+    ret = []
+    agg = col_netflix_full.aggregate([
+        {
+            '$match': {
+                'serie': '0'
+            }
+        }, {
+            '$sample': {
+                'size': 5
+            }
+        }
+    ])
+    for a in agg:
+        ret.append(parse_json(a))
+    return ret
+
+def get_random_tv():
+    ret = []
+    agg = col_netflix_full.aggregate([
+        {
+            '$match': {
+                'serie': '1'
+            }
+        }, {
+            '$sample': {
+                'size': 5
+            }
+        }
+    ])
+    for a in agg:
+        ret.append(parse_json(a))
+    return ret
+
 
 def find_by_imdb(imdb_id):
     ret_d = col_disney.find_one({'imdb_id': str(imdb_id)})
@@ -25,3 +62,21 @@ def find_by_imdb(imdb_id):
         ret = random.choice(l)
     return ret
 
+def parse_json(data):
+    return json.loads(json_util.dumps(data))
+
+def check_imdb(_imdbID):
+    agg = col_netflix_full.aggregate([
+        {
+            '$match': {
+                'imdb_id': str(_imdbID)
+            }
+        },
+    ])
+
+    searchResults = list(agg)
+
+    if len(searchResults) > 0:
+        return True
+    else:
+        return False

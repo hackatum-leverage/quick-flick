@@ -2,6 +2,8 @@ import os
 import urllib.request, json
 from flask import Flask
 from reviewAPI import getReviewData
+from movieSeriesGrabber import getMovies, getSeries
+import mongo
 
 app = Flask(__name__)
 
@@ -48,9 +50,9 @@ def movie_poster(imdb_id="tt0137523"):
 def tv_next(num=5):
     return num
 
-@app.route("/movie/next/<num>")
-def movie_next(num=5):
-    return num
+@app.route("/movie/next/")
+def movie_next():
+    return {"result": mongo.get_random_movie()}
 
 @app.route("/series/poster/<imdb_id>")
 def tv_poster(imdb_id):
@@ -84,13 +86,13 @@ def get_id(imdb_id): #vllt parameter einfügen für TV oder Movie ergebnisse
     return str(ret)
 
 def get_imdb_id_movie(id):
-    with urllib.request.urlopen(mdb_url+ "movie/" + id + "?api_key=" + mdb_key) as url:
+    with urllib.request.urlopen(mdb_url+ "movie/" + str(id) + "?api_key=" + mdb_key) as url:
         req = json.loads(url.read().decode())
         ret = req["imdb_id"]
     return ret
 
 def get_imdb_id_tv(id):
-    with urllib.request.urlopen(mdb_url+ "tv/" + id + "/external_ids" + "?api_key=" + mdb_key) as url:
+    with urllib.request.urlopen(mdb_url+ "tv/" + str(id) + "/external_ids" + "?api_key=" + mdb_key) as url:
         req = json.loads(url.read().decode())
         ret = req["imdb_id"]
     return ret
