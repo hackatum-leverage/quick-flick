@@ -18,6 +18,7 @@
         grid-template-columns: auto 60px;
         height: 100%;
         background-color: black;
+        overflow: hidden;
         grid-template-areas:
         "left toolbar";
         width: min(56.25vh, 100%);
