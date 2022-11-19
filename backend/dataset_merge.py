@@ -60,15 +60,15 @@ def copyEntity(_entity):
 #dataFile3 = open('streampicker/dp.json')
 #dataFile4 = open('streampicker/tn.json')
 
-#dataFile1 = open('newAppleList.json')
-#dataFile2 = open('newNetflixList.json')
-#dataFile3 = open('newDisneyList.json')
-#dataFile4 = open('newRTLList.json')
+#dataFile1 = open('JSON_files/newAppleList.json')
+#dataFile2 = open('JSON_files/newNetflixList.json')
+#dataFile3 = open('JSON_files/newDisneyList.json')
+dataFile4 = open('JSON_files/newRTLList.json')
 
-dataFile1 = open('imdbApple.json')
-dataFile2 = open('imdbNetflix.json')
-dataFile3 = open('imdbDisney.json')
-dataFile4 = open('imdbRTL.json')
+#dataFile1 = open('imdbApple.json')
+#dataFile2 = open('imdbNetflix.json')
+#dataFile3 = open('imdbDisney.json')
+#dataFile4 = open('imdbRTL.json')
 
 
 """movieListAP = [
@@ -307,18 +307,33 @@ movieListNF = [
     },
 ]"""
 
-movieListAP = json.load(dataFile1)
-print("Finished loading apple")
-movieListNF = json.load(dataFile2)
-print("Finished loading netflix")
-movieListDP = json.load(dataFile3)
-print("Finished loading disney")
-movieListTN = json.load(dataFile4)
-print("Finished loading rtl")
+#movieListAP = json.load(dataFile1)
+#print("Finished loading apple")
+#movieListNF = json.load(dataFile2)
+#print("Finished loading netflix")
+#movieListDP = json.load(dataFile3)
+#print("Finished loading disney")
+#movieListTN = json.load(dataFile4)
+#print("Finished loading rtl")
 
 imdbIDList = []
+outputList = []
 
 print("Start matching...")
+
+"""
+# Create unique elements 
+tmpAlreadyExisting = []
+for movieIdx in range(0, len(movieListTN)):
+    if movieListTN[movieIdx]['imdb_id'] not in imdbIDList:
+        imdbIDList.append(movieListTN[movieIdx]['imdb_id'])
+        outputList.append(movieListTN[movieIdx])
+
+with open('rtlShort.json', 'w') as f:
+    json.dump(outputList, f)
+
+"""
+
 
 """
 # Function to merge all four imdb list together
