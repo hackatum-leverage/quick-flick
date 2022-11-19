@@ -2,8 +2,10 @@ import os
 import urllib.request, json
 from flask import Flask
 import mongo
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 mdb_url = "https://api.themoviedb.org/3/"
 mdb_key = "5df139106aa0fb2f1b015f82b6bf0a7a"
