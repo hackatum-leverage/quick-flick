@@ -7,6 +7,9 @@
         <ion-label>{{ genre }}</ion-label>
       </ion-chip>
     </div>
+    <div *ngIf="item.posters && item.posters.split(',').length >= 0">
+      <img [src]="item.posters.split(',')[0]">
+    </div>
     <div class="toolbar">
       <ion-icon name="eye-outline"></ion-icon>
       <ion-icon name="share-social-outline" (click)="share()"></ion-icon>
