@@ -1,6 +1,7 @@
 import os
 import urllib.request, json
 from flask import Flask
+from reviewAPI import getReviewData
 
 app = Flask(__name__)
 
@@ -60,24 +61,12 @@ def tv_poster(imdb_id):
     return img_baseurl+size+ret
 
 @app.route("/movie/comments/<imdb_id>")
-def movie_comments(imdb_id):
-    new_id = get_id(imdb_id)
-    with urllib.request.urlopen(mdb_url+ "movie/" + new_id + "/reviews" + "?api_key=" + mdb_key) as url:
-        req = json.loads(url.read().decode())
-        comments = []
-        for r in req["results"]:
-            comments.append(r["content"])
-    return {"comments": comments}
+def returnCommentsM(imdb_id):
+    return getReviewData(imdb_id)
 
 @app.route("/series/comments/<imdb_id>")
-def tv_comments(imdb_id):
-    new_id = get_id(imdb_id)
-    with urllib.request.urlopen(mdb_url + "tv/" + new_id + "/reviews" + "?api_key=" + mdb_key) as url:
-        req = json.loads(url.read().decode())
-        comments = []
-        for r in req["results"]:
-            comments.append(r["content"])
-    return {"comments": comments}
+def returnCommentsS(imdb_id):
+    return getReviewData(imdb_id)
 
 @app.route("/offer/<imdb_id>")
 def get_offer_record(imdb_id):
