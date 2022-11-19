@@ -18,7 +18,11 @@
             </ion-chip>
           </div>
         </div>
-        <div class="flipper"></div>
+        <div class="flipper">
+          <div class="content">
+            {{ review[reviewIndex] }}
+          </div>
+        </div>
       </div>
       <div class="toolbar">
         <a [href]="item.url ?? ''" target="_blank">

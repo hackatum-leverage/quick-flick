@@ -80,9 +80,23 @@
                 .flipper {
                     grid-area: "flipper";
                     background-color: green;
+                    display: grid;
+                    .content {
+                        font-size: 24px;
+                        padding: 12px;
+                        grid-area: 1;
+                    }
                 }
             }
         }
+    }
+}
+@keyframes flip {
+    0% {
+        transform: rotate3d(0);
+    }
+    100% {
+        transform: rotate3d(1, 0, 0, -180deg);
     }
 }
 
