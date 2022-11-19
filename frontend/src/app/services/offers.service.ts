@@ -13,6 +13,7 @@ export class OffersService {
   ) { }
 
   public async getMovies() {
+
     return this.http.get<Offer[]>("https://quick-flick-backend-pu2rnvaodq-ew.a.run.app/movie/next").toPromise().then(async (movies: Offer[] | undefined) => {
       movies = movies ?? []
       for (let movie of movies) {
