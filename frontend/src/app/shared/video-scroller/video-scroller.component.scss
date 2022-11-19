@@ -54,10 +54,13 @@
                     flex-flow: column;
                     justify-content: center;
                     align-items: center;
-                    ion-icon {
+                    ion-icon, img {
                         font-size: 42px;
                         padding: 12px 0px;
                         cursor: pointer;
+                    }
+                    img {
+                        border-radius: 50%;
                     }
                 }
             }
