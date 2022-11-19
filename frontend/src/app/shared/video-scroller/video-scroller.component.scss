@@ -20,9 +20,16 @@
         .toolbar {
             display: flex;
             flex-flow: column;
+            gap: 12px;
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
             ion-button {
                 --background: none;
                 --background-hover: none;
+                ion-icon {
+                    font-size: 48px;
+                }
             }
         }
     }
