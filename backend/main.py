@@ -20,6 +20,13 @@ def test_json():
     }
 
 @app.route("/test/trends/movie")
+def test_trends_movie():
+    with urllib.request.urlopen(mdb_url + "trending/" + "movie/" + "week" +"?api_key=" + mdb_key) as url:
+        req = json.loads(url.read().decode())
+        req_id = req["results"][0]["id"]
+        ret_id = get_imdb_id(str(req_id))
+    return ret_id
+
 
 @app.route("/test/poster/<imdb_id>")
 def test_poster(imdb_id="tt0137523"):
