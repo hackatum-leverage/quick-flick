@@ -31,15 +31,17 @@
         </div>
       </div>
       <div class="toolbar">
-        <a [href]="item.url ?? ''" target="_blank">
-          <ion-icon name="play-circle-outline"></ion-icon>
-        </a>
-        <ion-icon name="eye-outline"></ion-icon>
-        <ion-icon name="share-social-outline" (click)="share(item.url ?? '')"></ion-icon>
-        <ion-icon name="chatbubble-ellipses-outline" (click)="openCommentModal(item)"></ion-icon>
-        <ion-avatar>
-          <img [src]="getProviderIcon(item)" />
-        </ion-avatar>
+        <div class="container">
+          <a [href]="item.url ?? ''" target="_blank">
+            <ion-icon name="play-circle-outline"></ion-icon>
+          </a>
+          <ion-icon name="eye-outline"></ion-icon>
+          <ion-icon name="share-social-outline" (click)="share(item.url ?? '')"></ion-icon>
+          <ion-icon name="chatbubble-ellipses-outline" (click)="openCommentModal(item)"></ion-icon>
+          <ion-avatar>
+            <img [src]="getProviderIcon(item)" />
+          </ion-avatar>
+        </div>
       </div>
     </div>
   </div>

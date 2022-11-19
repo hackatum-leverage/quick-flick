@@ -9,7 +9,7 @@
     <div *ngFor="let comment of comments" fill="outline" class="comment">
       <ion-chip>
         <ion-avatar>
-          <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+          <img alt="Silhouette of a person's head" [src]="getAvatar(comment.name)">
         </ion-avatar>
         <ion-label>{{ comment.name }}</ion-label>
       </ion-chip>
