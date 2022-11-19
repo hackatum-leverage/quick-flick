@@ -31,12 +31,14 @@
         </div>
       </div>
       <div class="toolbar">
-        <a [href]="item.url ?? ''" target="_blank">
-          <ion-icon name="play-circle-outline"></ion-icon>
-        </a>
-        <ion-icon name="eye-outline"></ion-icon>
-        <ion-icon name="share-social-outline" (click)="share(item.url ?? '')"></ion-icon>
-        <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+        <div class="container">
+          <a [href]="item.url ?? ''" target="_blank">
+            <ion-icon name="play-circle-outline"></ion-icon>
+          </a>
+          <ion-icon name="eye-outline"></ion-icon>
+          <ion-icon name="share-social-outline" (click)="share(item.url ?? '')"></ion-icon>
+          <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+        </div>
       </div>
     </div>
   </div>
