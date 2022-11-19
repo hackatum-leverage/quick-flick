@@ -79,9 +79,8 @@
                     border-radius: 12px;
                     img {
                         border-radius: 7px;
-                        flex-grow: 0;
-                        flex-shrink: 0;
-                        width: 120px;
+                        width: 110px;
+                        min-width: 110px;
                     }
                     // background-color: yellow;
                     .container {
