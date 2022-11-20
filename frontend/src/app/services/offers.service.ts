@@ -103,7 +103,7 @@ export class OffersService {
   }
 
   public async getAdjectives(id: string) {
-    return Promise.resolve(["scary", "classic", "well-acted"])
+    return Promise.resolve(["intense", "mind-blowing", "futuristic"])
 
     return this.http.get<string[]>(`${this.BACKEND_URL}/movie/reasons/${id}/0`).toPromise().then(async (reasons: string[] | undefined) => {
       return reasons ?? [];
