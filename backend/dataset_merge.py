@@ -55,15 +55,15 @@ def copyEntity(_entity):
 
     return returnJson
 
-#dataFile1 = open('streampicker/ap.json')
-#dataFile2 = open('streampicker/nf.json')
-#dataFile3 = open('streampicker/dp.json')
-#dataFile4 = open('streampicker/tn.json')
+dataFile1 = open('streampicker/ap.json')
+dataFile2 = open('streampicker/nf.json')
+dataFile3 = open('streampicker/dp.json')
+dataFile4 = open('streampicker/tn.json')
 
 #dataFile1 = open('JSON_files/newAppleList.json')
 #dataFile2 = open('JSON_files/newNetflixList.json')
 #dataFile3 = open('JSON_files/newDisneyList.json')
-dataFile4 = open('JSON_files/newRTLList.json')
+#dataFile4 = open('JSON_files/newRTLList.json')
 
 #dataFile1 = open('imdbApple.json')
 #dataFile2 = open('imdbNetflix.json')
@@ -307,14 +307,56 @@ movieListNF = [
     },
 ]"""
 
-#movieListAP = json.load(dataFile1)
-#print("Finished loading apple")
-#movieListNF = json.load(dataFile2)
-#print("Finished loading netflix")
-#movieListDP = json.load(dataFile3)
-#print("Finished loading disney")
-#movieListTN = json.load(dataFile4)
-#print("Finished loading rtl")
+movieListAP = json.load(dataFile1)
+print("Finished loading apple")
+movieListNF = json.load(dataFile2)
+print("Finished loading netflix")
+movieListDP = json.load(dataFile3)
+print("Finished loading disney")
+movieListTN = json.load(dataFile4)
+print("Finished loading rtl")
+
+outputList = []
+
+print(len(movieListAP))
+print(len(movieListNF))
+print(len(movieListDP))
+print(len(movieListTN))
+
+counter = 0
+for idx in range(0, 275200):
+    counter = counter + 2
+    print(counter)
+    outputList.append(movieListAP[counter])
+print("Apple done")
+
+counter = 0
+for idx in range(0, 25000):
+    counter = counter + 6
+    print(counter)
+    outputList.append(movieListNF[counter])
+print("Netflix done")
+
+counter = 0
+for idx in range(0, 60000):
+    counter = counter + 4
+    print(counter)
+    outputList.append(movieListDP[counter])
+print("Disney done")
+
+counter = 0
+for idx in range(0, 4500):
+    counter = counter + 15
+    print(counter)
+    outputList.append(movieListTN[counter])
+print("RTL done")
+
+with open("mergedFile.json", "w") as write_file:
+    json.dump(outputList, write_file)
+
+exit()
+
+
 
 imdbIDList = []
 outputList = []
