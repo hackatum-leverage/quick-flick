@@ -82,6 +82,8 @@ def getMovies():
             cleanedList.append(element)
             tmdbList.append(element['tmdb'])
 
+    liste = cleanedList
+
     idx = list(range(0, len(liste)))
     random.shuffle(idx)
 
@@ -99,6 +101,11 @@ def getMovies():
     popularList, votingList = getPopularMovies()
     liste = mongo.check_list(popularList)
 
+    # delete current movie list elemets out of list
+    liste = [num for num in liste if num != movieList[0]['tmdb']]
+    liste = [num for num in liste if num != movieList[1]['tmdb']]
+    liste = [num for num in liste if num != movieList[2]['tmdb']]
+
     idx = list(range(0, len(liste)))
     random.shuffle(idx)
 
@@ -109,6 +116,11 @@ def getMovies():
 
     gemList, votingList = getHiddenGemMovie()
     liste = mongo.check_list(gemList)
+
+    liste = [num for num in liste if num != movieList[0]['tmdb']]
+    liste = [num for num in liste if num != movieList[1]['tmdb']]
+    liste = [num for num in liste if num != movieList[2]['tmdb']]
+    liste = [num for num in liste if num != movieList[3]['tmdb']]
 
     idx = list(range(0, len(liste)))
     random.shuffle(idx)
@@ -150,6 +162,16 @@ def getMovieRecommendation(_tmdbID):
 
         liste = mongo.check_list(tmdbList)
 
+        # delete duplicates
+        cleanedList = []
+        tmdbList = []
+        for element in liste:
+            if element['tmdb'] not in tmdbList:
+                cleanedList.append(element)
+                tmdbList.append(element['tmdb'])
+
+        liste = cleanedList
+
         idx = list(range(0, len(liste)))
         random.shuffle(idx)
 
@@ -181,17 +203,6 @@ def getSeriesRecommendation(_imdbID):
         seriesList.append(seriesListRaw[idx[counter]])
 
     return seriesList
-    
-def getRating(_tmdb):
-    tmdbList = []
-    movieList = []
-    with urllib.request.urlopen(mdb_url + "movie/" + str(_tmdbID) + "/recommendations" + "?api_key=" + str(mdb_key) + "&page=1") as url:
-        req = json.loads(url.read().decode())
-        movieRecommendationList = req['results']
-
-        # just extract ids
-        for movie in movieRecommendationList:
-            tmdbList.append(str(movie['id']))
 
 if __name__ == "__main__":
     print("Ugga Ugga")
