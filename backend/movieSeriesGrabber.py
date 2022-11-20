@@ -64,7 +64,13 @@ def getMovies():
 
     discoveryList, votingList = getRandomDiscoverMovie()
     liste = mongo.check_list(discoveryList)
-    liste = list(dict.fromkeys(liste))
+    
+    cleanedList = []
+    tmdbList = []
+    for element in liste:
+        if element['tmdb'] not in tmdbList:
+            cleanedList.append(element)
+            tmdbList.append(element['tmdb'])
 
     idx = list(range(0, len(liste)))
     random.shuffle(idx)
@@ -180,4 +186,4 @@ def getRating(_tmdb):
 if __name__ == "__main__":
     print("Ugga Ugga")
 
-    getMovies()
+    print(getMovies())
