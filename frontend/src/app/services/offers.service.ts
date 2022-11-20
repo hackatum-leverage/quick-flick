@@ -17,9 +17,16 @@ export class OffersService {
 
     return this.http.get<Offer[]>("https://quick-flick-backend-pu2rnvaodq-ew.a.run.app/movie/next/").toPromise().then(async (movies: Offer[] | undefined) => {
       movies = movies ?? []
-      for (let movie of movies) {
-        movie.gif_url = await this.getGif(movie);
-      }
+      movies.forEach(async (movie, index) => {
+        if (index % 4 == 0) {
+          movie.label = "gem"
+        } else if (index % 4 == 1) {
+          movie.label = "trending"
+        } else {
+          movie.label = "for you"
+        }
+        movie.gif_url = await this.getGif(movie)
+      })
       return movies
     });
   }
@@ -27,10 +34,17 @@ export class OffersService {
   public async getSeries() {
     return this.http.get<Offer[]>("https://quick-flick-backend-pu2rnvaodq-ew.a.run.app/series/next/").toPromise().then(async (series: Offer[] | undefined) => {
       series = series ?? []
-      for (let s of series) {
-        s.gif_url = await this.getGif(s);
-      }
-      return series;
+      series.forEach(async (serie, index) => {
+        if (index % 4 == 0) {
+          serie.label = "gem"
+        } else if (index % 4 == 1) {
+          serie.label = "trending"
+        } else {
+          serie.label = "for you"
+        }
+        serie.gif_url = await this.getGif(serie)
+      })
+      return series
     });
   }
 

@@ -32,4 +32,5 @@ export interface Offer {
   runtime?: string,
   fsk?: string,
   gif_url?: string
+  label?: "gem" | "trending" | "for you"
 }
