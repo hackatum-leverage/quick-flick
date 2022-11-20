@@ -61,7 +61,7 @@ export class OffersService {
   }
 
   public async getReasons(id: string) {
-    return this.http.get<string[]>(`${this.BACKEND_URL}/movie/reasons/${id}/0`).toPromise().then(async (reasons: string[] | undefined) => {
+    return this.http.get<string[]>(`${this.BACKEND_URL}/movie/reasons/${id}/1`).toPromise().then(async (reasons: string[] | undefined) => {
       return reasons ?? [];
     })
   }
