@@ -38,15 +38,13 @@ export class CommentListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.comments = this.mockComments
-    this.isLoading = false
-    // this.offersService.getComments(this.offer).then((comments) => {
-    //   this.comments = comments;
-    //   if (this.comments.length == 0) {
-    //     this.comments = this.mockComments
-    //   }
-    //   this.isLoading = false
-    // });
+    this.offersService.getComments(this.offer).then((comments) => {
+      this.comments = comments;
+      if (this.comments.length == 0) {
+        this.comments = this.mockComments
+      }
+      this.isLoading = false
+    });
   }
 
   onCancel() {
