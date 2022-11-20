@@ -42,8 +42,8 @@ def tv_trends():
 
 @app.route("/movie/poster/<imdb_id>")
 def movie_poster(imdb_id="tt0137523"):
-    new_id = str(get_id(imdb_id))
-    with urllib.request.urlopen(mdb_url + "movie/tt" + new_id +"?api_key=" + mdb_key) as url:
+    new_id = str(get_id("tt" + imdb_id))
+    with urllib.request.urlopen(mdb_url + "movie/" + new_id +"?api_key=" + mdb_key) as url:
         req = json.loads(url.read().decode())
         ret = req["poster_path"]
     return img_baseurl+size+ret
@@ -79,8 +79,8 @@ def series_reasons(tmdb_ID, mode):
 
 @app.route("/series/poster/<imdb_id>")
 def tv_poster(imdb_id):
-    new_id = str(get_id(imdb_id, True))
-    with urllib.request.urlopen(mdb_url + "tv/tt" + new_id + "/images" + "?api_key=" + mdb_key) as url:
+    new_id = str(get_id("tt" + imdb_id, True))
+    with urllib.request.urlopen(mdb_url + "tv/" + new_id + "/images" + "?api_key=" + mdb_key) as url:
         req = json.loads(url.read().decode())
         ret = req["posters"][0]["file_path"]
     return img_baseurl+size+ret
