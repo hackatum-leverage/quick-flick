@@ -13,11 +13,11 @@ def getRandomDiscoverMovie():
     randomNumber = random.randint(1, 10)
     randomNumber2 = randomNumber + 1
 
-    with urllib.request.urlopen(mdb_url + "discover/" + "movie/" + "?api_key=" + str(mdb_key) + "&language=en-US" + "&sort_by=popularity.desc" + "&page=" + randomNumber) as url:
+    with urllib.request.urlopen(mdb_url + "discover/" + "movie/" + "?api_key=" + str(mdb_key) + "&language=en-US" + "&sort_by=popularity.desc" + "&page=" + str(randomNumber)) as url:
         req = json.loads(url.read().decode())
         movieList = req['results']
 
-    with urllib.request.urlopen(mdb_url + "discover/" + "movie/" + "?api_key=" + str(mdb_key) + "&language=en-US" + "&sort_by=popularity.desc" + "&page=" + randomNumber2) as url:
+    with urllib.request.urlopen(mdb_url + "discover/" + "movie/" + "?api_key=" + str(mdb_key) + "&language=en-US" + "&sort_by=popularity.desc" + "&page=" + str(randomNumber2)) as url:
         req = json.loads(url.read().decode())
         movieList2 = req['results']
 
@@ -40,7 +40,7 @@ def getPopularMovies():
 
     randomNumber = random.randint(1, 5)
 
-    with urllib.request.urlopen(mdb_url + "movie/" + "popular/" + "?api_key=" + str(mdb_key) + "&language=en-US" + "&page=" + randomNumber) as url:
+    with urllib.request.urlopen(mdb_url + "movie/" + "popular/" + "?api_key=" + str(mdb_key) + "&language=en-US" + "&page=" + str(randomNumber)) as url:
         req = json.loads(url.read().decode())
         movieRecommendationList = req['results']
 
@@ -57,7 +57,7 @@ def getHiddenGemMovie():
 
     randomNumber = random.randint(1, 5)
     
-    with urllib.request.urlopen(mdb_url + "discover/" + "movie/" + "?api_key=" + str(mdb_key) + "&language=en-US" + "&sort_by=popularity.desc" + "&page=" + randomNumber + "&release_date.lte=2009-12-31") as url:
+    with urllib.request.urlopen(mdb_url + "discover/" + "movie/" + "?api_key=" + str(mdb_key) + "&language=en-US" + "&sort_by=popularity.desc" + "&page=" + str(randomNumber) + "&release_date.lte=2009-12-31") as url:
         req = json.loads(url.read().decode())
         movieList = req['results']
 
