@@ -70,9 +70,9 @@ def getReviewData(_tmdbID):
     reviews = reviewsBox.find_all("div", class_="text show-more__control")
 
     # Max number of elements
-    if len(reviews) > NUMREVIEWS:
-        reviews = reviews[0:NUMREVIEWS]
-        userNames = userNames[0:NUMREVIEWS]
+    #if len(reviews) > NUMREVIEWS:
+    #    reviews = reviews[0:NUMREVIEWS]
+    #    userNames = userNames[0:NUMREVIEWS]
 
     # Convert to string list
     reviewList = []
@@ -88,6 +88,7 @@ def getReviewData(_tmdbID):
     # Get data from open ai
     responseList = []
     userNameCounter = 0
+    counter = 0
     for review in reviewList:
         response = openai.Completion.create(
             model = "text-davinci-002",
@@ -100,7 +101,7 @@ def getReviewData(_tmdbID):
         )
 
         if response['choices'][0]['finish_reason'] == "stop":
-            return []
+            continue
 
         # Try to get data out of response
         try:
@@ -121,6 +122,8 @@ def getReviewData(_tmdbID):
             }
             responseList.append(responseJson)
             userNameCounter = userNameCounter + 1
+            if counter >= 4:
+                break
         except Exception as e:
             print("There was an error while summarizing data from openai")
 
