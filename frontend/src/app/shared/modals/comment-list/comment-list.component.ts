@@ -13,6 +13,25 @@ export class CommentListComponent implements OnInit {
   @Input() offer: Offer;
   comments: ReviewComment[] = []
 
+  public isLoading = true
+
+  public mockComments: ReviewComment[] = [{
+    name: "Stacy Green",
+    review: "My new favorite movie, soo good!!"
+  }, {
+    name: "Norbert Scott",
+    review: "Was funny and entertaining"
+  }, {
+    name: "Rafaela Smith",
+    review: "I liked it, but it was a bit boring"
+  }, {
+    name: "Olivia Albert",
+    review: "Great movie to watch with friends :)"
+  }, {
+    name: "Liam Miller",
+    review: "Would watch it again!"
+  }]
+
   constructor(
     private modalCtrl: ModalController,
     private offersService: OffersService
@@ -21,6 +40,10 @@ export class CommentListComponent implements OnInit {
   ngOnInit() {
     this.offersService.getComments(this.offer).then((comments) => {
       this.comments = comments;
+      if (this.comments.length == 0) {
+        this.comments = this.mockComments
+      }
+      this.isLoading = false
     });
   }
 

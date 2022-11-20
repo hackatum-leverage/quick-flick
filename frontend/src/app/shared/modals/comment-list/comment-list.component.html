@@ -16,6 +16,9 @@
       <ion-label class="ion-text-wrap">{{ comment.review }}</ion-label>
     </div>
     <!-- source: https://loading.io/css/ -->
-    <div class="lds-ripple" *ngIf="comments.length === 0"><div></div><div></div></div>
+    <div class="lds-ripple" *ngIf="isLoading">
+      <div></div>
+      <div></div>
+    </div>
   </div>
 </div>
