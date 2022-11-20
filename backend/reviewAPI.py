@@ -5,6 +5,7 @@ import openai
 import mongo
 import requests
 from bs4 import BeautifulSoup
+import urllib.request, json
 
 mdb_url = "https://api.themoviedb.org/3/"
 mdb_key = "5df139106aa0fb2f1b015f82b6bf0a7a"
@@ -12,19 +13,39 @@ mdb_key = "5df139106aa0fb2f1b015f82b6bf0a7a"
 CLEANR = re.compile('<.*?>')
 NUMREVIEWS = 4
 
+def get_imdb_id_movie(id):
+    with urllib.request.urlopen(mdb_url+ "movie/" + str(id) + "?api_key=" + mdb_key) as url:
+        req = json.loads(url.read().decode())
+        ret = req["imdb_id"]
+    return ret
+
+def get_imdb_id_tv(id):
+    with urllib.request.urlopen(mdb_url+ "tv/" + str(id) + "/external_ids" + "?api_key=" + mdb_key) as url:
+        req = json.loads(url.read().decode())
+        ret = req["imdb_id"]
+    return ret
+
 def cleanHtml(_rawHtml):
         cleanText = re.sub(CLEANR, '', _rawHtml)
         return cleanText
 
 def getReviewData(_tmdbID):
-    # Check _imdbID
-    if len(str(_imdbID)) == 6:
-        _imdbID = "0" + str(_imdbID)
-    elif len(str(_imdbID)) == 7:
-        _imdbID = str(_imdbID)
+    entityName, entityVersion = mongo.check_tmdb_name(_tmdbID)
 
-    URL = "https://www.imdb.com/title/tt" + str(_imdbID) + "/reviews?ref_=tt_sa_3"
+    imdbID = 0
+    if entityVersion == 0:
+        # Movie
+        imdbID =  get_imdb_id_movie(_tmdbID)
+    else:
+        # Series
+        imdbID = get_imdb_id_tv(_tmdbID)
+    
+    # TODO: catch error
+
+    URL = "https://www.imdb.com/title/" + imdbID + "/reviews?ref_=tt_sa_3"
     page = requests.get(URL)
+
+    # TODO: check if website reachable
 
     # Get necessary data of webpage
     soup = BeautifulSoup(page.content, "html.parser")
@@ -59,7 +80,7 @@ def getReviewData(_tmdbID):
             model = "text-davinci-002",
             prompt = "Summarize the following review in short positive form from the first person:" + review,
             temperature = 0.7,
-            max_tokens = 12,
+            max_tokens = 18,
             top_p = 1,
             frequency_penalty = 0,
             presence_penalty = 0
@@ -145,5 +166,6 @@ def getMovieDescription(_tmdbID, _mode):
 #        json.dump(getReviewData(0), f)
 
 if __name__ == "__main__":
-    getMovieDescription(157336, 1)
-    #157336
+    print("Brrrrumm")
+    #print(getMovieDescription(157336, 1))
+    #print(getReviewData(157336))

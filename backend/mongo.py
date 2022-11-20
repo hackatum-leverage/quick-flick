@@ -79,6 +79,7 @@ def check_imdb(_imdbID):
         return False
 
 def check_list(_tmdbList):
+    ret = []
     agg = col_netflix_full.find(
         {
             'tmdb': {
@@ -87,37 +88,27 @@ def check_list(_tmdbList):
         }
     )
 
-    searchResults = list(agg)
+    for a in agg:
+        ret.append(parse_json(a))
 
-    return searchResults
-
-def check_list_series(_tmdbList):
-    agg = col_netflix_full.find(
-        {
-            'tmdb': {
-                '$in': _tmdbList
-            }
-        }
-    )
-
-    searchResults = list(agg)
-
-    return searchResults
-
+    return ret
+    
 def check_tmdb_name(_tmdbID):
+    ret = []
     agg = col_netflix_full.find(
         {
             'tmdb': str(_tmdbID)
         }
     )
 
-    searchResults = list(agg)
+    for a in agg:
+        ret.append(parse_json(a))
 
-    if(len(searchResults)) >= 1:
-        if searchResults[0]['title'] is not None:
-            return (searchResults[0]['title'], int(searchResults[0]['serie']))
-        elif searchResults[0]['otitle'] is not None:
-            return (searchResults[0]['otitle'], int(searchResults[0]['serie']))
+    if(len(ret)) >= 1:
+        if ret[0]['title'] is not None:
+            return (ret[0]['title'], int(ret[0]['serie']))
+        elif ret[0]['otitle'] is not None:
+            return (ret[0]['otitle'], int(ret[0]['serie']))
         else:
             return None
         
