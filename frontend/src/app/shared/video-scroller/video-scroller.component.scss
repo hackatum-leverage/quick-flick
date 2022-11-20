@@ -59,6 +59,9 @@
                         padding: 12px 0px;
                         cursor: pointer;
                         color: white;
+                        &.checked {
+                            color: #00c02d;
+                        }
                     }
                     img {
                         border-radius: 50%;
