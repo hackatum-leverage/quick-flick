@@ -3,7 +3,7 @@ import urllib.request, json
 from flask import Flask
 import mongo
 from flask_cors import CORS
-from reviewAPI import getReviewData
+from reviewAPI import getReviewData, getMovieDescription
 from movieSeriesGrabber import getMovies, getSeries, getMovieRecommendation, getSeriesRecommendation
 
 app = Flask(__name__)
@@ -68,6 +68,14 @@ def movie_next(imdb_id = None):
         return getMovies()
     else:
         return getMovieRecommendation(imdb_id)
+
+@app.route("/movies/reasons/<tmdb_ID>/<mode>")
+def movie_reasons(tmdb_ID, mode):
+    return getMovieDescription(tmdb_ID, mode)
+
+@app.route("/series/reasons/<tmdb_ID>/<mode>")
+def series_reasons(tmdb_ID, mode):
+    return getMovieDescription(tmdb_ID, mode)
 
 @app.route("/series/poster/<imdb_id>")
 def tv_poster(imdb_id):

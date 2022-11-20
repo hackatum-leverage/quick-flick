@@ -104,6 +104,22 @@ def check_list_series(_tmdbList):
 
     return searchResults
 
+def check_tmdb_name(_tmdbID):
+    agg = col_netflix_full.find(
+        {
+            'tmdb': str(_tmdbID)
+        }
+    )
+
+    searchResults = list(agg)
+
+    if(len(searchResults)) >= 1:
+        if searchResults[0]['title'] is not None:
+            return (searchResults[0]['title'], int(searchResults[0]['serie']))
+        elif searchResults[0]['otitle'] is not None:
+            return (searchResults[0]['otitle'], int(searchResults[0]['serie']))
+        else:
+            return None
         
 def parse_json(data):
     return json.loads(json_util.dumps(data))
