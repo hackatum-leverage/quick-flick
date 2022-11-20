@@ -88,19 +88,17 @@ def getReviewData(_tmdbID):
     # Get data from open ai
     responseList = []
     userNameCounter = 0
+    counter = 0
     for review in reviewList:
         response = openai.Completion.create(
             model = "text-davinci-002",
-            prompt = "Summarize the following review in short positive form from the first person:" + review,
+            prompt = "Briefly summarize the positive aspects of the following review from first person view:" + review,
             temperature = 0.7,
-            max_tokens = 18,
+            max_tokens = 26,
             top_p = 1,
             frequency_penalty = 0,
             presence_penalty = 0
         )
-
-        if response['choices'][0]['finish_reason'] == "stop":
-            return []
 
         # Try to get data out of response
         try:
@@ -121,6 +119,8 @@ def getReviewData(_tmdbID):
             }
             responseList.append(responseJson)
             userNameCounter = userNameCounter + 1
+            if counter >= 4:
+                break
         except Exception as e:
             print("There was an error while summarizing data from openai")
 
@@ -130,7 +130,10 @@ def getMovieDescription(_tmdbID, _mode):
     # _mode = 0 -> short text
     # _mode = 1 -> adjectives
 
-    entityName, entityVersion = mongo.check_tmdb_name(_tmdbID)
+    try:
+        entityName, entityVersion = mongo.check_tmdb_name(_tmdbID)
+    except Exception as e:
+        return []
 
     nameList = ['movie', 'series']
 
@@ -156,26 +159,29 @@ def getMovieDescription(_tmdbID, _mode):
             presence_penalty = 0
         )
 
-    processedResponse = response['choices'][0]['text'].replace("\n", "")
+    try:
+        processedResponse = response['choices'][0]['text'].replace("\n", "")
 
-    if "1. " not in processedResponse and "2. " not in processedResponse and "3. " not in processedResponse:
-        return ["-1"]
-    
-    processedResponse = processedResponse.replace("1", "")
-    processedResponse = processedResponse.replace("2", "")
-    processedResponse = processedResponse.replace("3", "")
-    processedResponse = processedResponse.split(". ")
+        if "1. " not in processedResponse and "2. " not in processedResponse and "3. " not in processedResponse:
+            return ["-1"]
+        
+        processedResponse = processedResponse.replace("1", "")
+        processedResponse = processedResponse.replace("2", "")
+        processedResponse = processedResponse.replace("3", "")
+        processedResponse = processedResponse.split(". ")
 
-    # Delete unnecessary elements
-    for element in processedResponse:
-        if not element:
-            processedResponse.remove(element)
+        # Delete unnecessary elements
+        for element in processedResponse:
+            if not element:
+                processedResponse.remove(element)
 
-    # clean data one more time
-    for idx, element in enumerate(processedResponse):
-        processedResponse[idx] = processedResponse[idx].replace(".", "")
+        # clean data one more time
+        for idx, element in enumerate(processedResponse):
+            processedResponse[idx] = processedResponse[idx].replace(".", "")
 
-    return processedResponse
+        return processedResponse
+    except Exception as e:
+        return []
 
 
 #with open('openAIReponse.json', 'w') as f:
@@ -184,4 +190,4 @@ def getMovieDescription(_tmdbID, _mode):
 if __name__ == "__main__":
     print("Brrrrumm")
     #print(getMovieDescription(157336, 1))
-    print(getReviewData(157336))
+    #print(getReviewData(157336))
