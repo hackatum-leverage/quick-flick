@@ -100,9 +100,6 @@ def getReviewData(_tmdbID):
             presence_penalty = 0
         )
 
-        if response['choices'][0]['finish_reason'] == "stop":
-            continue
-
         # Try to get data out of response
         try:
             reviewString = response['choices'][0]['text'].replace("\n", "")
