@@ -9,11 +9,15 @@ mdb_key = "5df139106aa0fb2f1b015f82b6bf0a7a"
 def getRandomDiscoverMovie():
     tmdbList = []
     votingList = []
-    with urllib.request.urlopen(mdb_url + "discover/" + "movie/" + "?api_key=" + str(mdb_key) + "&language=en-US" + "&sort_by=popularity.desc" + "&page=1") as url:
+
+    randomNumber = random.randint(1, 10)
+    randomNumber2 = randomNumber + 1
+
+    with urllib.request.urlopen(mdb_url + "discover/" + "movie/" + "?api_key=" + str(mdb_key) + "&language=en-US" + "&sort_by=popularity.desc" + "&page=" + randomNumber) as url:
         req = json.loads(url.read().decode())
         movieList = req['results']
 
-    with urllib.request.urlopen(mdb_url + "discover/" + "movie/" + "?api_key=" + str(mdb_key) + "&language=en-US" + "&sort_by=popularity.desc" + "&page=2") as url:
+    with urllib.request.urlopen(mdb_url + "discover/" + "movie/" + "?api_key=" + str(mdb_key) + "&language=en-US" + "&sort_by=popularity.desc" + "&page=" + randomNumber2) as url:
         req = json.loads(url.read().decode())
         movieList2 = req['results']
 
@@ -33,7 +37,10 @@ def getRandomDiscoverMovie():
 def getPopularMovies():
     tmdbList = []
     votingList = []
-    with urllib.request.urlopen(mdb_url + "movie/" + "popular/" + "?api_key=" + str(mdb_key) + "&language=en-US" + "&page=1") as url:
+
+    randomNumber = random.randint(1, 5)
+
+    with urllib.request.urlopen(mdb_url + "movie/" + "popular/" + "?api_key=" + str(mdb_key) + "&language=en-US" + "&page=" + randomNumber) as url:
         req = json.loads(url.read().decode())
         movieRecommendationList = req['results']
 
@@ -47,7 +54,10 @@ def getPopularMovies():
 def getHiddenGemMovie():
     tmdbList = []
     votingList = []
-    with urllib.request.urlopen(mdb_url + "discover/" + "movie/" + "?api_key=" + str(mdb_key) + "&language=en-US" + "&sort_by=popularity.desc" + "&page=1" + "&release_date.lte=2009-12-31") as url:
+
+    randomNumber = random.randint(1, 5)
+    
+    with urllib.request.urlopen(mdb_url + "discover/" + "movie/" + "?api_key=" + str(mdb_key) + "&language=en-US" + "&sort_by=popularity.desc" + "&page=" + randomNumber + "&release_date.lte=2009-12-31") as url:
         req = json.loads(url.read().decode())
         movieList = req['results']
 
