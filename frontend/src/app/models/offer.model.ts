@@ -33,4 +33,5 @@ export interface Offer {
   fsk?: string,
   gif_url?: string
   label?: "gem" | "trending" | "for you"
+  reasons?: string[]
 }

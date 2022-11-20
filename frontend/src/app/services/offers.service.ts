@@ -18,14 +18,26 @@ export class OffersService {
     return this.http.get<Offer[]>(`${this.BACKEND_URL}/movie/next/`).toPromise().then(async (movies: Offer[] | undefined) => {
       movies = movies ?? []
       movies.forEach(async (movie, index) => {
+        let loadResons = false
         if (index % 4 == 3) {
           movie.label = "gem"
+          if (movie.tmdb) {
+            loadResons = true
+          }
         } else if (index % 4 == 2) {
           movie.label = "trending"
         } else {
           movie.label = "for you"
         }
-        movie.gif_url = await this.getGif(movie)
+        let gif_url = ""
+        let reasons = undefined
+        if (loadResons) {
+          [gif_url, reasons] = await Promise.all([this.getGif(movie), this.getReasons(movie.tmdb!)])
+        } else {
+          gif_url = await this.getGif(movie)
+        }
+        movie.gif_url = gif_url
+        movie.reasons = reasons
       })
       return movies
     });
