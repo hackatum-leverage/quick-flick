@@ -106,6 +106,7 @@
                         gap: 5px;
                         width: 100%;
                         height: 100%;
+                        padding: 12px;
                         p {
                             font-weight: bold;
                             font-size: 20px;
@@ -151,6 +152,10 @@
                 .flipper {
                     grid-area: "flipper";
                     backdrop-filter: blur(10px) brightness(60%);
+                    border-radius: 7px;
+                    margin: 5px;
+                    margin-top: 0px;
+                    padding: 5px;
                     .stars {
                         display: flex;
                         flex-flow: row;
