@@ -2,8 +2,12 @@
 import re
 import json
 import openai
+import mongo
 import requests
 from bs4 import BeautifulSoup
+
+mdb_url = "https://api.themoviedb.org/3/"
+mdb_key = "5df139106aa0fb2f1b015f82b6bf0a7a"
 
 CLEANR = re.compile('<.*?>')
 NUMREVIEWS = 4
@@ -12,7 +16,7 @@ def cleanHtml(_rawHtml):
         cleanText = re.sub(CLEANR, '', _rawHtml)
         return cleanText
 
-def getReviewData(_imdbID):
+def getReviewData(_tmdbID):
     # Check _imdbID
     if len(str(_imdbID)) == 6:
         _imdbID = "0" + str(_imdbID)
@@ -53,7 +57,7 @@ def getReviewData(_imdbID):
     for review in reviewList:
         response = openai.Completion.create(
             model = "text-davinci-002",
-            prompt = "Summarize the following review in short form from the first person:" + review,
+            prompt = "Summarize the following review in short positive form from the first person:" + review,
             temperature = 0.7,
             max_tokens = 12,
             top_p = 1,
@@ -85,8 +89,61 @@ def getReviewData(_imdbID):
 
     return responseList
 
+def getMovieDescription(_tmdbID, _mode):
+    # _mode = 0 -> short text
+    # _mode = 1 -> adjectives
+
+    entityName, entityVersion = mongo.check_tmdb_name(_tmdbID)
+
+    nameList = ['movie', 'series']
+
+    if entityName is None:
+        return ["-1"]
+
+    # Settings for openai
+    openai.api_key = "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"
+
+    prompt = ""
+    if _mode == 0:
+        prompt = "name three reasons why people love " + entityName + " as a " + nameList[entityVersion] + ":"
+    else:
+        prompt = "name three adjectives why people love " + entityName + " as a " + nameList[entityVersion] + ":"
+
+    response = openai.Completion.create(
+            model = "text-davinci-002",
+            prompt = prompt,
+            temperature = 0.5,
+            max_tokens = 48,
+            top_p = 1,
+            frequency_penalty = 0,
+            presence_penalty = 0
+        )
+
+    processedResponse = response['choices'][0]['text'].replace("\n", "")
+
+    if "1. " not in processedResponse and "2. " not in processedResponse and "3. " not in processedResponse:
+        return ["-1"]
+    
+    processedResponse = processedResponse.replace("1", "")
+    processedResponse = processedResponse.replace("2", "")
+    processedResponse = processedResponse.replace("3", "")
+    processedResponse = processedResponse.split(". ")
+
+    # Delete unnecessary elements
+    for element in processedResponse:
+        if not element:
+            processedResponse.remove(element)
+
+    # clean data one more time
+    for idx, element in enumerate(processedResponse):
+        processedResponse[idx] = processedResponse[idx].replace(".", "")
+
+    return processedResponse
+
+
 #with open('openAIReponse.json', 'w') as f:
 #        json.dump(getReviewData(0), f)
 
 if __name__ == "__main__":
-    print(getReviewData(816692))
+    getMovieDescription(157336, 1)
+    #157336
