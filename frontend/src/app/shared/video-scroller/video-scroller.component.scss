@@ -46,7 +46,7 @@
                 align-items: center;
                 .container {
                     border-radius: 12px;
-                    backdrop-filter: blur(10px) brightness(60%);
+                    filter: drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.4));
                     margin: 5px;
                     width: 55px;
                     margin-left: 0px;
@@ -54,10 +54,17 @@
                     flex-flow: column;
                     justify-content: center;
                     align-items: center;
-                    ion-icon {
+                    ion-icon, img {
                         font-size: 42px;
                         padding: 12px 0px;
                         cursor: pointer;
+                        color: white;
+                        &.checked {
+                            color: var(--ion-color-primary);
+                        }
+                    }
+                    img {
+                        border-radius: 50%;
                     }
                 }
             }
@@ -71,11 +78,21 @@
                     "title"
                     "flipper";
                 .content {
+                    // background-color: darkolivegreen;
                     grid-area: "content";
-                    // background-color: violet;
                     display: flex;
+                    flex-flow: column;
                     justify-content: center;
                     align-items: center;
+                    gap: 5px;
+                    p {
+                        font-weight: bold;
+                        background-color: black;
+                        padding: 4px 6px;
+                        border-radius: 4px;
+                        margin: 0px;
+                        animation: text 0.5s ease-in-out;
+                    }
                 }
                 .title {
                     display: flex;
@@ -150,6 +167,17 @@
     100% {
         transform: rotate3d(0) scale(1);
         opacity: 1;
+    }
+}
+
+@keyframes text {
+    0% {
+        opacity: 0;
+        transform: scale(1.5);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
     }
 }
 

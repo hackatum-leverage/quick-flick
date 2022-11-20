@@ -1,12 +1,14 @@
 <div class="scroller" infinite-scroll [infiniteScrollDistance]="2" (scrolled)="loadNextOffers()" [scrollWindow]="false">
-  <div class="wrapper" *ngFor="let item of offers">
+  <div class="wrapper" *ngFor="let item of offers; let i = index">
     <div class="background">
       <img [src]="item.gif_url">
     </div>
-    <div class="foreground">
+    <div class="foreground" [id]="'offer-' + i">
       <div class="left">
         <div class="content">
-          <!-- empty -->
+          <p>This is a test</p>
+          <p>Lorem ipsum solor et dilor.</p>
+          <p>Shit bussin</p>
         </div>
         <div class="title">
           <div *ngIf="item.posters && item.posters.split(',').length > 0">
@@ -33,14 +35,12 @@
       <div class="toolbar">
         <div class="container">
           <a [href]="item.url ?? ''" target="_blank">
-            <ion-icon name="play-circle-outline"></ion-icon>
+            <ion-icon name="play-circle" class="play"></ion-icon>
           </a>
-          <ion-icon name="eye-outline"></ion-icon>
+          <ion-icon name="checkmark-done-outline" (click)="rememberWatched(i, item.id)" [ngClass]="{'checked': hasWatched(item.id)}"></ion-icon>
           <ion-icon name="share-social-outline" (click)="share(item.url ?? '')"></ion-icon>
           <ion-icon name="chatbubble-ellipses-outline" (click)="openCommentModal(item)"></ion-icon>
-          <ion-avatar>
-            <img [src]="getProviderIcon(item)" />
-          </ion-avatar>
+          <img [src]="getProviderIcon(item)">
         </div>
       </div>
     </div>

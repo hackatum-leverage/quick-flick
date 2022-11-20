@@ -14,6 +14,7 @@ col_apple = db.apple
 col_rtl = db.rtl
 col_netflix = db.netflix
 col_netflix_full = db.netflix_full
+col_seriesData = db.seriesData
 
 def get_random_movie():
     ret = []
@@ -62,5 +63,64 @@ def find_by_imdb(imdb_id):
         ret = random.choice(l)
     return ret
 
+def check_imdb(_imdbID):
+    agg = col_netflix_full.aggregate([
+        {
+            '$match': {
+                'imdb_id': str(_imdbID)
+            }
+        },
+    ])
+
+    searchResults = list(agg)
+
+    if len(searchResults) > 0:
+        return True
+    else:
+        return False
+
+def check_list(_tmdbList):
+    ret = []
+    agg = col_netflix_full.find(
+        {
+            'tmdb': {
+                '$in': _tmdbList
+            }
+        }
+    )
+
+    for a in agg:
+        ret.append(parse_json(a))
+
+    return ret
+    
+def check_tmdb_name(_tmdbID):
+    ret = []
+    agg = col_netflix_full.find(
+        {
+            'tmdb': str(_tmdbID)
+        }
+    )
+
+    for a in agg:
+        ret.append(parse_json(a))
+
+    if(len(ret)) >= 1:
+        if ret[0]['title'] is not None:
+            return (ret[0]['title'], int(ret[0]['serie']))
+        elif ret[0]['otitle'] is not None:
+            return (ret[0]['otitle'], int(ret[0]['serie']))
+        else:
+            return None
+
+def getSeriesData():
+    ret = []
+    agg = col_seriesData.find()
+
+    for a in agg:
+        ret.append(parse_json(a))
+
+    return ret
+        
 def parse_json(data):
     return json.loads(json_util.dumps(data))
