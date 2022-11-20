@@ -8,14 +8,14 @@ import { Offer } from '../models/offer.model';
   providedIn: 'root'
 })
 export class OffersService {
+  private BACKEND_URL = "https://quick-flick-backend-pu2rnvaodq-ew.a.run.app";
 
   constructor(
     private http: HttpClient
   ) { }
 
   public async getMovies() {
-
-    return this.http.get<Offer[]>("https://quick-flick-backend-pu2rnvaodq-ew.a.run.app/movie/next/").toPromise().then(async (movies: Offer[] | undefined) => {
+    return this.http.get<Offer[]>(`${this.BACKEND_URL}/movie/next/`).toPromise().then(async (movies: Offer[] | undefined) => {
       movies = movies ?? []
       movies.forEach(async (movie, index) => {
         if (index % 4 == 3) {
@@ -32,7 +32,7 @@ export class OffersService {
   }
 
   public async getSeries() {
-    return this.http.get<Offer[]>("https://quick-flick-backend-pu2rnvaodq-ew.a.run.app/series/next/").toPromise().then(async (series: Offer[] | undefined) => {
+    return this.http.get<Offer[]>(`${this.BACKEND_URL}/series/next/`).toPromise().then(async (series: Offer[] | undefined) => {
       series = series ?? []
       series.forEach(async (serie, index) => {
         if (index % 4 == 0) {
@@ -63,8 +63,7 @@ export class OffersService {
   }
 
   public getComments(item: Offer) {
-    // console.log(`https://quick-flick-backend-pu2rnvaodq-ew.a.run.app/${item.serie ? "series" : "movie"}/comments/${(item.tmdb ?? "634649")}`)
-    return this.http.get<ReviewComment[]>(`https://quick-flick-backend-pu2rnvaodq-ew.a.run.app/${item.serie ? "series" : "movie"}/comments/${(item.tmdb ?? "634649")}`).toPromise().then(async (comments: ReviewComment[]| undefined) => {
+    return this.http.get<ReviewComment[]>(`${this.BACKEND_URL}/${item.serie ? "series" : "movie"}/comments/${(item.tmdb ?? "634649")}`).toPromise().then(async (comments: ReviewComment[]| undefined) => {
       return comments ?? [];
     });
   }

@@ -154,7 +154,6 @@ export class VideoScrollerComponent implements OnInit, AfterViewInit {
   }
 
   getProviderIcon(offer: Offer) {
-    console.log(offer.pid);
     if (offer.pid === "nf") {
       return "assets/providers/netflix.png";
     } else
