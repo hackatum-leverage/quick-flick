@@ -138,7 +138,7 @@ def getMovieDescription(_tmdbID, _mode):
     nameList = ['movie', 'series']
 
     if entityName is None:
-        return ["-1"]
+        return []
 
     # Settings for openai
     openai.api_key = "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"
@@ -163,7 +163,7 @@ def getMovieDescription(_tmdbID, _mode):
         processedResponse = response['choices'][0]['text'].replace("\n", "")
 
         if "1. " not in processedResponse and "2. " not in processedResponse and "3. " not in processedResponse:
-            return ["-1"]
+            return []
         
         processedResponse = processedResponse.replace("1", "")
         processedResponse = processedResponse.replace("2", "")
