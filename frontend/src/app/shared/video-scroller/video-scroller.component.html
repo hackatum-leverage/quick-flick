@@ -1,9 +1,9 @@
 <div class="scroller" infinite-scroll [infiniteScrollDistance]="2" (scrolled)="loadNextOffers()" [scrollWindow]="false">
-  <div class="wrapper" *ngFor="let item of offers">
+  <div class="wrapper" *ngFor="let item of offers; let i = index">
     <div class="background">
       <img [src]="item.gif_url">
     </div>
-    <div class="foreground">
+    <div class="foreground" [id]="'offer-' + i">
       <div class="left">
         <div class="content">
           <p>This is a test</p>
@@ -37,7 +37,9 @@
           <a [href]="item.url ?? ''" target="_blank">
             <ion-icon name="play-circle" class="play"></ion-icon>
           </a>
-          <ion-icon name="checkmark-done-outline"></ion-icon>
+          <a [href]="getNextAnchor(i)">
+            <ion-icon name="checkmark-done-outline"></ion-icon>
+          </a>
           <ion-icon name="share-social-outline" (click)="share(item.url ?? '')"></ion-icon>
           <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
           <img [src]="getProviderIcon(item)">

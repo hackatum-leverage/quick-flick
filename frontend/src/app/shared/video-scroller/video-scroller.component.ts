@@ -58,6 +58,12 @@ export class VideoScrollerComponent implements OnInit, AfterViewInit {
     }
   }
 
+  getNextAnchor(i: number): string {
+    let path = window.location.pathname
+    let link = path + '#offer-' + (i + 1)
+    return link
+  }
+
   public share(url: string) {
     navigator.share({ url: url })
   }
