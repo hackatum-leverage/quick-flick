@@ -3,6 +3,7 @@ import { AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2, ViewChi
 import { Offer } from 'src/app/models/offer.model';
 import { OffersService } from 'src/app/services/offers.service';
 import { CommentListComponent } from '../modals/comment-list/comment-list.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-video-scroller',
@@ -26,11 +27,41 @@ export class VideoScrollerComponent implements OnInit, AfterViewInit {
   private interval: any = null
   public animateFlipper = false
 
+  public startX?: number
+  public startY?: number
+  public endX?: number
+  public endY?: number
+
+
   constructor(
     private offersService: OffersService,
     private modalCtrl: ModalController,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private router: Router
   ) { }
+
+  public touchStart(event: TouchEvent) {
+    this.startX = event.touches[0].clientX
+    this.startY = event.touches[0].clientY
+  }
+
+  public touchMove(event: TouchEvent) {
+    this.endX = event.touches[0].clientX
+    this.endY = event.touches[0].clientY
+  }
+
+  public touchEnd(event: TouchEvent) {
+    let threshold = 100
+    if (Math.abs(this.startX! - this.endX!) > threshold && Math.abs(this.startY! - this.endY!) <= threshold) {
+      if (this.startX! - this.endX! > 0) {
+        console.log("left")
+        this.router.navigate(['/movies'])
+      } else {
+        console.log("right")
+        this.router.navigate(['/series'])
+      }
+    }
+  }
 
   ngOnInit() {
     if (this.type === "movie") {
@@ -64,7 +95,7 @@ export class VideoScrollerComponent implements OnInit, AfterViewInit {
 
   private scrollIntoView(i: number) {
     let element = document.getElementById('offer-' + i)!
-    element.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+    element.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
   }
 
   public rememberWatched(i: number, id: string) {
@@ -84,10 +115,8 @@ export class VideoScrollerComponent implements OnInit, AfterViewInit {
   public hasWatched(id: string): boolean {
     if (localStorage.getItem('watchedMedia')) {
       let watchedMedia: string[] = JSON.parse(localStorage.getItem('watchedMedia')!)
-      console.log(watchedMedia.includes(id))
       return watchedMedia.includes(id)
     }
-    console.log(false)
     return false
   }
 
