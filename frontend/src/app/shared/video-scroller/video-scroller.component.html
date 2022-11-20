@@ -18,7 +18,7 @@
             <img src="../../../assets/poster-placeholder.jpg">
           </div>
           <div class="container">
-            <h1>{{ item.title }}</h1>
+            <h1>{{ item.otitle || item.title }}</h1>
             <div *ngIf="item.genres">
               <ion-chip *ngFor="let genre of item.genres.split(',') | slice:0:5">
                 <ion-label>{{ genre }}</ion-label>
