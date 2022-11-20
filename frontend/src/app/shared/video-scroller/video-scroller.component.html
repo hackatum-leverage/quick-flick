@@ -13,8 +13,10 @@
               <ion-label *ngIf="item.label! == 'for you'">For you</ion-label>
             </ion-chip>
           </div>
-          <div class="text" *ngIf="item.reasons">
-            <p *ngFor="let reason of item.reasons">{{ reason }}</p>
+          <div class="text" *ngIf="item.reasons || item.adjectives">
+            <p *ngIf="item.reasons">Here's why you will love this:</p>
+            <p *ngIf="item.adjectives">Here's how people describe this movie:</p>
+            <p *ngFor="let el of (item.reasons || item.adjectives); let k = index">{{k+1}}. {{ el }}</p>
           </div>
         </div>
         <div class="title">

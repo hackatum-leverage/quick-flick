@@ -31,7 +31,8 @@ export interface Offer {
   audio?: string,
   runtime?: string,
   fsk?: string,
-  gif_url?: string
-  label?: "gem" | "trending" | "for you"
-  reasons?: string[]
+  gif_url?: string,
+  label?: "gem" | "trending" | "for you",
+  reasons?: string[],
+  adjectives?: string[],
 }
