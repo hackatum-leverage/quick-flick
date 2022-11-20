@@ -18,20 +18,19 @@ export class VideoScrollerComponent implements OnInit, AfterViewInit {
 
   @ViewChild('flipper') flipper: ElementRef
 
-  public review: string[] = [
+  /* public review: string[] = [
     'Lorem ipsum solor et dilor',
     'liked it very much',
     'Shit was bussin'
   ]
   public reviewIndex = 0
   private interval: any = null
-  public animateFlipper = false
+  public animateFlipper = false */
 
   public startX?: number
   public startY?: number
   public endX?: number
   public endY?: number
-
 
   constructor(
     private offersService: OffersService,
@@ -74,12 +73,12 @@ export class VideoScrollerComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.interval = setInterval(() => {
+    /* this.interval = setInterval(() => {
       this.nextReview()
-    }, 5000)
+    }, 5000) */
   }
 
-  nextReview() {
+  /* nextReview() {
     if (this.reviewIndex < this.review.length - 1) {
       this.flipper.nativeElement.innerHTML = ""
       let newChild = this.renderer.createElement('p')
@@ -89,7 +88,7 @@ export class VideoScrollerComponent implements OnInit, AfterViewInit {
     } else {
       clearInterval(this.interval)
     }
-  }
+  } */
 
   private scrollIntoView(i: number) {
     let element = document.getElementById('offer-' + i)!
@@ -166,16 +165,32 @@ export class VideoScrollerComponent implements OnInit, AfterViewInit {
     if (offer.pid === "nf") {
       return "assets/providers/netflix.png";
     } else
-    if (offer.pid === "ap") {
-      return "assets/providers/apple.png";
-    } else
-    if (offer.pid === "dp") {
-      return "assets/providers/disney.png";
-    } else
-    if (offer.pid === "tn") {
-      return "assets/providers/tvnow.png";
-    } else {
-      return "https://ionicframework.com/docs/img/demos/avatar.svg";
-    }
+      if (offer.pid === "ap") {
+        return "assets/providers/apple.png";
+      } else
+        if (offer.pid === "dp") {
+          return "assets/providers/disney.png";
+        } else
+          if (offer.pid === "tn") {
+            return "assets/providers/tvnow.png";
+          } else {
+            return "https://ionicframework.com/docs/img/demos/avatar.svg";
+          }
+  }
+
+  public getStarsAmount(rating: number): number {
+    return Math.floor(Math.round(rating)/2)
+  }
+
+  public getHalfStarsAmount(rating: number): number {
+    return Math.abs(Math.round(rating)/2 - this.getStarsAmount(rating)) > 0 ? 1 : 0
+  }
+
+  public getEmptyStarsAmount(rating: number): number {
+    return 5 - this.getStarsAmount(rating) - this.getHalfStarsAmount(rating)
+  }
+
+  public counter(i: number) {
+    return new Array(i);
   }
 }

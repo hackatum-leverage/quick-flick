@@ -35,4 +35,5 @@ export interface Offer {
   label?: "gem" | "trending" | "for you",
   reasons?: string[],
   adjectives?: string[],
+  rating?: number
 }

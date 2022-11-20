@@ -151,27 +151,14 @@
                 .flipper {
                     grid-area: "flipper";
                     backdrop-filter: blur(10px) brightness(60%);
-                    // background-color: green;
-                    display: flex;
-                    border-radius: 7px;
-                    margin: 5px;
-                    margin-top: 0px;
-                    padding: 5px;
-                    align-items: center;
-                    justify-content: center;
-                    p {
-                        animation: flip 2s ease-in-out;
-                        font-size: 20px;
-                        font-style: italic;
-                        font-weight: bold;
-                        font-family: serif;
-                        margin: 0px;
-                        opacity: 1;
-                        &::before {
-                            content: open-quote;
-                        }
-                        &::after {
-                            content: close-quote;
+                    .stars {
+                        display: flex;
+                        flex-flow: row;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 5px;
+                        ion-icon {
+                            font-size: 20px;
                         }
                     }
                 }
