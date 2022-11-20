@@ -40,7 +40,7 @@
           <a [href]="item.url ?? ''" target="_blank">
             <ion-icon name="play-circle" class="play"></ion-icon>
           </a>
-          <ion-icon name="checkmark-done-outline" (click)="rememberWatched(i, item.id)" [ngClass]="{'checked': hasWatched(item.id)}"></ion-icon>
+          <ion-icon name="checkmark-done-outline" (click)="rememberWatched(i, item)" [ngClass]="{'checked': hasWatched(item.id)}"></ion-icon>
           <ion-icon name="share-social-outline" (click)="share(item.url ?? '')"></ion-icon>
           <ion-icon name="chatbubble-ellipses-outline" (click)="openCommentModal(item)"></ion-icon>
           <img [src]="getProviderIcon(item)">

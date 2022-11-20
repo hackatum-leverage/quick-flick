@@ -98,16 +98,18 @@ export class VideoScrollerComponent implements OnInit, AfterViewInit {
     element.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
   }
 
-  public rememberWatched(i: number, id: string) {
+  public rememberWatched(i: number, offer: Offer) {
+    console.log(offer);
+    this.loadRelatedOffers(offer);
     let watchedMedia: string[] = []
     if (localStorage.getItem('watchedMedia')) {
       watchedMedia = JSON.parse(localStorage.getItem('watchedMedia')!)
     }
-    if (!watchedMedia.includes(id)) {
-      watchedMedia.push(id)
+    if (!watchedMedia.includes(offer.id)) {
+      watchedMedia.push(offer.id)
       this.scrollIntoView(i + 1)
     } else {
-      watchedMedia.splice(watchedMedia.indexOf(id), 1)
+      watchedMedia.splice(watchedMedia.indexOf(offer.id), 1)
     }
     localStorage.setItem('watchedMedia', JSON.stringify(watchedMedia))
   }
@@ -133,6 +135,15 @@ export class VideoScrollerComponent implements OnInit, AfterViewInit {
     } else {
       this.offersService.getSeries().then((series) => {
         this.offers.push(...series);
+      });
+    }
+  }
+
+  loadRelatedOffers(offer: Offer) {
+    if (this.type === "movie") {
+      this.offersService.getRelatedMovies(offer).then((movies) => {
+        console.log(movies);
+        this.offers.push(...movies);
       });
     }
   }
