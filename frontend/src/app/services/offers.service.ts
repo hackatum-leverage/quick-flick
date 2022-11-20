@@ -63,8 +63,8 @@ export class OffersService {
   }
 
   public getComments(item: Offer) {
-    console.log(`https://quick-flick-backend-pu2rnvaodq-ew.a.run.app/${item.serie ? "series" : "movie"}/comments/${(item.imdb_id ?? "0133093")}`)
-    return this.http.get<ReviewComment[]>(`https://quick-flick-backend-pu2rnvaodq-ew.a.run.app/${item.serie ? "series" : "movie"}/comments/${(item.imdb_id ?? "0133093")}`).toPromise().then(async (comments: ReviewComment[]| undefined) => {
+    // console.log(`https://quick-flick-backend-pu2rnvaodq-ew.a.run.app/${item.serie ? "series" : "movie"}/comments/${(item.tmdb ?? "634649")}`)
+    return this.http.get<ReviewComment[]>(`https://quick-flick-backend-pu2rnvaodq-ew.a.run.app/${item.serie ? "series" : "movie"}/comments/${(item.tmdb ?? "634649")}`).toPromise().then(async (comments: ReviewComment[]| undefined) => {
       return comments ?? [];
     });
   }
