@@ -56,15 +56,15 @@ def copyEntity(_entity):
 
     return returnJson
 
-dataFile1 = open('streampicker/ap.json')
-dataFile2 = open('streampicker/nf.json')
-dataFile3 = open('streampicker/dp.json')
-dataFile4 = open('streampicker/tn.json')
+#dataFile1 = open('streampicker/ap.json')
+#dataFile2 = open('streampicker/nf.json')
+#dataFile3 = open('streampicker/dp.json')
+#dataFile4 = open('streampicker/tn.json')
 
 #dataFile1 = open('JSON_files/newAppleList.json')
 #dataFile2 = open('JSON_files/newNetflixList.json')
 #dataFile3 = open('JSON_files/newDisneyList.json')
-#dataFile4 = open('newRTLList.json')
+dataFile4 = open('mergedFile.json')
 
 #dataFile1 = open('imdbApple.json')
 #dataFile2 = open('imdbNetflix.json')
@@ -308,14 +308,22 @@ movieListNF = [
     },
 ]"""
 
-movieListAP = json.load(dataFile1)
-print("Finished loading apple")
-movieListNF = json.load(dataFile2)
-print("Finished loading netflix")
-movieListDP = json.load(dataFile3)
-print("Finished loading disney")
+#movieListAP = json.load(dataFile1)
+#print("Finished loading apple")
+#movieListNF = json.load(dataFile2)
+#print("Finished loading netflix")
+#movieListDP = json.load(dataFile3)
+#print("Finished loading disney")
 movieListTN = json.load(dataFile4)
 print("Finished loading rtl")
+
+
+random.shuffle(movieListTN)
+
+with open("mergedFileShuffled.json", "w") as write_file:
+    json.dump(movieListTN, write_file)
+
+exit()
 
 outputList = []
 
