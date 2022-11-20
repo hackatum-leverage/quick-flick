@@ -1,24 +1,19 @@
 <div class="modal-container">
   <div class="header">
     <div class="header-heading-wrapper">
-      <ion-label>Quick Hits - What your peers think</ion-label>
-      <ion-icon (click)="onCancel()" name="close-circle-outline" id="button-cancel"></ion-icon>
+      <span>Quick Hits - What your peers think</span>
+      <!-- <ion-icon (click)="onCancel()" name="close-circle" id="button-cancel"></ion-icon> -->
     </div>
   </div>
-  <div class="scroll-content">
-    <div *ngFor="let comment of comments" fill="outline" class="comment">
-      <ion-chip>
-        <ion-avatar>
-          <img alt="Silhouette of a person's head" [src]="getAvatar(comment.name)">
-        </ion-avatar>
-        <ion-label>{{ comment.name }}</ion-label>
-      </ion-chip>
-      <ion-label class="ion-text-wrap">{{ comment.review }}</ion-label>
-    </div>
-    <!-- source: https://loading.io/css/ -->
-    <div class="lds-ripple" *ngIf="isLoading">
-      <div></div>
-      <div></div>
-    </div>
+  <div *ngFor="let comment of comments" fill="outline" class="comment">
+      <img alt="Silhouette of a person's head" [src]="getAvatar(comment.name)">
+      <div class="text">
+        <p class="name">{{ comment.name }}</p>
+        <p>{{ comment.review }}</p>
+      </div>
+  </div>
+  <div class="lds-ripple" *ngIf="isLoading">
+    <div></div>
+    <div></div>
   </div>
 </div>
