@@ -58,10 +58,9 @@ export class VideoScrollerComponent implements OnInit, AfterViewInit {
     }
   }
 
-  getNextAnchor(i: number): string {
-    let path = window.location.pathname
-    let link = path + '#offer-' + (i + 1)
-    return link
+  public scrollIntoView(i: number) {
+    let element = document.getElementById('offer-' + i)!
+    element.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
   }
 
   public share(url: string) {
