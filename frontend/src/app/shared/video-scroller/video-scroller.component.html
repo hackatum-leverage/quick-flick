@@ -1,4 +1,4 @@
-<div class="scroller" infinite-scroll [infiniteScrollDistance]="2" (scrolled)="loadNextOffers()" [scrollWindow]="false" (touchstart)="touchStart($event)" (touchend)="touchEnd($event)">
+<div class="scroller" infinite-scroll [infiniteScrollDistance]="2" (scrolled)="loadNextOffers()" [scrollWindow]="false" (touchstart)="touchStart($event)" (touchmove)="touchMove($event)" (touchend)="touchEnd($event)">
   <div class="wrapper" *ngFor="let item of offers; let i = index">
     <div class="background">
       <img [src]="item.gif_url">

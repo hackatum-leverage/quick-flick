@@ -26,20 +26,25 @@ export class VideoScrollerComponent implements OnInit, AfterViewInit {
   private interval: any = null
   public animateFlipper = false
 
-  public clientX?: number
-  public clientY?: number
+  public startX?: number
+  public startY?: number
+  public endX?: number
+  public endY?: number
 
   touchStart(event: TouchEvent) {
-    this.clientX = event.touches[0].clientX
-    this.clientY = event.touches[0].clientY
+    this.startX = event.touches[0].clientX
+    this.startY = event.touches[0].clientY
+  }
+
+  touchMove(event: TouchEvent) {
+    this.endX = event.touches[0].clientX
+    this.endY = event.touches[0].clientY
   }
 
   touchEnd(event: TouchEvent) {
     let threshold = 100
-    let clientX = event.touches[0].clientX
-    let clientY = event.touches[0].clientY
-    if (Math.abs(clientX - this.clientX!) > threshold && Math.abs(clientY - this.clientY!) <= threshold) {
-      if (clientX - this.clientX! < 0) {
+    if (Math.abs(this.startX! - this.endX!) > threshold && Math.abs(this.startY! - this.endY!) <= threshold) {
+      if (this.startX! - this.endX! > 0) {
         console.log("left")
       } else {
         console.log("right")
@@ -105,10 +110,8 @@ export class VideoScrollerComponent implements OnInit, AfterViewInit {
   public hasWatched(id: string): boolean {
     if (localStorage.getItem('watchedMedia')) {
       let watchedMedia: string[] = JSON.parse(localStorage.getItem('watchedMedia')!)
-      console.log(watchedMedia.includes(id))
       return watchedMedia.includes(id)
     }
-    console.log(false)
     return false
   }
 
