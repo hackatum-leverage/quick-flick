@@ -26,6 +26,27 @@ export class VideoScrollerComponent implements OnInit, AfterViewInit {
   private interval: any = null
   public animateFlipper = false
 
+  public clientX?: number
+  public clientY?: number
+
+  touchStart(event: TouchEvent) {
+    this.clientX = event.touches[0].clientX
+    this.clientY = event.touches[0].clientY
+  }
+
+  touchEnd(event: TouchEvent) {
+    let threshold = 100
+    let clientX = event.touches[0].clientX
+    let clientY = event.touches[0].clientY
+    if (Math.abs(clientX - this.clientX!) > threshold && Math.abs(clientY - this.clientY!) <= threshold) {
+      if (clientX - this.clientX! < 0) {
+        console.log("left")
+      } else {
+        console.log("right")
+      }
+    }
+  }
+
   constructor(
     private offersService: OffersService,
     private modalCtrl: ModalController,
@@ -64,7 +85,7 @@ export class VideoScrollerComponent implements OnInit, AfterViewInit {
 
   private scrollIntoView(i: number) {
     let element = document.getElementById('offer-' + i)!
-    element.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+    element.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
   }
 
   public rememberWatched(i: number, id: string) {
