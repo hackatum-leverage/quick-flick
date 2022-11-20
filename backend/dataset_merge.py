@@ -1,4 +1,5 @@
 import json
+import random
 
 def copyEntity(_entity):
     returnJson = {
@@ -63,7 +64,7 @@ dataFile4 = open('streampicker/tn.json')
 #dataFile1 = open('JSON_files/newAppleList.json')
 #dataFile2 = open('JSON_files/newNetflixList.json')
 #dataFile3 = open('JSON_files/newDisneyList.json')
-#dataFile4 = open('JSON_files/newRTLList.json')
+#dataFile4 = open('newRTLList.json')
 
 #dataFile1 = open('imdbApple.json')
 #dataFile2 = open('imdbNetflix.json')
@@ -318,38 +319,39 @@ print("Finished loading rtl")
 
 outputList = []
 
-print(len(movieListAP))
-print(len(movieListNF))
-print(len(movieListDP))
-print(len(movieListTN))
-
 counter = 0
-for idx in range(0, 275200):
-    counter = counter + 2
-    print(counter)
-    outputList.append(movieListAP[counter])
+for element in movieListAP:
+    counter = counter + 1
+    if not counter % 10000:
+        print(counter)
+    outputList.append(element)
 print("Apple done")
 
 counter = 0
-for idx in range(0, 25000):
-    counter = counter + 6
-    print(counter)
-    outputList.append(movieListNF[counter])
+for element in movieListNF:
+    counter = counter + 1
+    if not counter % 10000:
+        print(counter)
+    outputList.append(element)
 print("Netflix done")
 
 counter = 0
-for idx in range(0, 60000):
-    counter = counter + 4
-    print(counter)
-    outputList.append(movieListDP[counter])
+for element in movieListDP:
+    counter = counter + 1
+    if not counter % 10000:
+        print(counter)
+    outputList.append(element)
 print("Disney done")
 
 counter = 0
-for idx in range(0, 4500):
-    counter = counter + 15
-    print(counter)
-    outputList.append(movieListTN[counter])
+for element in movieListTN:
+    counter = counter + 1
+    if not counter % 10000:
+        print(counter)
+    outputList.append(element)
 print("RTL done")
+
+random.shuffle(outputList)
 
 with open("mergedFile.json", "w") as write_file:
     json.dump(outputList, write_file)
