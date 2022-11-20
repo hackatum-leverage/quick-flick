@@ -68,7 +68,7 @@ def movie_next(imdb_id = None):
     else:
         return getMovieRecommendation(imdb_id)
 
-@app.route("/movies/reasons/<tmdb_ID>/<mode>")
+@app.route("/movie/reasons/<tmdb_ID>/<mode>")
 def movie_reasons(tmdb_ID, mode):
     return getMovieDescription(tmdb_ID, mode)
 
