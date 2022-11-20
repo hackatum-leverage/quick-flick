@@ -36,9 +36,12 @@
           </div>
         </div>
         <div class="flipper" #flipper>
-          <p>
-            {{ review[reviewIndex] }}
-          </p>
+          <div class="stars">
+            <ion-icon name="star" *ngFor="let n of counter(getStarsAmount(item.rating!))"></ion-icon>
+            <ion-icon name="star-half" *ngFor="let n of counter(getHalfStarsAmount(item.rating!))"></ion-icon>
+            <ion-icon name="star-outline" *ngFor="let n of counter(getEmptyStarsAmount(item.rating!))"></ion-icon>
+          </div>
+          <p>- TMDB</p>
         </div>
       </div>
       <div class="toolbar">

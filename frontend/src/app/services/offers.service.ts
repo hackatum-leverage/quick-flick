@@ -18,20 +18,26 @@ export class OffersService {
     return Promise.resolve(this.augmentOffers(this.DUMMY_MOVIE_OFFERS));
     return this.http.get<Offer[]>(`${this.BACKEND_URL}/movie/next/`).toPromise().then(async (movies: Offer[] | undefined) => {
       return this.augmentOffers(movies);
-    });
+    }).catch(() => {
+      return []
+    })
   }
 
   public async getRelatedMovies(offer: Offer) {
     return this.http.get<Offer[]>(`${this.BACKEND_URL}/movie/next/${offer.tmdb ?? "634649"}`).toPromise().then(async (movies: Offer[] | undefined) => {
       return this.augmentOffers(movies);
-    });
+    }).catch(() => {
+      return []
+    })
   }
 
   public async getSeries() {
     return Promise.resolve(this.augmentOffers(this.DUMMY_SERIES_OFFERS));
     return this.http.get<Offer[]>(`${this.BACKEND_URL}/series/next/`).toPromise().then(async (series: Offer[] | undefined) => {
       return this.augmentOffers(series);
-    });
+    }).catch(() => {
+      return []
+    })
   }
 
   private augmentOffers(offers: Offer[] | undefined, fixedLabel?: "gem" | "trending" | "for you") {
@@ -79,26 +85,31 @@ export class OffersService {
 
   private getPosterURL(offer: Offer) {
     const id = offer.serie ? offer.tvdb : offer.imdb_id;
+    let placeholderPoster = "../../../assets/poster-placeholder.jpg";
     if (!id) {
-      return "../../../assets/poster-placeholder.jpg";
+      return placeholderPoster;
     }
     return this.http.get<string>(`${this.BACKEND_URL}/${offer.serie ? "series" : "movie"}/poster/${id ?? "1722512"}`).toPromise().then(async (url: string | undefined) => {
-      url = url ?? "../../../assets/poster-placeholder.jpg"
-      return url;
+      url = url ?? placeholderPoster
+      return url
     }).catch(() => {
-      return "../../../assets/poster-placeholder.jpg";
-    });
+      return placeholderPoster
+    })
   }
 
   public async getReasons(id: string) {
     return this.http.get<string[]>(`${this.BACKEND_URL}/movie/reasons/${id}/1`).toPromise().then(async (reasons: string[] | undefined) => {
       return reasons ?? [];
+    }).catch(() => {
+      return []
     })
   }
 
   public async getAdjectives(id: string) {
     return this.http.get<string[]>(`${this.BACKEND_URL}/movie/reasons/${id}/0`).toPromise().then(async (reasons: string[] | undefined) => {
       return reasons ?? [];
+    }).catch(() => {
+      return []
     })
   }
 
@@ -119,6 +130,8 @@ export class OffersService {
   public getComments(item: Offer) {
     return this.http.get<ReviewComment[]>(`${this.BACKEND_URL}/${item.serie ? "series" : "movie"}/comments/${(item.tmdb ?? "634649")}`).toPromise().then(async (comments: ReviewComment[]| undefined) => {
       return comments ?? [];
+    }).catch(() => {
+      return []
     });
   }
 

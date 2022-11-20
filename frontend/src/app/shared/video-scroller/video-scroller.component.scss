@@ -72,7 +72,7 @@
             .left {
                 grid-area: "left";
                 display: grid;
-                grid-template-rows: auto min-content 60px;
+                grid-template-rows: auto min-content 40px;
                 grid-template-columns: auto;
                 grid-template-areas:
                     "content"
@@ -106,6 +106,7 @@
                         gap: 5px;
                         width: 100%;
                         height: 100%;
+                        padding: 12px;
                         p {
                             font-weight: bold;
                             font-size: 20px;
@@ -151,28 +152,27 @@
                 .flipper {
                     grid-area: "flipper";
                     backdrop-filter: blur(10px) brightness(60%);
-                    // background-color: green;
-                    display: flex;
                     border-radius: 7px;
                     margin: 5px;
                     margin-top: 0px;
                     padding: 5px;
-                    align-items: center;
+                    display: flex;
+                    flex-flow: row;
                     justify-content: center;
+                    align-items: center;
+                    gap: 12px;
+                    .stars {
+                        display: flex;
+                        flex-flow: row;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 5px;
+                        ion-icon {
+                            font-size: 20px;
+                        }
+                    }
                     p {
-                        animation: flip 2s ease-in-out;
-                        font-size: 20px;
                         font-style: italic;
-                        font-weight: bold;
-                        font-family: serif;
-                        margin: 0px;
-                        opacity: 1;
-                        &::before {
-                            content: open-quote;
-                        }
-                        &::after {
-                            content: close-quote;
-                        }
                     }
                 }
             }
