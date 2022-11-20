@@ -120,8 +120,7 @@ def getMovies():
 def getSeries():
     seriesList = []
 
-    dataFile = open('seriesData.json')
-    seriesListRaw = json.load(dataFile)
+    seriesListRaw = mongo.getSeriesData()
 
     idx = list(range(0, len(seriesListRaw)))
     random.shuffle(idx)
@@ -175,4 +174,4 @@ def getSeriesRecommendation(_imdbID):
 if __name__ == "__main__":
     print("Ugga Ugga")
 
-    getMovies()
+    getSeries()

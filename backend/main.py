@@ -40,10 +40,9 @@ def tv_trends():
         ret_id = get_imdb_id_tv(str(req_id))
     return ret_id
 
-@app.route("/movie/poster/<imdb_id>")
-def movie_poster(imdb_id="tt0137523"):
-    new_id = get_id(imdb_id)
-    with urllib.request.urlopen(mdb_url + "movie/" + new_id +"?api_key=" + mdb_key) as url:
+@app.route("/movie/poster/<tmdb_id>")
+def movie_poster(tmdb_id):
+    with urllib.request.urlopen(mdb_url + "movie/" + tmdb_id +"?api_key=" + mdb_key) as url:
         req = json.loads(url.read().decode())
         ret = req["poster_path"]
     return img_baseurl+size+ret
@@ -69,7 +68,7 @@ def movie_next(imdb_id = None):
     else:
         return getMovieRecommendation(imdb_id)
 
-@app.route("/movies/reasons/<tmdb_ID>/<mode>")
+@app.route("/movie/reasons/<tmdb_ID>/<mode>")
 def movie_reasons(tmdb_ID, mode):
     return getMovieDescription(tmdb_ID, mode)
 
@@ -77,10 +76,9 @@ def movie_reasons(tmdb_ID, mode):
 def series_reasons(tmdb_ID, mode):
     return getMovieDescription(tmdb_ID, mode)
 
-@app.route("/series/poster/<imdb_id>")
-def tv_poster(imdb_id):
-    new_id = str(get_id(imdb_id))
-    with urllib.request.urlopen(mdb_url + "tv/" + new_id + "/images" + "?api_key=" + mdb_key) as url:
+@app.route("/series/poster/<tmdb_id>")
+def tv_poster(tmdb_id):
+    with urllib.request.urlopen(mdb_url + "tv/" + tmdb_id + "/images" + "?api_key=" + mdb_key) as url:
         req = json.loads(url.read().decode())
         ret = req["posters"][0]["file_path"]
     return img_baseurl+size+ret
