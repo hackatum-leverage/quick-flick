@@ -9,12 +9,13 @@ client = MongoClient(
 
 db = client.data
 
-col_disney = db.disney
-col_apple = db.apple
-col_rtl = db.rtl
-col_netflix = db.netflix
-col_netflix_full = db.netflix_full
+#col_disney = db.disney
+#col_apple = db.apple
+#col_rtl = db.rtl
+#col_netflix = db.netflix
+#col_netflix_full = db.netflix_full
 col_seriesData = db.seriesData
+col_netflix_full = db.quickFlickDataSet
 
 def get_random_movie():
     ret = []

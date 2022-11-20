@@ -30,22 +30,35 @@ def cleanHtml(_rawHtml):
         return cleanText
 
 def getReviewData(_tmdbID):
-    entityName, entityVersion = mongo.check_tmdb_name(_tmdbID)
+    try:
+        entityName, entityVersion = mongo.check_tmdb_name(_tmdbID)
+    except Exception as e:
+        return []
 
     imdbID = 0
     if entityVersion == 0:
         # Movie
-        imdbID =  get_imdb_id_movie(_tmdbID)
+        try:
+            imdbID =  get_imdb_id_movie(_tmdbID)
+        except Exception as e:
+            return []
     else:
         # Series
-        imdbID = get_imdb_id_tv(_tmdbID)
-    
-    # TODO: catch error
+        try:
+            imdbID = get_imdb_id_tv(_tmdbID)
+        except Exception as e:
+            return []
 
     URL = "https://www.imdb.com/title/" + imdbID + "/reviews?ref_=tt_sa_3"
-    page = requests.get(URL)
 
-    # TODO: check if website reachable
+    response = requests.get(URL)
+    if response.status_code != 200:
+        return []
+
+    try:
+        page = requests.get(URL)
+    except Exception as e:
+        return []
 
     # Get necessary data of webpage
     soup = BeautifulSoup(page.content, "html.parser")
@@ -85,6 +98,9 @@ def getReviewData(_tmdbID):
             frequency_penalty = 0,
             presence_penalty = 0
         )
+
+        if response['choices'][0]['finish_reason'] == "stop":
+            return []
 
         # Try to get data out of response
         try:
@@ -168,4 +184,4 @@ def getMovieDescription(_tmdbID, _mode):
 if __name__ == "__main__":
     print("Brrrrumm")
     #print(getMovieDescription(157336, 1))
-    #print(getReviewData(157336))
+    print(getReviewData(157336))
