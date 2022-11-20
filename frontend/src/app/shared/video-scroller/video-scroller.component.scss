@@ -54,7 +54,8 @@
                     flex-flow: column;
                     justify-content: center;
                     align-items: center;
-                    ion-icon, img {
+                    ion-icon,
+                    img {
                         font-size: 42px;
                         padding: 12px 0px;
                         cursor: pointer;
@@ -80,6 +81,21 @@
                 .content {
                     // background-color: darkolivegreen;
                     grid-area: "content";
+                    .label {
+                        padding: 4px 6px;
+                        border-radius: 4px;
+                        font-weight: bold;
+                        font-size: 20px;
+                        ion-chip {
+                            font-size: 18px;
+                            &.red {
+                                background-color: var(--ion-color-danger);
+                            }
+                            &.blue {
+                                background-color: var(--ion-color-tertiary);
+                            }
+                        }
+                    }
                     .text {
                         display: flex;
                         flex-flow: column;
@@ -124,12 +140,6 @@
                         }
                         ion-chip {
                             height: 25px;
-                            &.red {
-                                background-color: var(--ion-color-danger);
-                            }
-                            &.blue {
-                                background-color: var(--ion-color-tertiary);
-                            }
                         }
                         ion-label {
                             font-size: 10px;

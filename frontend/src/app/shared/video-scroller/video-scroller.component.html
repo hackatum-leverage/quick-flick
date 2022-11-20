@@ -6,6 +6,13 @@
     <div class="foreground" [id]="'offer-' + i">
       <div class="left">
         <div class="content">
+          <div class="label">
+            <ion-chip [ngClass]="{'red': item.label! == 'gem', 'blue': item.label! == 'trending'}">
+              <ion-label *ngIf="item.label! == 'gem'">💎 Gem</ion-label>
+              <ion-label *ngIf="item.label! == 'trending'">🔥 Trending</ion-label>
+              <ion-label *ngIf="item.label! == 'for you'">For you</ion-label>
+            </ion-chip>
+          </div>
           <div class="text" *ngIf="item.reasons">
             <p *ngFor="let reason of item.reasons">{{ reason }}</p>
           </div>
@@ -22,9 +29,6 @@
             <div *ngIf="item.genres">
               <ion-chip *ngFor="let genre of item.genres.split(',') | slice:0:5">
                 <ion-label>{{ genre }}</ion-label>
-              </ion-chip>
-              <ion-chip [ngClass]="{'red': item.label! == 'gem', 'blue': item.label! == 'trending'}">
-                <ion-label>{{ item.label! | titlecase }}</ion-label>
               </ion-chip>
             </div>
           </div>
