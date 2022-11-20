@@ -92,7 +92,7 @@ def getReviewData(_tmdbID):
     for review in reviewList:
         response = openai.Completion.create(
             model = "text-davinci-002",
-            prompt = "Briefly summarize the positive aspects of the following review from first person view:" + review,
+            prompt = "Briefly summarize the positive aspects of the following review in first person: " + review,
             temperature = 0.7,
             max_tokens = 26,
             top_p = 1,
