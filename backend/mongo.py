@@ -14,6 +14,7 @@ col_apple = db.apple
 col_rtl = db.rtl
 col_netflix = db.netflix
 col_netflix_full = db.netflix_full
+col_seriesData = db.seriesData
 
 def get_random_movie():
     ret = []
@@ -111,6 +112,15 @@ def check_tmdb_name(_tmdbID):
             return (ret[0]['otitle'], int(ret[0]['serie']))
         else:
             return None
+
+def getSeriesData():
+    ret = []
+    agg = col_seriesData.find()
+
+    for a in agg:
+        ret.append(parse_json(a))
+
+    return ret
         
 def parse_json(data):
     return json.loads(json_util.dumps(data))
