@@ -18,9 +18,9 @@ export class OffersService {
     return this.http.get<Offer[]>("https://quick-flick-backend-pu2rnvaodq-ew.a.run.app/movie/next/").toPromise().then(async (movies: Offer[] | undefined) => {
       movies = movies ?? []
       movies.forEach(async (movie, index) => {
-        if (index % 4 == 0) {
+        if (index % 4 == 3) {
           movie.label = "gem"
-        } else if (index % 4 == 1) {
+        } else if (index % 4 == 2) {
           movie.label = "trending"
         } else {
           movie.label = "for you"
