@@ -85,13 +85,13 @@ def tv_poster(imdb_id):
         ret = req["posters"][0]["file_path"]
     return img_baseurl+size+ret
 
-@app.route("/movie/comments/<imdb_id>")
-def returnCommentsM(imdb_id):
-    return getReviewData(imdb_id)
+@app.route("/movie/comments/<tmdb_id>")
+def returnCommentsM(tmdb_id):
+    return getReviewData(tmdb_id)
 
-@app.route("/series/comments/<imdb_id>")
-def returnCommentsS(imdb_id):
-    return getReviewData(imdb_id)
+@app.route("/series/comments/<tmdb_id>")
+def returnCommentsS(tmdb_id):
+    return getReviewData(tmdb_id)
 
 @app.route("/offer/<imdb_id>")
 def get_offer_record(imdb_id):
