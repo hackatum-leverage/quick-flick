@@ -48,6 +48,12 @@ export class OffersService {
     });
   }
 
+  public async getReasons(id: string) {
+    return this.http.get<string[]>(`${this.BACKEND_URL}/movie/reasons/${id}/0`).toPromise().then(async (reasons: string[] | undefined) => {
+      return reasons ?? [];
+    })
+  }
+
   private getGif(item: Offer) {
     const query_addon = item.serie ? " series" : " movie";
     const query_title = escape(((item.otitle || item.title || "The Matrix"))).substring(0, 50 - query_addon.length).replace(/%+\d*$/, "");
