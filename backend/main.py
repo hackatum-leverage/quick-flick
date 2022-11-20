@@ -1,6 +1,6 @@
 import os
 import urllib.request, json
-from flask import Flask
+from flask import Flask, make_response
 import mongo
 from flask_cors import CORS
 from reviewAPI import getReviewData, getMovieDescription
@@ -46,7 +46,9 @@ def movie_poster(imdb_id="tt0137523"):
     with urllib.request.urlopen(mdb_url + "movie/" + new_id +"?api_key=" + mdb_key) as url:
         req = json.loads(url.read().decode())
         ret = req["poster_path"]
-    return img_baseurl+size+ret
+    response = make_response(img_baseurl+size+ret, 200)
+    response.mimetype = "text/plain"
+    return response
 
 @app.route("/series/next/")
 @app.route("/series/next/<imdb_id>")
@@ -83,7 +85,9 @@ def tv_poster(imdb_id):
     with urllib.request.urlopen(mdb_url + "tv/" + new_id + "/images" + "?api_key=" + mdb_key) as url:
         req = json.loads(url.read().decode())
         ret = req["posters"][0]["file_path"]
-    return img_baseurl+size+ret
+    response = make_response(img_baseurl+size+ret, 200)
+    response.mimetype = "text/plain"
+    return response
 
 @app.route("/movie/comments/<tmdb_id>")
 def returnCommentsM(tmdb_id):
