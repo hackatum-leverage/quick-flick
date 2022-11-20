@@ -58,9 +58,33 @@ export class VideoScrollerComponent implements OnInit, AfterViewInit {
     }
   }
 
-  public scrollIntoView(i: number) {
+  private scrollIntoView(i: number) {
     let element = document.getElementById('offer-' + i)!
     element.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+  }
+
+  public rememberWatched(i: number, id: string) {
+    let watchedMedia: string[] = []
+    if (localStorage.getItem('watchedMedia')) {
+      watchedMedia = JSON.parse(localStorage.getItem('watchedMedia')!)
+    }
+    if (!watchedMedia.includes(id)) {
+      watchedMedia.push(id)
+      this.scrollIntoView(i + 1)
+    } else {
+      watchedMedia.splice(watchedMedia.indexOf(id), 1)
+    }
+    localStorage.setItem('watchedMedia', JSON.stringify(watchedMedia))
+  }
+
+  public hasWatched(id: string): boolean {
+    if (localStorage.getItem('watchedMedia')) {
+      let watchedMedia: string[] = JSON.parse(localStorage.getItem('watchedMedia')!)
+      console.log(watchedMedia.includes(id))
+      return watchedMedia.includes(id)
+    }
+    console.log(false)
+    return false
   }
 
   public share(url: string) {
