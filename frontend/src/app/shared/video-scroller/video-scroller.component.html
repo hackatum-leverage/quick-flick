@@ -23,7 +23,7 @@
               <ion-chip *ngFor="let genre of item.genres.split(',') | slice:0:5">
                 <ion-label>{{ genre }}</ion-label>
               </ion-chip>
-              <ion-chip>
+              <ion-chip [ngClass]="{'red': item.label! == 'gem', 'blue': item.label! == 'trending'}">
                 <ion-label>{{ item.label! | titlecase }}</ion-label>
               </ion-chip>
             </div>

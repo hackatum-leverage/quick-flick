@@ -119,6 +119,12 @@
                         }
                         ion-chip {
                             height: 25px;
+                            &.red {
+                                background-color: var(--ion-color-danger);
+                            }
+                            &.blue {
+                                background-color: var(--ion-color-tertiary);
+                            }
                         }
                         ion-label {
                             font-size: 10px;
