@@ -72,7 +72,7 @@
             .left {
                 grid-area: "left";
                 display: grid;
-                grid-template-rows: auto min-content 60px;
+                grid-template-rows: auto min-content 40px;
                 grid-template-columns: auto;
                 grid-template-areas:
                     "content"
@@ -156,6 +156,11 @@
                     margin: 5px;
                     margin-top: 0px;
                     padding: 5px;
+                    display: flex;
+                    flex-flow: row;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 12px;
                     .stars {
                         display: flex;
                         flex-flow: row;
@@ -165,6 +170,9 @@
                         ion-icon {
                             font-size: 20px;
                         }
+                    }
+                    p {
+                        font-style: italic;
                     }
                 }
             }
