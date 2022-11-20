@@ -36,6 +36,7 @@ export class OffersService {
     offers = offers ?? []
     offers.forEach(async (offer, index) => {
       let loadReasons = false
+      let loadAdjectives = false;
       if (!fixedLabel) {
         if (index % 4 == 3) {
           offer.label = "gem"
@@ -47,18 +48,26 @@ export class OffersService {
         } else {
           offer.label = "for you"
         }
+        if (!loadReasons) {
+          loadAdjectives = this.getRandomInt(5) == 0;
+        }
       } else {
         offer.label = fixedLabel;
       }
       let gif_url = ""
       let reasons = undefined
+      let adjectives = undefined
       if (loadReasons) {
         [gif_url, reasons] = await Promise.all([this.getGif(offer), this.getReasons(offer.tmdb!)])
-      } else {
+      } else if (loadAdjectives) {
+        [gif_url, adjectives] = await Promise.all([this.getGif(offer), this.getAdjectives(offer.tmdb!)])
+      }
+      else {
         gif_url = await this.getGif(offer)
       }
       offer.gif_url = gif_url
       offer.reasons = reasons
+      offer.adjectives = adjectives
       if (!offer.posters || offer.posters.split(',').length === 0) {
         offer.posters = await this.getPosterURL(offer);
       }
@@ -85,6 +94,12 @@ export class OffersService {
     })
   }
 
+  public async getAdjectives(id: string) {
+    return this.http.get<string[]>(`${this.BACKEND_URL}/movie/reasons/${id}/0`).toPromise().then(async (reasons: string[] | undefined) => {
+      return reasons ?? [];
+    })
+  }
+
   private getGif(item: Offer) {
     const query_addon = item.serie ? " series" : " movie";
     const query_title = escape(((item.otitle || item.title || "The Matrix"))).substring(0, 50 - query_addon.length).replace(/%+\d*$/, "");
@@ -104,6 +119,11 @@ export class OffersService {
       return comments ?? [];
     });
   }
+
+  private getRandomInt(max: number) {
+    return Math.floor(Math.random() * max);
+  }
+
 
   private DUMMY_COMMENTS: ReviewComment[] = [
       {
