@@ -16,47 +16,66 @@ export class OffersService {
 
   public async getMovies() {
     return this.http.get<Offer[]>(`${this.BACKEND_URL}/movie/next/`).toPromise().then(async (movies: Offer[] | undefined) => {
-      movies = movies ?? []
-      movies.forEach(async (movie, index) => {
-        let loadResons = false
-        if (index % 4 == 3) {
-          movie.label = "gem"
-          if (movie.tmdb) {
-            loadResons = true
-          }
-        } else if (index % 4 == 2) {
-          movie.label = "trending"
-        } else {
-          movie.label = "for you"
-        }
-        let gif_url = ""
-        let reasons = undefined
-        if (loadResons) {
-          [gif_url, reasons] = await Promise.all([this.getGif(movie), this.getReasons(movie.tmdb!)])
-        } else {
-          gif_url = await this.getGif(movie)
-        }
-        movie.gif_url = gif_url
-        movie.reasons = reasons
-      })
-      return movies
+      return this.augmentOffers(movies);
+    });
+  }
+
+  public async getRelatedMovies(offer: Offer) {
+    return this.http.get<Offer[]>(`${this.BACKEND_URL}/movie/next/${offer.tmdb ?? "634649"}`).toPromise().then(async (movies: Offer[] | undefined) => {
+      return this.augmentOffers(movies);
     });
   }
 
   public async getSeries() {
     return this.http.get<Offer[]>(`${this.BACKEND_URL}/series/next/`).toPromise().then(async (series: Offer[] | undefined) => {
-      series = series ?? []
-      series.forEach(async (serie, index) => {
-        if (index % 4 == 0) {
-          serie.label = "gem"
-        } else if (index % 4 == 1) {
-          serie.label = "trending"
+      return this.augmentOffers(series);
+    });
+  }
+
+  private augmentOffers(offers: Offer[] | undefined, fixedLabel?: "gem" | "trending" | "for you") {
+    offers = offers ?? []
+    offers.forEach(async (offer, index) => {
+      let loadReasons = false
+      if (!fixedLabel) {
+        if (index % 4 == 3) {
+          offer.label = "gem"
+          if (offer.tmdb) {
+            loadReasons = true
+          }
+        } else if (index % 4 == 2) {
+          offer.label = "trending"
         } else {
-          serie.label = "for you"
+          offer.label = "for you"
         }
-        serie.gif_url = await this.getGif(serie)
-      })
-      return series
+      } else {
+        offer.label = fixedLabel;
+      }
+      let gif_url = ""
+      let reasons = undefined
+      if (loadReasons) {
+        [gif_url, reasons] = await Promise.all([this.getGif(offer), this.getReasons(offer.tmdb!)])
+      } else {
+        gif_url = await this.getGif(offer)
+      }
+      offer.gif_url = gif_url
+      offer.reasons = reasons
+      if (!offer.posters || offer.posters.split(',').length === 0) {
+        offer.posters = await this.getPosterURL(offer);
+      }
+    });
+    return offers;
+  }
+
+  private getPosterURL(offer: Offer) {
+    const id = offer.serie ? offer.tvdb : offer.imdb_id;
+    if (!id) {
+      return "../../../assets/poster-placeholder.jpg";
+    }
+    return this.http.get<string>(`${this.BACKEND_URL}/${offer.serie ? "series" : "movie"}/poster/${id ?? "1722512"}`).toPromise().then(async (url: string | undefined) => {
+      url = url ?? "../../../assets/poster-placeholder.jpg"
+      return url;
+    }).catch(() => {
+      return "../../../assets/poster-placeholder.jpg";
     });
   }
 
