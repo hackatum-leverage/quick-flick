@@ -32,6 +32,7 @@ def getRandomDiscoverMovie():
 # Get trending movies
 def getPopularMovies():
     tmdbList = []
+    votingList = []
     with urllib.request.urlopen(mdb_url + "movie/" + "popular/" + "?api_key=" + str(mdb_key) + "&language=en-US" + "&page=1") as url:
         req = json.loads(url.read().decode())
         movieRecommendationList = req['results']
@@ -39,11 +40,13 @@ def getPopularMovies():
         # just extract ids
         for movie in movieRecommendationList:
             tmdbList.append(str(movie['id']))
+            votingList.append(str(movie['vote_average']))
 
-        return tmdbList
+        return (tmdbList, votingList)
 
 def getHiddenGemMovie():
     tmdbList = []
+    votingList = []
     with urllib.request.urlopen(mdb_url + "discover/" + "movie/" + "?api_key=" + str(mdb_key) + "&language=en-US" + "&sort_by=popularity.desc" + "&page=1" + "&release_date.lte=2009-12-31") as url:
         req = json.loads(url.read().decode())
         movieList = req['results']
@@ -51,8 +54,9 @@ def getHiddenGemMovie():
         # just extract ids
         for movie in movieList:
             tmdbList.append(str(movie['id']))
+            votingList.append(str(movie['vote_average']))
 
-        return tmdbList
+        return (tmdbList, votingList)
 
 # Call to get first Discovery movie and afterwards four more suggestions with same topic
 def getMovies():
@@ -60,6 +64,7 @@ def getMovies():
 
     discoveryList, votingList = getRandomDiscoverMovie()
     liste = mongo.check_list(discoveryList)
+    liste = list(dict.fromkeys(liste))
 
     idx = list(range(0, len(liste)))
     random.shuffle(idx)
@@ -67,13 +72,15 @@ def getMovies():
     # TODO: check size
 
     movieList.append(liste[idx[0]])
-
-    #var = discoveryList.index(movieList[0]['tmdb'])
-
     movieList.append(liste[idx[1]])
     movieList.append(liste[idx[2]])
 
-    popularList = getPopularMovies()
+    # Get rating for data
+    movieList[0]['rating'] = votingList[discoveryList.index(movieList[0]['tmdb'])]
+    movieList[1]['rating'] = votingList[discoveryList.index(movieList[1]['tmdb'])]
+    movieList[2]['rating'] = votingList[discoveryList.index(movieList[2]['tmdb'])]
+
+    popularList, votingList = getPopularMovies()
     liste = mongo.check_list(popularList)
 
     idx = list(range(0, len(liste)))
@@ -82,8 +89,9 @@ def getMovies():
     # TODO: check size
 
     movieList.append(liste[idx[0]])
+    movieList[3]['rating'] = votingList[popularList.index(movieList[3]['tmdb'])]
 
-    gemList = getHiddenGemMovie()
+    gemList, votingList = getHiddenGemMovie()
     liste = mongo.check_list(gemList)
 
     idx = list(range(0, len(liste)))
@@ -92,6 +100,7 @@ def getMovies():
     # TODO: check size
 
     movieList.append(liste[idx[0]])
+    movieList[4]['rating'] = votingList[gemList.index(movieList[4]['tmdb'])]
 
     return movieList
 
@@ -113,6 +122,7 @@ def getSeries():
 def getMovieRecommendation(_tmdbID):
     tmdbList = []
     movieList = []
+    votingList = []
     with urllib.request.urlopen(mdb_url + "movie/" + str(_tmdbID) + "/recommendations" + "?api_key=" + str(mdb_key) + "&page=1") as url:
         req = json.loads(url.read().decode())
         movieRecommendationList = req['results']
@@ -120,6 +130,7 @@ def getMovieRecommendation(_tmdbID):
         # just extract ids
         for movie in movieRecommendationList:
             tmdbList.append(str(movie['id']))
+            votingList.append(str(movie['vote_average']))
 
         liste = mongo.check_list(tmdbList)
 
@@ -131,6 +142,12 @@ def getMovieRecommendation(_tmdbID):
         movieList.append(liste[idx[2]])
         movieList.append(liste[idx[3]])
         movieList.append(liste[idx[4]])
+
+        movieList[0]['rating'] = votingList[tmdbList.index(movieList[0]['tmdb'])]
+        movieList[1]['rating'] = votingList[tmdbList.index(movieList[1]['tmdb'])]
+        movieList[2]['rating'] = votingList[tmdbList.index(movieList[2]['tmdb'])]
+        movieList[3]['rating'] = votingList[tmdbList.index(movieList[3]['tmdb'])]
+        movieList[4]['rating'] = votingList[tmdbList.index(movieList[4]['tmdb'])]
 
         return movieList
 
