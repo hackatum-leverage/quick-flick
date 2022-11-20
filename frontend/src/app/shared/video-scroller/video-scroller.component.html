@@ -1,4 +1,4 @@
-<div class="scroller" infinite-scroll [infiniteScrollDistance]="2" (scrolled)="loadNextOffers()" [scrollWindow]="false" (touchstart)="touchStart($event)" (touchmove)="touchMove($event)" (touchend)="touchEnd($event)">
+<div class="scroller" #scroller infinite-scroll [infiniteScrollDistance]="2" (scrolled)="loadNextOffers()" [scrollWindow]="false" (touchstart)="touchStart($event)" (touchmove)="touchMove($event)" (touchend)="touchEnd($event)">
   <div class="wrapper" *ngFor="let item of offers; let i = index">
     <div class="background">
       <img [src]="item.gif_url">
@@ -6,9 +6,9 @@
     <div class="foreground" [id]="'offer-' + i">
       <div class="left">
         <div class="content">
-          <p>This is a test</p>
-          <p>Lorem ipsum solor et dilor.</p>
-          <p>Shit bussin</p>
+          <div class="text" *ngIf="item.reasons">
+            <p *ngFor="let reason of item.reasons">{{ reason }}</p>
+          </div>
         </div>
         <div class="title">
           <div *ngIf="item.posters && item.posters.split(',').length > 0">

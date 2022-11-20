@@ -35,9 +35,13 @@ export class OffersService {
   private augmentOffers(offers: Offer[] | undefined, fixedLabel?: "gem" | "trending" | "for you") {
     offers = offers ?? []
     offers.forEach(async (offer, index) => {
+      let loadReasons = false
       if (!fixedLabel) {
         if (index % 4 == 3) {
           offer.label = "gem"
+          if (offer.tmdb) {
+            loadReasons = true
+          }
         } else if (index % 4 == 2) {
           offer.label = "trending"
         } else {
@@ -46,7 +50,15 @@ export class OffersService {
       } else {
         offer.label = fixedLabel;
       }
-      offer.gif_url = await this.getGif(offer);
+      let gif_url = ""
+      let reasons = undefined
+      if (loadReasons) {
+        [gif_url, reasons] = await Promise.all([this.getGif(offer), this.getReasons(offer.tmdb!)])
+      } else {
+        gif_url = await this.getGif(offer)
+      }
+      offer.gif_url = gif_url
+      offer.reasons = reasons
       if (!offer.posters || offer.posters.split(',').length === 0) {
         offer.posters = await this.getPosterURL(offer);
       }
@@ -62,7 +74,15 @@ export class OffersService {
     return this.http.get<string>(`${this.BACKEND_URL}/${offer.serie ? "series" : "movie"}/poster/${id ?? "1722512"}`).toPromise().then(async (url: string | undefined) => {
       url = url ?? "../../../assets/poster-placeholder.jpg"
       return url;
+    }).catch(() => {
+      return "../../../assets/poster-placeholder.jpg";
     });
+  }
+
+  public async getReasons(id: string) {
+    return this.http.get<string[]>(`${this.BACKEND_URL}/movie/reasons/${id}/1`).toPromise().then(async (reasons: string[] | undefined) => {
+      return reasons ?? [];
+    })
   }
 
   private getGif(item: Offer) {

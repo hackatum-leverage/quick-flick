@@ -5,85 +5,82 @@ import urllib.request, json
 mdb_url = "https://api.themoviedb.org/3/"
 mdb_key = "5df139106aa0fb2f1b015f82b6bf0a7a"
 
-def get_imdb_id_movie(id):
-    with urllib.request.urlopen(mdb_url+ "movie/" + str(id) + "?api_key=" + mdb_key) as url:
-        req = json.loads(url.read().decode())
-        ret = req["imdb_id"]
-    return ret
-
-def get_imdb_id_tv(id):
-    with urllib.request.urlopen(mdb_url+ "tv/" + str(id) + "/external_ids" + "?api_key=" + mdb_key) as url:
-        req = json.loads(url.read().decode())
-        ret = req["imdb_id"]
-    return ret
-
-def get_id(imdb_id):
-    # Check length of id
-    if len(str(imdb_id)) == 6:
-        imdb_id = "tt0" + str(imdb_id)
-    elif len(str(imdb_id)) == 7:
-        imdb_id = "tt" + str(imdb_id)
-
-    with urllib.request.urlopen(mdb_url + "find/" + imdb_id + "?api_key=" + mdb_key + "&external_source=imdb_id") as url:
-        req = json.loads(url.read().decode())
-        if not req["tv_results"]:
-            ret = req["movie_results"][0]["id"]
-        else :
-            ret = req["tv_results"][0]["id"]
-    return str(ret)
-
 # Uses discover api as first suggestion and then selects next recommendation
 def getRandomDiscoverMovie():
     tmdbList = []
-    with urllib.request.urlopen(mdb_url + "discover/" + "movie/" + "?api_key=" + str(mdb_key) + "&sort_by=popularity.desc" + "&page=1") as url:
+    votingList = []
+
+    randomNumber = random.randint(1, 10)
+    randomNumber2 = randomNumber + 1
+
+    with urllib.request.urlopen(mdb_url + "discover/" + "movie/" + "?api_key=" + str(mdb_key) + "&language=en-US" + "&sort_by=popularity.desc" + "&page=" + str(randomNumber)) as url:
         req = json.loads(url.read().decode())
         movieList = req['results']
 
-    with urllib.request.urlopen(mdb_url + "discover/" + "movie/" + "?api_key=" + str(mdb_key) + "&sort_by=popularity.desc" + "&page=2") as url:
+    with urllib.request.urlopen(mdb_url + "discover/" + "movie/" + "?api_key=" + str(mdb_key) + "&language=en-US" + "&sort_by=popularity.desc" + "&page=" + str(randomNumber2)) as url:
         req = json.loads(url.read().decode())
         movieList2 = req['results']
 
         # just extract ids
         for movie in movieList:
             tmdbList.append(str(movie['id']))
+            votingList.append(str(movie['vote_average']))
         for movie in movieList2:
             tmdbList.append(str(movie['id']))
+            votingList.append(str(movie['vote_average']))
 
-        return tmdbList
+        return (tmdbList, votingList)
 
     return -1
 
 # Get trending movies
 def getPopularMovies():
     tmdbList = []
-    with urllib.request.urlopen(mdb_url + "movie/" + "popular/" + "?api_key=" + str(mdb_key) + "&page=1") as url:
+    votingList = []
+
+    randomNumber = random.randint(1, 5)
+
+    with urllib.request.urlopen(mdb_url + "movie/" + "popular/" + "?api_key=" + str(mdb_key) + "&language=en-US" + "&page=" + str(randomNumber)) as url:
         req = json.loads(url.read().decode())
         movieRecommendationList = req['results']
 
         # just extract ids
         for movie in movieRecommendationList:
             tmdbList.append(str(movie['id']))
+            votingList.append(str(movie['vote_average']))
 
-        return tmdbList
+        return (tmdbList, votingList)
 
 def getHiddenGemMovie():
     tmdbList = []
-    with urllib.request.urlopen(mdb_url + "discover/" + "movie/" + "?api_key=" + str(mdb_key) + "&sort_by=popularity.desc" + "&page=1" + "&release_date.lte=2009-12-31") as url:
+    votingList = []
+
+    randomNumber = random.randint(1, 5)
+    
+    with urllib.request.urlopen(mdb_url + "discover/" + "movie/" + "?api_key=" + str(mdb_key) + "&language=en-US" + "&sort_by=popularity.desc" + "&page=" + str(randomNumber) + "&release_date.lte=2009-12-31") as url:
         req = json.loads(url.read().decode())
         movieList = req['results']
 
         # just extract ids
         for movie in movieList:
             tmdbList.append(str(movie['id']))
+            votingList.append(str(movie['vote_average']))
 
-        return tmdbList
+        return (tmdbList, votingList)
 
 # Call to get first Discovery movie and afterwards four more suggestions with same topic
 def getMovies():
     movieList = []
 
-    discoveryList = getRandomDiscoverMovie()
+    discoveryList, votingList = getRandomDiscoverMovie()
     liste = mongo.check_list(discoveryList)
+    
+    cleanedList = []
+    tmdbList = []
+    for element in liste:
+        if element['tmdb'] not in tmdbList:
+            cleanedList.append(element)
+            tmdbList.append(element['tmdb'])
 
     idx = list(range(0, len(liste)))
     random.shuffle(idx)
@@ -94,7 +91,12 @@ def getMovies():
     movieList.append(liste[idx[1]])
     movieList.append(liste[idx[2]])
 
-    popularList = getPopularMovies()
+    # Get rating for data
+    movieList[0]['rating'] = votingList[discoveryList.index(movieList[0]['tmdb'])]
+    movieList[1]['rating'] = votingList[discoveryList.index(movieList[1]['tmdb'])]
+    movieList[2]['rating'] = votingList[discoveryList.index(movieList[2]['tmdb'])]
+
+    popularList, votingList = getPopularMovies()
     liste = mongo.check_list(popularList)
 
     idx = list(range(0, len(liste)))
@@ -103,8 +105,9 @@ def getMovies():
     # TODO: check size
 
     movieList.append(liste[idx[0]])
+    movieList[3]['rating'] = votingList[popularList.index(movieList[3]['tmdb'])]
 
-    gemList = getHiddenGemMovie()
+    gemList, votingList = getHiddenGemMovie()
     liste = mongo.check_list(gemList)
 
     idx = list(range(0, len(liste)))
@@ -113,6 +116,7 @@ def getMovies():
     # TODO: check size
 
     movieList.append(liste[idx[0]])
+    movieList[4]['rating'] = votingList[gemList.index(movieList[4]['tmdb'])]
 
     return movieList
 
@@ -134,6 +138,7 @@ def getSeries():
 def getMovieRecommendation(_tmdbID):
     tmdbList = []
     movieList = []
+    votingList = []
     with urllib.request.urlopen(mdb_url + "movie/" + str(_tmdbID) + "/recommendations" + "?api_key=" + str(mdb_key) + "&page=1") as url:
         req = json.loads(url.read().decode())
         movieRecommendationList = req['results']
@@ -141,6 +146,7 @@ def getMovieRecommendation(_tmdbID):
         # just extract ids
         for movie in movieRecommendationList:
             tmdbList.append(str(movie['id']))
+            votingList.append(str(movie['vote_average']))
 
         liste = mongo.check_list(tmdbList)
 
@@ -152,6 +158,12 @@ def getMovieRecommendation(_tmdbID):
         movieList.append(liste[idx[2]])
         movieList.append(liste[idx[3]])
         movieList.append(liste[idx[4]])
+
+        movieList[0]['rating'] = votingList[tmdbList.index(movieList[0]['tmdb'])]
+        movieList[1]['rating'] = votingList[tmdbList.index(movieList[1]['tmdb'])]
+        movieList[2]['rating'] = votingList[tmdbList.index(movieList[2]['tmdb'])]
+        movieList[3]['rating'] = votingList[tmdbList.index(movieList[3]['tmdb'])]
+        movieList[4]['rating'] = votingList[tmdbList.index(movieList[4]['tmdb'])]
 
         return movieList
 
@@ -170,8 +182,18 @@ def getSeriesRecommendation(_imdbID):
 
     return seriesList
     
+def getRating(_tmdb):
+    tmdbList = []
+    movieList = []
+    with urllib.request.urlopen(mdb_url + "movie/" + str(_tmdbID) + "/recommendations" + "?api_key=" + str(mdb_key) + "&page=1") as url:
+        req = json.loads(url.read().decode())
+        movieRecommendationList = req['results']
+
+        # just extract ids
+        for movie in movieRecommendationList:
+            tmdbList.append(str(movie['id']))
 
 if __name__ == "__main__":
     print("Ugga Ugga")
 
-    getSeries()
+    print(getMovies())

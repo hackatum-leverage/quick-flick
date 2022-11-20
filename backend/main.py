@@ -1,6 +1,6 @@
 import os
 import urllib.request, json
-from flask import Flask
+from flask import Flask, make_response
 import mongo
 from flask_cors import CORS
 from reviewAPI import getReviewData, getMovieDescription
@@ -40,12 +40,15 @@ def tv_trends():
         ret_id = get_imdb_id_tv(str(req_id))
     return ret_id
 
-@app.route("/movie/poster/<tmdb_id>")
-def movie_poster(tmdb_id):
-    with urllib.request.urlopen(mdb_url + "movie/" + tmdb_id +"?api_key=" + mdb_key) as url:
+@app.route("/movie/poster/<imdb_id>")
+def movie_poster(imdb_id="tt0137523"):
+    new_id = str(get_id("tt" + imdb_id))
+    with urllib.request.urlopen(mdb_url + "movie/" + new_id +"?api_key=" + mdb_key) as url:
         req = json.loads(url.read().decode())
         ret = req["poster_path"]
-    return img_baseurl+size+ret
+    response = make_response(img_baseurl+size+ret, 200)
+    response.mimetype = "text/plain"
+    return response
 
 @app.route("/series/next/")
 @app.route("/series/next/<imdb_id>")
@@ -76,12 +79,15 @@ def movie_reasons(tmdb_ID, mode):
 def series_reasons(tmdb_ID, mode):
     return getMovieDescription(tmdb_ID, mode)
 
-@app.route("/series/poster/<tmdb_id>")
-def tv_poster(tmdb_id):
-    with urllib.request.urlopen(mdb_url + "tv/" + tmdb_id + "/images" + "?api_key=" + mdb_key) as url:
+@app.route("/series/poster/<imdb_id>")
+def tv_poster(imdb_id):
+    new_id = str(get_id("tt" + imdb_id, True))
+    with urllib.request.urlopen(mdb_url + "tv/" + new_id + "/images" + "?api_key=" + mdb_key) as url:
         req = json.loads(url.read().decode())
         ret = req["posters"][0]["file_path"]
-    return img_baseurl+size+ret
+    response = make_response(img_baseurl+size+ret, 200)
+    response.mimetype = "text/plain"
+    return response
 
 @app.route("/movie/comments/<tmdb_id>")
 def returnCommentsM(tmdb_id):
@@ -95,10 +101,10 @@ def returnCommentsS(tmdb_id):
 def get_offer_record(imdb_id):
     pass
 
-def get_id(imdb_id): #vllt parameter einfügen für TV oder Movie ergebnisse
+def get_id(imdb_id, tv=False): #vllt parameter einfügen für TV oder Movie ergebnisse
     with urllib.request.urlopen(mdb_url + "find/" + imdb_id + "?api_key=" + mdb_key + "&external_source=imdb_id") as url:
         req = json.loads(url.read().decode())
-        if not req["tv_results"]:
+        if not tv:
             ret = req["movie_results"][0]["id"]
             print("got movie result")
         else :

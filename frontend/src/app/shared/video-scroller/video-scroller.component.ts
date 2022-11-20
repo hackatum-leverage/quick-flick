@@ -53,11 +53,9 @@ export class VideoScrollerComponent implements OnInit, AfterViewInit {
   public touchEnd(event: TouchEvent) {
     let threshold = 100
     if (Math.abs(this.startX! - this.endX!) > threshold && Math.abs(this.startY! - this.endY!) <= threshold) {
-      if (this.startX! - this.endX! > 0) {
-        console.log("left")
+      if (this.startX! - this.endX! < 0) {
         this.router.navigate(['/movies'])
       } else {
-        console.log("right")
         this.router.navigate(['/series'])
       }
     }
