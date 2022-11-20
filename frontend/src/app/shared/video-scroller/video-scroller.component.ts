@@ -96,7 +96,6 @@ export class VideoScrollerComponent implements OnInit, AfterViewInit {
   }
 
   public rememberWatched(i: number, offer: Offer) {
-    console.log(offer);
     this.loadRelatedOffers(offer);
     let watchedMedia: string[] = []
     if (localStorage.getItem('watchedMedia')) {
@@ -105,6 +104,7 @@ export class VideoScrollerComponent implements OnInit, AfterViewInit {
     if (!watchedMedia.includes(offer.id)) {
       watchedMedia.push(offer.id)
       this.scrollIntoView(i + 1)
+      console.log("scrolling into view");
     } else {
       watchedMedia.splice(watchedMedia.indexOf(offer.id), 1)
     }
