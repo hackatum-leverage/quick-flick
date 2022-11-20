@@ -79,10 +79,10 @@ def movie_reasons(tmdb_ID, mode):
 def series_reasons(tmdb_ID, mode):
     return getMovieDescription(tmdb_ID, mode)
 
-@app.route("/series/poster/<imdb_id>")
-def tv_poster(imdb_id):
-    new_id = str(get_id("tt" + imdb_id, True))
-    with urllib.request.urlopen(mdb_url + "tv/" + new_id + "/images" + "?api_key=" + mdb_key) as url:
+@app.route("/series/poster/<tvid>")
+def tv_poster(tvid):
+    new_id = get_id_from_tvid(str(tvid))
+    with urllib.request.urlopen(mdb_url + "tv/" + str(new_id) + "/images" + "?api_key=" + mdb_key) as url:
         req = json.loads(url.read().decode())
         ret = req["posters"][0]["file_path"]
     response = make_response(img_baseurl+size+ret, 200)
@@ -122,6 +122,12 @@ def get_imdb_id_tv(id):
     with urllib.request.urlopen(mdb_url+ "tv/" + str(id) + "/external_ids" + "?api_key=" + mdb_key) as url:
         req = json.loads(url.read().decode())
         ret = req["imdb_id"]
+    return ret
+
+def get_id_from_tvid(tvid):
+    with urllib.request.urlopen(mdb_url + "find/" + tvid + "?api_key=" + mdb_key + "&external_source=tvdb_id") as url:
+        req = json.loads(url.read().decode())
+        ret = req["tv_results"][0]["id"]
     return ret
 
 if __name__ == "__main__":
