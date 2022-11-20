@@ -7,10 +7,10 @@
       <div class="left">
         <div class="content">
           <div class="label">
-            <ion-chip [ngClass]="{'red': item.label! == 'gem', 'blue': item.label! == 'trending'}">
-              <ion-label *ngIf="item.label! == 'gem'">💎 Gem</ion-label>
+            <ion-chip [ngClass]="{'gem': item.label! == 'gem', 'trending': item.label! == 'trending'}">
+              <ion-label *ngIf="item.label! == 'gem'">💎 Hidden Gem</ion-label>
               <ion-label *ngIf="item.label! == 'trending'">🔥 Trending</ion-label>
-              <ion-label *ngIf="item.label! == 'for you'">For you</ion-label>
+              <ion-label *ngIf="item.label! == 'for you'">🎯 For you</ion-label>
             </ion-chip>
           </div>
           <div class="text" *ngIf="item.reasons">
