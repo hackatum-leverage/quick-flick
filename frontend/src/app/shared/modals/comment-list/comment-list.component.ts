@@ -16,20 +16,20 @@ export class CommentListComponent implements OnInit {
   public isLoading = true
 
   public mockComments: ReviewComment[] = [{
-    name: "Stacy Green",
+    name: "Snaregian",
     review: "My new favorite movie, soo good!!"
   }, {
-    name: "Norbert Scott",
-    review: "Was funny and entertaining"
+    name: "Leofwine_draca",
+    review: "Watched this movie with my friends. Sounded all quiet impressed."
   }, {
-    name: "Rafaela Smith",
-    review: "I liked it, but it was a bit boring"
+    name: "Hitchcoc",
+    review: "I liked it, with a pretty nice setting"
   }, {
-    name: "Olivia Albert",
-    review: "Great movie to watch with friends :)"
+    name: "TheConnoisseurReviews",
+    review: "Fantastic effects with great actors."
   }, {
-    name: "Liam Miller",
-    review: "Would watch it again!"
+    name: "copyright908",
+    review: "Looooved it! 100% recommendation"
   }]
 
   constructor(
